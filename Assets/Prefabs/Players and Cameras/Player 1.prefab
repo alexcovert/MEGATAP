@@ -147,8 +147,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1428506183960842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -36.4, y: 2, z: -48.39}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -36.4, y: 2, z: -43.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4512526300849048}
   m_Father: {fileID: 0}
@@ -382,7 +382,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  wallTriggers: []
+  wallTriggers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   floorSpawn: {fileID: 0}
 --- !u!114 &114940724036334842
 MonoBehaviour:
