@@ -60,15 +60,19 @@ public class PlayerOne : MonoBehaviour {
         {
             case 1:
                 rb.AddForce(inputAxis * moveSpeed * movementMultiplier, 0, 0, ForceMode.Impulse);
+                rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
                 break;
             case 2:
                 rb.AddForce(0, 0, inputAxis * moveSpeed * movementMultiplier, ForceMode.Impulse);
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
                 break;
             case 3:
                 rb.AddForce(-inputAxis * moveSpeed * movementMultiplier, 0, 0, ForceMode.Impulse);
+                rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
                 break;
             case 4:
                 rb.AddForce(0, 0, -inputAxis * moveSpeed * movementMultiplier, ForceMode.Impulse);
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
                 break;
         }
 
