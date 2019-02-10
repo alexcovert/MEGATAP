@@ -102,6 +102,7 @@ public class CastSpell : MonoBehaviour {
 
         if (Input.GetButtonDown("Swap_Queue"))
         {
+            DestroyTarget();
             SwitchQueue();
         }
     }
@@ -310,7 +311,7 @@ public class CastSpell : MonoBehaviour {
     }
 
 
-    public void DestroyTarget()
+    private void DestroyTarget()
     {
         if (spellTarget != null)
         {
@@ -330,7 +331,6 @@ public class CastSpell : MonoBehaviour {
         StartCoroutine(EnableInput());
         
         DestroyTarget();
-        GetComponent<PlaceTrap>().DestroyGhost();
         SetTarget();
         spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
     }
