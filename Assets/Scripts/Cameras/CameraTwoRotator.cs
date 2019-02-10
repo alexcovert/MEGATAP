@@ -1,12 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //<alexc> This class rotates and moves the Player 2 (right side camera) on a given input.
 public class CameraTwoRotator : MonoBehaviour {
 
     [SerializeField] private Camera playerTwoCam;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private Image gridUI;
 
     //Change these static variables iff tower is scaled
     private static int camPosHorizontal = 150;
@@ -80,7 +81,7 @@ public class CameraTwoRotator : MonoBehaviour {
         }
         camTween = TweenToPosition(goalPos, goalRot, moveSpeed);
         StartCoroutine(camTween);
-
+        MoveGrid();
     }
 
     //Camera movement coroutine
@@ -103,6 +104,28 @@ public class CameraTwoRotator : MonoBehaviour {
 
         moveEnabled = true;
         camTween = null;
+    }
+
+    //Rotate and move worldspace grid UI with camera
+    private void MoveGrid()
+    {
+        gridUI.transform.Rotate(0, 90, 0);
+        switch (currentPos)
+        {
+            case 1:
+                //Move up 20 when it hits face 1 again
+                gridUI.transform.position = new Vector3(0, gridUI.transform.position.y + 20, -40.1f);
+                break;
+            case 2:
+                gridUI.transform.position = new Vector3(40.1f, gridUI.transform.position.y, 0);
+                break;
+            case 3:
+                gridUI.transform.position = new Vector3(0, gridUI.transform.position.y, 40.1f);
+                break;
+            case 4:
+                gridUI.transform.position = new Vector3(-40.1f, gridUI.transform.position.y, 0);
+                break;
+        }
     }
 
     public int GetState()
