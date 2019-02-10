@@ -354,6 +354,11 @@ public class PlaceTrap : MonoBehaviour {
             newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
 
             queue.Add(newTrap);
+
+            if(active == false)
+            {
+                queue[i].GetComponent<Button>().interactable = false;
+            }
         }
 
     }

@@ -365,6 +365,11 @@ public class CastSpell : MonoBehaviour {
             newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
 
             queue.Add(newSpell);
+
+            if (active == false)
+            {
+                queue[i].GetComponent<Button>().interactable = false;
+            }
         }
 
     }
