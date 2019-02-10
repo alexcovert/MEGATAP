@@ -129,8 +129,8 @@ public class SpellBase : MonoBehaviour {
     private IEnumerator WaitStun(GameObject player, float stunDuration)
     {
         waitActive = true;
-        player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
         yield return new WaitForSeconds(stunDuration);
         waitActive = false;
