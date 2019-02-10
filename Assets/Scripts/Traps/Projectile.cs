@@ -12,19 +12,20 @@ public class Projectile : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		trapBase = GetComponent<TrapBase>();
-		Destroy(gameObject, 5.0f);
 	}
 
 	void FixedUpdate(){
+		Debug.Log(hit);
+		Debug.Log(player);
 		if (player != null)
 		{
 				if (hit)
 				{
-					trapBase.Stun2(player, 3, this.gameObject);
+						trapBase.Stun2(player, 3, this.gameObject);
 				}
 				else
 				{
-					hit = false;
+						hit = false;
 				}
 
 		}
@@ -37,7 +38,7 @@ public class Projectile : MonoBehaviour {
 			player = col.gameObject;
 			hit = true;
 		}
-		else if(col.gameObject.name != "ArrowTrap(Clone)"){
+		else{
 			Destroy(gameObject);
 		}
 	}

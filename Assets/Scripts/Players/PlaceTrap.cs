@@ -24,8 +24,6 @@ public class PlaceTrap : MonoBehaviour {
     private TrapBase trap;
     private GameObject ghostTrap;
     private GameObject previouslySelected;
-    private float gridXOffset, gridZOffset, gridYOffset = 0.35f; //changed when trap is rotated so that it still properly aligns with grid.
-
 
     private bool p2Controller;
     private bool placeEnabled;
@@ -90,28 +88,28 @@ public class PlaceTrap : MonoBehaviour {
         if (RaycastFromCam() != null)
         {
             RaycastHit hit = RaycastFromCam().Value;
-            float hitX = -1;
-            float hitZ = -1;
+            int hitX = -1;
+            int hitZ = -1;
             switch (cam.GetComponent<CameraTwoRotator>().GetState())
             {
                 case 1:
-                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1 + gridXOffset;
+                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1;
                     hitZ = Mathf.RoundToInt(hit.point.z + -2);
                     break;
                 case 2:
                     hitX = Mathf.RoundToInt(hit.point.x + 2);
-                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1 + gridZOffset;
+                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1;
                     break;
                 case 3:
-                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1 + gridXOffset;
+                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1;
                     hitZ = Mathf.RoundToInt(hit.point.z + 2);
                     break;
                 case 4:
                     hitX = Mathf.RoundToInt(hit.point.x + -2);
-                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1 + gridZOffset;
+                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1;
                     break;
             }
-            float hitY = Mathf.RoundToInt((hit.point.y - 1)/ gridSize) * gridSize + gridYOffset;
+            int hitY = Mathf.RoundToInt((hit.point.y - 1)/ gridSize) * gridSize + 1;
             return new Vector3(hitX, hitY, hitZ);
         }
         else return null;
@@ -121,23 +119,17 @@ public class PlaceTrap : MonoBehaviour {
     {
         RaycastHit hit;
         Ray ray;
-        if (p2Controller && controllerCursor.transform.position.y > Screen.height / 2)
+        if (p2Controller)
         {
             ray = cam.ScreenPointToRay(controllerCursor.transform.position);
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Tower")))
-            {
-                return hit;
-            }
-            else return null;
         }
-        else if(Input.mousePosition.y > Screen.height / 2)
+        else
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Tower")))
-            {
-                return hit;
-            }
-            else return null;
+        }
+        if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Tower")))
+        {
+            return hit;
         }
         else
         {
@@ -233,9 +225,6 @@ public class PlaceTrap : MonoBehaviour {
             color.a = 0.5f;
             ghostTrap.GetComponentInChildren<MeshRenderer>().material.color = color;
         }
-        
-       	
-       	ghostTrap.GetComponent<TrapBase>().enabled = false;
 
     }
 
@@ -295,54 +284,6 @@ public class PlaceTrap : MonoBehaviour {
                     trapRot--;
                 }
             }
-
-            //Add Offsets so they still stick to grid
-            if(trapRot % 4 == 0)
-            {//Facing Up
-                gridYOffset = 0.35f;
-                gridXOffset = 0;
-                gridZOffset = 0;
-            }
-            else if((trapRot - 1) % 4 == 0)
-            {//Facing Left
-                gridYOffset = 1;
-                switch(cam.GetComponent<CameraTwoRotator>().GetState())
-                {
-                    case 1:
-                    case 3:
-                        gridXOffset = 0.6f;
-                        gridZOffset = 0;
-                        break;
-                    case 2:
-                    case 4:
-                        gridXOffset = 0;
-                        gridZOffset = -0.6f;
-                        break;
-                }
-            }
-            else if((trapRot - 2) % 4 == 0)
-            {//Facing Down
-                gridYOffset = 1.7f;
-                gridXOffset = 0;
-                gridZOffset = 0;
-            }
-            else if((trapRot - 3) % 4 == 0)
-            {//Facing Right
-                gridYOffset = 1;
-                switch (cam.GetComponent<CameraTwoRotator>().GetState())
-                {
-                    case 1:
-                    case 3:
-                        gridXOffset = -0.6f;
-                        gridZOffset = 0;
-                        break;
-                    case 2:
-                    case 4:
-                        gridXOffset = 0;
-                        gridZOffset = 0.6f;
-                        break;
-                }
-            }
         }
     }
 
@@ -395,14 +336,13 @@ public class PlaceTrap : MonoBehaviour {
 
     private void CreateTrapQueue()
     {
-        trapRot = 0;
         for(int i = 0; i < queueSize; i++)
         {
             int random = Random.Range(0, trapButtons.Length);
             GameObject newTrap = Instantiate(trapButtons[random], new Vector3 (-150f + 50f*i, 0f, 0), Quaternion.identity) as GameObject;
             newTrap.transform.SetParent(trapQueue.transform, false);
 
-            if(i == 0 && p2Controller)
+            if(i == 0)
             {
                 eventSystem.firstSelectedGameObject = trapButtons[0].gameObject;
                 eventSystem.SetSelectedGameObject(newTrap.gameObject);
