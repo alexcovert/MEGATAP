@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 136067776974424564}
   - component: {fileID: 114692542700711350}
   - component: {fileID: 54586173101670240}
+  - component: {fileID: 114385061336639608}
   m_Layer: 0
   m_Name: NarrowPOV
   m_TagString: Untagged
@@ -101,6 +102,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114385061336639608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858304420472382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b25e546a67e18647a104668fef909a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellTime: 5
 --- !u!114 &114692542700711350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,7 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocationCast: 2
-  SpellDirection: 8
+  CastDirection: 16
+  SpellCast: 0
   speed: 20
 --- !u!136 &136067776974424564
 CapsuleCollider:

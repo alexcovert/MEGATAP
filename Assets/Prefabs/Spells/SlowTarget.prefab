@@ -114,7 +114,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocationCast: 2
-  SpellDirection: 8
+  CastDirection: 8
+  SpellCast: 0
   speed: 20
 --- !u!114 &114734091321866432
 MonoBehaviour:
@@ -127,6 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4281a506996cf2f4b8859d0931aabac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slowRun: 0.5
+  reduceJump: 0.5
+  spellDuration: 5
 --- !u!136 &136067776974424564
 CapsuleCollider:
   m_ObjectHideFlags: 1

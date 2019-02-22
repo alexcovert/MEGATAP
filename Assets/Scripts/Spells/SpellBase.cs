@@ -2,38 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-/* Figure out enums later
-[Flags]
-public enum LocationCastFrom
-{
-    FreeFloat = 1, //Doesn't need to be attached to a surface
-    Player
-}
 
-[Flags]
-public enum SpellComeFrom
+public enum SpellDirection
 {
     Ceiling = 1,
     Floor = 2,
-    LeftWall = 4,
-    RightWall = 8,
+    Left = 4,
+    Right = 8,
+    Instant = 16
+}
 
-    Bothsides = LeftWall | RightWall,
-    Anywhere = LeftWall | RightWall | Floor | Ceiling,
-    FloorAndCeiling = Floor | Ceiling
-}*/
 
 public class SpellBase : MonoBehaviour {
-    /*Figure out enums later
-    [EnumFlag][SerializeField]
-    public LocationCastFrom ValidLocations;
-    [EnumFlag][SerializeField]
-    public SpellComeFrom spellDirection;*/
-
-        //using same numbers as from enums
     public int LocationCast;
-    public int SpellDirection;
 
+    [EnumFlag] [SerializeField] public SpellDirection CastDirection;
+
+    [HideInInspector]
+    public bool SpellCast; //Keep track of if the spell was cast - for checking instant spells (alex - post processing spells)
     //Spell speed towards player
     [SerializeField] private float speed;
 
@@ -180,9 +166,9 @@ public class SpellBase : MonoBehaviour {
         return LocationCast;
     }
 
-    public int GetDirection()
+    public SpellDirection GetDirection()
     {
-        return SpellDirection;
+        return CastDirection;
     }
 
     public float GetSpeed()

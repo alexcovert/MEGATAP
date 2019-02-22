@@ -32,7 +32,7 @@ public class CastSpell : MonoBehaviour {
 
     //for spell movement and spawning
     private int ValidLocation;
-    private int spellDirection;
+    private SpellDirection spellDirection;
     private int PlayerOneState = 1;
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Rigidbody rb;
@@ -100,7 +100,7 @@ public class CastSpell : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (castedSpell != null)
+        if (castedSpell != null && castedSpell.GetComponent<SpellBase>().CastDirection != SpellDirection.Instant)
         {
             rb.velocity = movementVector;
         }
@@ -178,7 +178,7 @@ public class CastSpell : MonoBehaviour {
             if (spellTarget != null && CheckFloor(position.y))
             {
                 //Spell comes from right side
-                if (spellDirection == 8)
+                if (spellDirection == SpellDirection.Right)
                 {
                     switch (PlayerOneState)
                     {
@@ -203,6 +203,12 @@ public class CastSpell : MonoBehaviour {
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                     }
+                    castedSpell.GetComponent<SpellBase>().SpellCast = true;
+                }
+                if(spellDirection == SpellDirection.Instant)
+                {
+                    castedSpell = spell.InstantiateSpell(spell.transform.position);
+                    castedSpell.GetComponent<SpellBase>().SpellCast = true;
                 }
 
                 spell = null;
