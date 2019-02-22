@@ -57,6 +57,8 @@ public class PlayerOneMovement : MonoBehaviour {
             if (Input.GetButtonDown("Jump_Joy_1") && grounded)
             {
                 jumping = true;
+                animator.SetTrigger("Jump");
+                animator.SetBool("Running", false);
             }
 
             //crouch
@@ -69,26 +71,26 @@ public class PlayerOneMovement : MonoBehaviour {
                 crouching = false;
             }
 
-            // Animation parameters update
-            animator.SetBool("Jumping", jumping);
         }
 
         switch (camOneState)
         {
             case 1:
                 movementVector = new Vector3(inputAxis * speed, rb.velocity.y, 0);
-                //Debug.Log(movementVector);
                 if (inputAxis > 0)
                 {
                     transform.eulerAngles = new Vector3(0, 90, 0);
                     animator.SetFloat("Velocity", speed);
-                    animator.SetBool("Running", true);
+                    if (grounded)
+                    {
+                        animator.SetBool("Running", true);
+                    }
                 }
                 else if (inputAxis < 0)
                 {
                     transform.eulerAngles = new Vector3(0, 270, 0);
                     animator.SetFloat("Velocity", -speed);
-                    animator.SetBool("Running", true);
+                    if (grounded) animator.SetBool("Running", true);
                 }
                 else
                 {
@@ -187,6 +189,7 @@ public class PlayerOneMovement : MonoBehaviour {
         if(collision.gameObject.tag == "Platform")
         {
             grounded = true;
+            animator.SetBool("Jumping", false);
         }
         else if (Physics.Raycast(transform.position, -transform.right, 1))
         {
