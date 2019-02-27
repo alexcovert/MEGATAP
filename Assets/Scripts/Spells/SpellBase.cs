@@ -71,7 +71,6 @@ public class SpellBase : MonoBehaviour {
     }
 
     //for stun function and its enum
-    private bool waitActive = true;
     private bool once = false;
 
     // apply knockback to inputted
@@ -115,19 +114,13 @@ public class SpellBase : MonoBehaviour {
 
     private IEnumerator WaitStun(GameObject player, float stunDuration)
     {
-        waitActive = true;
         player.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(0);
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
         yield return new WaitForSeconds(stunDuration);
-        waitActive = false;
-        if (waitActive == false)
-        {
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
             player.GetComponent<PlayerOneMovement>().SetSpeed(player.GetComponent<PlayerOneMovement>().GetConstantSpeed());
             //once = false;
-            waitActive = true;
-        }
     }
 
     // apply slow to inputted

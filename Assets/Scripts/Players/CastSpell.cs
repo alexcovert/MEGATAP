@@ -14,6 +14,7 @@ public class CastSpell : MonoBehaviour {
     [SerializeField] private Camera cam;
     [SerializeField] private Camera cam2;
     [SerializeField] private GameObject playerOne;
+    [SerializeField] private GameObject[] targeting;
 
     private float spellSpeed;
 
@@ -255,11 +256,18 @@ public class CastSpell : MonoBehaviour {
     {
         if (spell != null)
         {
-            spellTarget = spell.InstantiateSpell(Vector3.zero);
+            //spellTarget = spell.InstantiateSpell(Vector3.zero);
             ValidLocation = spell.GetComponent<SpellBase>().GetLocation();
-            spellDirection = spell.GetComponent<SpellBase>().GetDirection(); 
-        }
-        Destroy(spellTarget.GetComponent<Collider>());    
+            spellDirection = spell.GetComponent<SpellBase>().GetDirection();
+            if (spellDirection == SpellDirection.Right || spellDirection == SpellDirection.Left)
+            {
+                spellTarget = Instantiate(targeting[1], transform.position, Quaternion.identity);
+            }
+            else if (spellDirection == SpellDirection.Ceiling || spellDirection == SpellDirection.Floor)
+            {
+                spellTarget = Instantiate(targeting[0], transform.position, Quaternion.identity);
+            }
+        }    
 
     }
 
@@ -270,7 +278,44 @@ public class CastSpell : MonoBehaviour {
             if (GetGridPosition() != null)
             {
                 Vector3 position = GetGridPosition().Value;
-                spellTarget.transform.position = position;
+                if (spellDirection == SpellDirection.Right || spellDirection == SpellDirection.Left)
+                {
+                    switch (PlayerOneState)
+                    {
+                        case 1:
+                            spellTarget.transform.position = new Vector3(transform.position.x, position.y, -42);
+                            break;
+                        case 2:
+                            spellTarget.transform.position = new Vector3(42, position.y, transform.position.z);
+                            break;
+                        case 3:
+                            spellTarget.transform.position = new Vector3(transform.position.x, position.y, 42);
+                            break;
+                        case 4:
+                            spellTarget.transform.position = new Vector3(-42, position.y, transform.position.z);
+                            break;
+                    }
+                }
+
+                else if (spellDirection == SpellDirection.Ceiling || spellDirection == SpellDirection.Floor)
+                {
+                    switch (PlayerOneState)
+                    {
+                        case 1:
+                        case 3:
+                            spellTarget.transform.position = new Vector3(position.x, transform.position.y, transform.position.z);
+                            break;
+                        case 2:
+                        case 4:
+                            spellTarget.transform.position = new Vector3(transform.position.x, transform.position.y, position.z);
+                            break;
+                    }
+
+                }
+                else
+                {
+                    spellTarget.transform.position = position;
+                }
 
                 if (Input.GetMouseButton(1) || Input.GetButton("Cancel_Joy_2"))
                 {
@@ -303,7 +348,7 @@ public class CastSpell : MonoBehaviour {
     {
         if (spellTarget != null)
         {
-            Destroy(spellTarget);
+            //Destroy(spellTarget);
             ValidLocation = 0;
             spellDirection = 0;
             spellSpeed = 0;
