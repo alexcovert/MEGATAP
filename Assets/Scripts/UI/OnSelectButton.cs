@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;// Required when using Event data.
 
 //Alex
 //Invoke on click when button is selected
-public class CallClick : MonoBehaviour, ISelectHandler// required interface when using the OnSelect method.
+public class OnSelectButton : MonoBehaviour, ISelectHandler// required interface when using the OnSelect method.
 {
     [SerializeField] private bool isThisTrap;
-    
+
+    private TextMeshProUGUI tooltip;
     private CastSpell cs;
     private PlaceTrap pt;
     private Image controllerCursor;
@@ -20,17 +22,22 @@ public class CallClick : MonoBehaviour, ISelectHandler// required interface when
     private void Start()
     {
         GameObject player = GameObject.Find("Player 2");
+        tooltip = GameObject.Find("Tooltip").GetComponent<TextMeshProUGUI>();
         audioSource = GetComponentInParent<AudioSource>();
         cs = player.GetComponent<CastSpell>();
         pt = player.GetComponent<PlaceTrap>();
         controllerCursor = GameObject.Find("ControllerCursor").GetComponent<Image>();
         cursorMove = player.GetComponent<MoveControllerCursor>();
+
+        tooltip.transform.SetAsLastSibling();
     }
 
     //Do this when the selectable UI object is selected.
     public void OnSelect(BaseEventData eventData)
     {
         if(audioSource != null) audioSource.Play();
+        if (tooltip != null) SetTooltip();
+
         if (isThisTrap)
         {
             GetCurrentFirstTrap();
@@ -125,5 +132,46 @@ public class CallClick : MonoBehaviour, ISelectHandler// required interface when
         }
 
         return true;
+    }
+
+    private void SetTooltip()
+    {
+        Debug.Log(this.name);
+        switch(this.name)
+        {
+            //Traps
+            case "ArrowButton(Clone)":
+                tooltip.text = "Arrow Shooter (Stun)";
+                break;
+            case "BananaButton(Clone)":
+                tooltip.text = "Banana (Slip)";
+                break;
+            case "SapButton(Clone)":
+                tooltip.text = "Sap (Slow)";
+                break;
+            case "SpikesButton(Clone)":
+                tooltip.text = "Spikes (Knockback)";
+                break;
+            //Spells
+            case "Blur Spell Button(Clone)":
+                tooltip.text = "Blur";
+                break;
+            case "Gust Spell Button(Clone)":
+                tooltip.text = "Wind";
+                break;
+            case "Lightning Spell Button(Clone)":
+                tooltip.text = "Lightning";
+                break;
+            case "NarrowPOV Spell Button(Clone)":
+                tooltip.text = "Decrease Vision";
+                break;
+            case "Stun Spell Button(Clone)":
+                tooltip.text = "Petrify";
+                break;
+            case "Slow Spell Button(Clone)":
+                tooltip.text = "Slow";
+                break;
+        }
+        tooltip.transform.SetAsLastSibling();
     }
 }
