@@ -563,9 +563,9 @@ public class PlaceTrap : MonoBehaviour {
         SetGhost();
     }
 
-    //Make player wait .5 seconds after pressing button to be able to place trap.
-    //Gets rid of controller bug where pressing A to select a trap also immediately places it
-    IEnumerator EnableInput()
+
+    //Mostly for controller - wait between inputs to prevent spamming and some button selection bugs
+    private IEnumerator EnableInput()
     {
         yield return new WaitForSeconds(0.5f);
         placeEnabled = true;
