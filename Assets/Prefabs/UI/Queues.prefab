@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224168470329661708}
+  - component: {fileID: 222769356700216610}
   m_Layer: 5
   m_Name: TrapQueue
   m_TagString: Untagged
@@ -91,6 +92,13 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1810570756918204}
+  m_CullTransparentMesh: 0
+--- !u!222 &222769356700216610
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1621119748293804}
   m_CullTransparentMesh: 0
 --- !u!224 &224168470329661708
 RectTransform:
