@@ -13,8 +13,10 @@ public enum Direction
 
 
 public class PlaceTrap : MonoBehaviour {
+    [Header("Design Values -------------")]
     [SerializeField] private int gridSize;
     [SerializeField] private int cursorDistFromCenter;
+
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
 
@@ -28,6 +30,7 @@ public class PlaceTrap : MonoBehaviour {
     [SerializeField] private GameObject gameManager;
     [SerializeField] private Camera cam;
 
+    private CastSpell cs;
     private PauseMenu pause;
     private CheckControllers checkControllers;
 
@@ -39,16 +42,11 @@ public class PlaceTrap : MonoBehaviour {
     [Header("Queue Size -----")]
     [SerializeField] private int queueSize = 7;
     private MoveControllerCursor cursorMove;
-    //[Header("Controller Values -----")]
-    //[SerializeField] private float cursorDelay;
-    //[SerializeField] private float cursorGrid;
-    //[Tooltip("Higher # = Lower Sensitivity")] [SerializeField] private float stickSensitivity;
-   
+    
     //Andy's Queue Stuff
     public List<GameObject> queue { get; private set; }
     private int queueIndex;
-    [HideInInspector]
-    public bool active { get; private set; }
+    [HideInInspector] public bool active { get; private set; }
 
     //Alex's Trap Stuff
     private TrapBase trap;
@@ -56,19 +54,20 @@ public class PlaceTrap : MonoBehaviour {
     private GameObject ghostTrap;
     private float gridXOffset, gridZOffset, gridYOffset = 0.35f; //changed when trap is rotated so that it still properly aligns with grid.
     private SpriteRenderer[] placementSquares;
-    private CastSpell cs;
+    
+    
     //Controller Stuff
     private bool p2Controller;
     private bool placeEnabled;
-    //private bool cursorMove = true;
 
-    private float screenWidth; //Need to calculate edges of screen manually for cursor clamping because our canvas is set to match height.
-    private float screenHeight;
+
 
 	void Start () {
+        //Get references
         pause = gameManager.GetComponent<PauseMenu>();
         cs = GetComponent<CastSpell>();
         audioSource = GetComponent<AudioSource>();
+
         //Queue Initialization
         queue = new List<GameObject>();
         cursorMove = GetComponent<MoveControllerCursor>();

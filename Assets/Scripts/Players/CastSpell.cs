@@ -5,96 +5,97 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class CastSpell : MonoBehaviour {
+    [Header("Design Values -------------")]
     [SerializeField] private int cursorDistFromCenter;
+    [SerializeField] private int queueSize;
+
+    [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
+
     [SerializeField] private GameObject[] spellButtons;
     [SerializeField] private SpellBase[] spellPrefabs;
+    [SerializeField] private GameObject spellQueue;
+
     [SerializeField] private Image controllerCursor;
+
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject gameManager;
     [SerializeField] private Camera cam;
     [SerializeField] private Camera cam2;
+
     [SerializeField] private GameObject playerOne;
     [SerializeField] private GameObject[] targeting;
 
-    private float spellSpeed;
-
-    [SerializeField] private int queueSize = 7;
-    public GameObject[] queue { get; private set; }
-    [SerializeField] private GameObject spellQueue;
-    private int queueIndex;
-
-    private SpellBase spell;
-    private GameObject spellTarget;
-    private GameObject previouslySelected;
-    private GameObject castedSpell;
     private PlaceTrap pt;
-    //private MoveControllerCursor cursorMove;
-    private bool p2Controller;
-    private bool placeEnabled;
+    private PauseMenu pause;
+    private List<Camera> allCameras = new List<Camera>();
+
+    //Andy's Queue Stuff
+    public GameObject[] queue { get; private set; }
+    private int queueIndex;
+    [HideInInspector] public bool active { get; private set; }
+
+    //Spell Stuff
+    private SpellBase spell;
+    private SpellDirection spellDirection;
+    private GameObject spellTarget;
+    private GameObject castedSpell;
+    private float spellSpeed;
 
     //for spell movement and spawning
     private int ValidLocation;
-    private SpellDirection spellDirection;
     private int PlayerOneState = 1;
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Rigidbody rb;
-
-    private List<Camera> allCameras = new List<Camera>();
-    public bool active { get; private set; }
-
-    private PauseMenu pause;
+   
+    //Controller Stuff
+    private bool p2Controller;
+    private bool placeEnabled;
 
     void Start()
     {
-        active = true;
-        queue = new GameObject[queueSize];
-        pt = GetComponent<PlaceTrap>();
+        //Get references
         pause = gameManager.GetComponent<PauseMenu>();
-        //Handle cursor or set buttons if controller connected
-        p2Controller = gameManager.GetComponent<CheckControllers>().GetControllerTwoState();
-        //cursorMove = GetComponent<MoveControllerCursor>();
-        //For testing purposes right now
-        CreateSpellQueue();
-
-        placeEnabled = false;
-
+        pt = GetComponent<PlaceTrap>();
         allCameras.Add(cam);
         allCameras.Add(cam2);
 
-       // spellQueue.transform.SetAsFirstSibling();
-       // SwitchQueue();
+        //Queue Initialization
+        active = true;
+        queue = new GameObject[queueSize];
+        CreateSpellQueue();
+        spellQueue.transform.SetAsLastSibling();
+
+        //Handle cursor or set buttons if controller connected
+        p2Controller = gameManager.GetComponent<CheckControllers>().GetControllerTwoState();
+        placeEnabled = false;
     }
 
 
     void Update()
     {
+        //Move target with cursor
         MoveTarget();
+
+        //CONTROLLER ONLY Spell Casting Check
         if (p2Controller && !pause.GameIsPaused)
         {
             if (Input.GetButtonDown("Place_Joy_2") && placeEnabled && spellTarget != null)
             {
-                //Debug.Log(spellTarget.transform.localPosition.y, spellTarget);
                 SpellCast();
             }
         }
 
         PlayerOneState = playerOne.GetComponent<CameraOneRotator>().GetState();
 
-        if (spell != null && spellTarget != null) CheckValidLocation();
+      //  if (spell != null && spellTarget != null) CheckValidLocation();
 
         if (Input.GetButtonDown("Submit_Joy_2") && !pause.GameIsPaused && !(cam.GetComponent<CameraTwoRotator>().GetFloor() == tower.GetComponent<NumberOfFloors>().NumFloors && cam.GetComponent<CameraTwoRotator>().GetState() == 4))
         {
             DestroyTarget();
-            //For testing purposes currently
             CreateSpellQueue();
         }
 
-        //if (Input.GetButtonDown("Swap_Queue") && !pause.GameIsPaused)
-        //{
-        //    DestroyTarget();
-        //    SwitchQueue();
-        //}
 
         if (Input.GetMouseButtonDown(1) && ValidLocation == 1)
         {
