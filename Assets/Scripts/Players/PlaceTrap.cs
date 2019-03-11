@@ -230,32 +230,7 @@ public class PlaceTrap : MonoBehaviour {
                     placementSquares = null;
                     DestroyGhost();
 
-                    //Set the selected trap button
-                    if (p2Controller)
-                    {
-
-                        bool buttonSet = false;
-                        for (int i = 0; i < queue.Count; i++)
-                        {
-                            if (queue[i].activeInHierarchy && !buttonSet)
-                            {
-                                eventSystem.SetSelectedGameObject(queue[i]);
-                                buttonSet = true;
-                            }
-                        }
-                        placeEnabled = false;
-
-                        if (eventSystem.currentSelectedGameObject == null || !buttonSet)
-                        {
-                            for (int i = 0; i < cs.queue.Length; i++)
-                            {
-                                eventSystem.SetSelectedGameObject(cs.queue[i]);
-                                controllerCursor.transform.localPosition = new Vector3(0, -100);
-                                buttonSet = true;
-
-                            }
-                        }
-                    }
+                    SetSelectedButton();
                 }
                 else
                 {
@@ -403,35 +378,7 @@ public class PlaceTrap : MonoBehaviour {
                 {
                     DestroyGhost();
                     placementSquares = null;
-                    if (p2Controller)
-                    {
-                        if (active)
-                        {
-                            bool buttonSet = false;
-                            for (int i = 0; i < queue.Count; i++)
-                            {
-                                if (queue[i].activeInHierarchy && !buttonSet)
-                                {
-                                    eventSystem.SetSelectedGameObject(queue[i]);
-                                    buttonSet = true;
-                                }
-                            }
-                            if (!buttonSet)
-                            {
-                                for (int i = 0; i < cs.queue.Length; i++)
-                                {
-                                    if (cs.queue[i] != null && cs.queue[i].activeInHierarchy && !buttonSet)
-                                    {
-                                        controllerCursor.transform.localPosition = new Vector3(0, -100);
-                                        eventSystem.SetSelectedGameObject(cs.queue[i]);
-                                        buttonSet = true;
-                                    }
-                                }
-                            }
-
-                        }
-                        placeEnabled = false;
-                    }
+                    SetSelectedButton();
                 }
             }
         }
@@ -618,35 +565,69 @@ public class PlaceTrap : MonoBehaviour {
         queue[queueIndex].SetActive(false);
     }
 
-    private void SwitchQueue()
+    //Set new selected button if the controller is being used.
+    private void SetSelectedButton()
     {
-        if (active == true)
+        if (p2Controller)
         {
-            trapQueue.transform.SetAsFirstSibling();
-            trapQueue.transform.position += new Vector3(15f, 15f, 0);
-            for (int i = 0; i < queue.Count; i++)
+            if (active)
             {
-                queue[i].GetComponent<Button>().interactable = false;
-            }
-        }
-
-        if (active == false)
-        {
-            controllerCursor.transform.position = new Vector3(Screen.width / 2, Screen.height / 2 + cursorDistFromCenter, 0);
-            GetComponent<MoveControllerCursor>().MovingTraps = true;
-            bool buttonSet = false;
-            trapQueue.transform.SetAsLastSibling();
-            trapQueue.transform.position -= new Vector3(15f, 15f, 0);
-            for (int i = 0; i < queue.Count; i++)
-            {
-                queue[i].GetComponent<Button>().interactable = true;
-                if (queue[i].activeInHierarchy && !buttonSet)
+                bool buttonSet = false;
+                for (int i = 0; i < queue.Count; i++)
                 {
-                    eventSystem.SetSelectedGameObject(queue[i]);
-                    buttonSet = true;
+                    if (queue[i].activeInHierarchy && !buttonSet)
+                    {
+                        eventSystem.SetSelectedGameObject(queue[i]);
+                        buttonSet = true;
+                    }
                 }
+                if (!buttonSet)
+                {
+                    for (int i = 0; i < cs.queue.Length; i++)
+                    {
+                        if (cs.queue[i] != null && cs.queue[i].activeInHierarchy && !buttonSet)
+                        {
+                            controllerCursor.transform.localPosition = new Vector3(0, -100);
+                            eventSystem.SetSelectedGameObject(cs.queue[i]);
+                            buttonSet = true;
+                        }
+                    }
+                }
+
             }
+            placeEnabled = false;
         }
-        active = !active;
     }
+
+    //private void SwitchQueue()
+    //{
+    //    if (active == true)
+    //    {
+    //        trapQueue.transform.SetAsFirstSibling();
+    //        trapQueue.transform.position += new Vector3(15f, 15f, 0);
+    //        for (int i = 0; i < queue.Count; i++)
+    //        {
+    //            queue[i].GetComponent<Button>().interactable = false;
+    //        }
+    //    }
+
+    //    if (active == false)
+    //    {
+    //        controllerCursor.transform.position = new Vector3(Screen.width / 2, Screen.height / 2 + cursorDistFromCenter, 0);
+    //        GetComponent<MoveControllerCursor>().MovingTraps = true;
+    //        bool buttonSet = false;
+    //        trapQueue.transform.SetAsLastSibling();
+    //        trapQueue.transform.position -= new Vector3(15f, 15f, 0);
+    //        for (int i = 0; i < queue.Count; i++)
+    //        {
+    //            queue[i].GetComponent<Button>().interactable = true;
+    //            if (queue[i].activeInHierarchy && !buttonSet)
+    //            {
+    //                eventSystem.SetSelectedGameObject(queue[i]);
+    //                buttonSet = true;
+    //            }
+    //        }
+    //    }
+    //    active = !active;
+    //}
 }

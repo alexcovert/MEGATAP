@@ -65,7 +65,6 @@ public class CastSpell : MonoBehaviour {
         allCameras.Add(cam2);
 
         //Queue Initialization
-        active = true;
         queue = new GameObject[queueSize];
         CreateSpellQueue();
         spellQueue.transform.SetAsLastSibling();
@@ -251,37 +250,10 @@ public class CastSpell : MonoBehaviour {
                 spell = null;
 
                 ClearButton();
-                
+
                 DestroyTarget();
 
-
-                //Set new selected button if the controller is being used.
-                if (p2Controller)
-                {
-                    bool buttonSet = false;
-                    for (int i = queue.Length - 1; i >= 0; i--)
-                    {
-                        if (queue[i] != null && queue[i].activeInHierarchy && queue[i].GetComponent<Button>().interactable && !buttonSet)
-                        {
-                            eventSystem.SetSelectedGameObject(queue[i]);
-                            buttonSet = true;
-                        }
-                    }
-                    if (!buttonSet)
-                    {
-                        for (int i = 0; i < pt.queue.Count; i++)
-                        {
-                            if (pt.queue[i] != null && pt.queue[i].activeInHierarchy && !buttonSet)
-                            {
-
-                                controllerCursor.transform.localPosition = new Vector3(0, 130);
-                                eventSystem.SetSelectedGameObject(pt.queue[i]);
-                                buttonSet = true;
-                            }
-                        }
-                    }
-                    placeEnabled = false;
-                }
+                SetSelectedButton();
             }
         }
     }
@@ -399,23 +371,7 @@ public class CastSpell : MonoBehaviour {
                 {
                     DestroyTarget();
 
-                    if (p2Controller)
-                    {
-                        if (active)
-                        {
-                            bool buttonSet = false;
-                            for (int i = 0; i < queue.Length; i++)
-                            {
-                                if (queue[i].activeInHierarchy && !buttonSet && queue[i] != null)
-                                {
-                                    eventSystem.SetSelectedGameObject(queue[i]);
-                                    buttonSet = true;
-                                }
-                            }
-
-                        }
-                        placeEnabled = false;
-                    }
+                    SetSelectedButton();
                 }
             }
         }
@@ -437,7 +393,7 @@ public class CastSpell : MonoBehaviour {
     private void OnClickSpell(int spellNum)
     {
         spell = spellPrefabs[spellNum];
-        
+
         StartCoroutine(EnableInput());
 
         DestroyTarget();
@@ -494,6 +450,38 @@ public class CastSpell : MonoBehaviour {
         queue[queueIndex].GetComponent<Button>().interactable = false;
     }
 
+
+    //Set new selected button if the controller is being used.
+    private void SetSelectedButton()
+    {
+        if (p2Controller)
+        {
+            bool buttonSet = false;
+            for (int i = queue.Length - 1; i >= 0; i--)
+            {
+                if (queue[i] != null && queue[i].activeInHierarchy && queue[i].GetComponent<Button>().interactable && !buttonSet)
+                {
+                    eventSystem.SetSelectedGameObject(queue[i]);
+                    buttonSet = true;
+                }
+            }
+            if (!buttonSet)
+            {
+                for (int i = 0; i < pt.queue.Count; i++)
+                {
+                    if (pt.queue[i] != null && pt.queue[i].activeInHierarchy && !buttonSet)
+                    {
+
+                        controllerCursor.transform.localPosition = new Vector3(0, 130);
+                        eventSystem.SetSelectedGameObject(pt.queue[i]);
+                        buttonSet = true;
+                    }
+                }
+            }
+            placeEnabled = false;
+        }
+    }
+
     //Mostly for controller - wait between inputs to prevent spamming and some button selection bugs
     IEnumerator EnableInput()
     {
@@ -508,6 +496,7 @@ public class CastSpell : MonoBehaviour {
 
         Destroy(queue[index]);
         GenerateNewSpell(buttonPosition, index);
+        if (eventSystem.currentSelectedGameObject == null) SetSelectedButton();
     }
 
     private Camera GetCameraForMousePosition()
