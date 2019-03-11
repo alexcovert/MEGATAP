@@ -13,8 +13,10 @@ public enum Direction
 
 
 public class PlaceTrap : MonoBehaviour {
+    [Header("Design Values -------------")]
     [SerializeField] private int gridSize;
     [SerializeField] private int cursorDistFromCenter;
+
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
 
@@ -28,6 +30,7 @@ public class PlaceTrap : MonoBehaviour {
     [SerializeField] private GameObject gameManager;
     [SerializeField] private Camera cam;
 
+    private CastSpell cs;
     private PauseMenu pause;
     private CheckControllers checkControllers;
 
@@ -39,16 +42,11 @@ public class PlaceTrap : MonoBehaviour {
     [Header("Queue Size -----")]
     [SerializeField] private int queueSize = 7;
     private MoveControllerCursor cursorMove;
-    //[Header("Controller Values -----")]
-    //[SerializeField] private float cursorDelay;
-    //[SerializeField] private float cursorGrid;
-    //[Tooltip("Higher # = Lower Sensitivity")] [SerializeField] private float stickSensitivity;
-   
+    
     //Andy's Queue Stuff
     public List<GameObject> queue { get; private set; }
     private int queueIndex;
-    [HideInInspector]
-    public bool active { get; private set; }
+    [HideInInspector] public bool active { get; private set; }
 
     //Alex's Trap Stuff
     private TrapBase trap;
@@ -56,23 +54,24 @@ public class PlaceTrap : MonoBehaviour {
     private GameObject ghostTrap;
     private float gridXOffset, gridZOffset, gridYOffset = 0.35f; //changed when trap is rotated so that it still properly aligns with grid.
     private SpriteRenderer[] placementSquares;
-    private CastSpell cs;
+    
+    
     //Controller Stuff
     private bool p2Controller;
     private bool placeEnabled;
-    //private bool cursorMove = true;
 
-    private float screenWidth; //Need to calculate edges of screen manually for cursor clamping because our canvas is set to match height.
-    private float screenHeight;
+
 
 
     private int numTimesRotated = 0;
     private bool resetEnabled = true;
 
 	void Start () {
+        //Get references
         pause = gameManager.GetComponent<PauseMenu>();
         cs = GetComponent<CastSpell>();
         audioSource = GetComponent<AudioSource>();
+
         //Queue Initialization
         queue = new List<GameObject>();
         cursorMove = GetComponent<MoveControllerCursor>();
@@ -242,32 +241,7 @@ public class PlaceTrap : MonoBehaviour {
                     placementSquares = null;
                     DestroyGhost();
 
-                    //Set the selected trap button
-                    if (p2Controller)
-                    {
-
-                        bool buttonSet = false;
-                        for (int i = 0; i < queue.Count; i++)
-                        {
-                            if (queue[i].activeInHierarchy && !buttonSet)
-                            {
-                                eventSystem.SetSelectedGameObject(queue[i]);
-                                buttonSet = true;
-                            }
-                        }
-                        //placeEnabled = false;
-
-                        if (eventSystem.currentSelectedGameObject == null || !buttonSet)
-                        {
-                            for (int i = 0; i < cs.queue.Length; i++)
-                            {
-                                eventSystem.SetSelectedGameObject(cs.queue[i]);
-                                controllerCursor.transform.localPosition = new Vector3(0, -100);
-                                buttonSet = true;
-
-                            }
-                        }
-                    }
+                    SetSelectedButton();
                 }
                 else
                 {
@@ -415,35 +389,7 @@ public class PlaceTrap : MonoBehaviour {
                 {
                     DestroyGhost();
                     placementSquares = null;
-                    if (p2Controller)
-                    {
-                        if (active)
-                        {
-                            bool buttonSet = false;
-                            for (int i = 0; i < queue.Count; i++)
-                            {
-                                if (queue[i].activeInHierarchy && !buttonSet)
-                                {
-                                    eventSystem.SetSelectedGameObject(queue[i]);
-                                    buttonSet = true;
-                                }
-                            }
-                            if (!buttonSet)
-                            {
-                                for (int i = 0; i < cs.queue.Length; i++)
-                                {
-                                    if (cs.queue[i] != null && cs.queue[i].activeInHierarchy && !buttonSet)
-                                    {
-                                        controllerCursor.transform.localPosition = new Vector3(0, -100);
-                                        eventSystem.SetSelectedGameObject(cs.queue[i]);
-                                        buttonSet = true;
-                                    }
-                                }
-                            }
-
-                        }
-                       // placeEnabled = false;
-                    }
+                    SetSelectedButton();
                 }
             }
         }
@@ -575,9 +521,9 @@ public class PlaceTrap : MonoBehaviour {
         SetGhost();
     }
 
-    //Make player wait .5 seconds after pressing button to be able to place trap.
-    //Gets rid of controller bug where pressing A to select a trap also immediately places it
-    IEnumerator EnableInput()
+
+    //Mostly for controller - wait between inputs to prevent spamming and some button selection bugs
+    private IEnumerator EnableInput()
     {
         yield return new WaitForSeconds(0.5f);
         resetEnabled = true;
@@ -631,35 +577,69 @@ public class PlaceTrap : MonoBehaviour {
         queue[queueIndex].SetActive(false);
     }
 
-    private void SwitchQueue()
+    //Set new selected button if the controller is being used.
+    private void SetSelectedButton()
     {
-        if (active == true)
+        if (p2Controller)
         {
-            trapQueue.transform.SetAsFirstSibling();
-            trapQueue.transform.position += new Vector3(15f, 15f, 0);
-            for (int i = 0; i < queue.Count; i++)
+            if (active)
             {
-                queue[i].GetComponent<Button>().interactable = false;
-            }
-        }
-
-        if (active == false)
-        {
-            controllerCursor.transform.position = new Vector3(Screen.width / 2, Screen.height / 2 + cursorDistFromCenter, 0);
-            GetComponent<MoveControllerCursor>().MovingTraps = true;
-            bool buttonSet = false;
-            trapQueue.transform.SetAsLastSibling();
-            trapQueue.transform.position -= new Vector3(15f, 15f, 0);
-            for (int i = 0; i < queue.Count; i++)
-            {
-                queue[i].GetComponent<Button>().interactable = true;
-                if (queue[i].activeInHierarchy && !buttonSet)
+                bool buttonSet = false;
+                for (int i = 0; i < queue.Count; i++)
                 {
-                    eventSystem.SetSelectedGameObject(queue[i]);
-                    buttonSet = true;
+                    if (queue[i].activeInHierarchy && !buttonSet)
+                    {
+                        eventSystem.SetSelectedGameObject(queue[i]);
+                        buttonSet = true;
+                    }
                 }
+                if (!buttonSet)
+                {
+                    for (int i = 0; i < cs.queue.Length; i++)
+                    {
+                        if (cs.queue[i] != null && cs.queue[i].activeInHierarchy && !buttonSet)
+                        {
+                            controllerCursor.transform.localPosition = new Vector3(0, -100);
+                            eventSystem.SetSelectedGameObject(cs.queue[i]);
+                            buttonSet = true;
+                        }
+                    }
+                }
+
             }
+            //placeEnabled = false;
         }
-        active = !active;
     }
+
+    //private void SwitchQueue()
+    //{
+    //    if (active == true)
+    //    {
+    //        trapQueue.transform.SetAsFirstSibling();
+    //        trapQueue.transform.position += new Vector3(15f, 15f, 0);
+    //        for (int i = 0; i < queue.Count; i++)
+    //        {
+    //            queue[i].GetComponent<Button>().interactable = false;
+    //        }
+    //    }
+
+    //    if (active == false)
+    //    {
+    //        controllerCursor.transform.position = new Vector3(Screen.width / 2, Screen.height / 2 + cursorDistFromCenter, 0);
+    //        GetComponent<MoveControllerCursor>().MovingTraps = true;
+    //        bool buttonSet = false;
+    //        trapQueue.transform.SetAsLastSibling();
+    //        trapQueue.transform.position -= new Vector3(15f, 15f, 0);
+    //        for (int i = 0; i < queue.Count; i++)
+    //        {
+    //            queue[i].GetComponent<Button>().interactable = true;
+    //            if (queue[i].activeInHierarchy && !buttonSet)
+    //            {
+    //                eventSystem.SetSelectedGameObject(queue[i]);
+    //                buttonSet = true;
+    //            }
+    //        }
+    //    }
+    //    active = !active;
+    //}
 }

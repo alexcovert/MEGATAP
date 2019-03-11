@@ -17,6 +17,7 @@ public class SpellBase : MonoBehaviour {
     public int LocationCast;
 
     [EnumFlag] [SerializeField] public SpellDirection CastDirection;
+    [SerializeField] public float CooldownTime;
 
     [HideInInspector]
     public bool SpellCast; //Keep track of if the spell was cast - for checking instant spells (alex - post processing spells)
