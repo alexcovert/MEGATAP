@@ -255,12 +255,13 @@ public class CastSpell : MonoBehaviour {
                 DestroyTarget();
 
 
+                //Set new selected button if the controller is being used.
                 if (p2Controller)
                 {
                     bool buttonSet = false;
                     for (int i = queue.Length - 1; i >= 0; i--)
                     {
-                        if (queue[i] != null && queue[i].activeInHierarchy && !buttonSet)
+                        if (queue[i] != null && queue[i].activeInHierarchy && queue[i].GetComponent<Button>().interactable && !buttonSet)
                         {
                             eventSystem.SetSelectedGameObject(queue[i]);
                             buttonSet = true;
@@ -450,6 +451,7 @@ public class CastSpell : MonoBehaviour {
         queueIndex = spell.GetComponent<ButtonIndex>().GetIndex();
     }
 
+    //Called when the spell cooldown is over
     private void GenerateNewSpell(Vector3 position, int index)
     {
         //Instantiate Spell Button
@@ -465,6 +467,7 @@ public class CastSpell : MonoBehaviour {
         queue[index] = newSpell;
     }
 
+    //Called on start only now
     private void CreateSpellQueue()
     {
         for (int i = 0; i < queueSize; i++)
@@ -482,20 +485,13 @@ public class CastSpell : MonoBehaviour {
                 newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
 
                 queue[i] = newSpell;
-
-                //if (active == false)
-                //{
-                //    queue[i].GetComponent<Button>().interactable = false;
-                //}
             }
         }
     }
 
     private void ClearButton()
     {
-        Destroy(queue[queueIndex]);
-        queue[queueIndex] = null;
-
+        queue[queueIndex].GetComponent<Button>().interactable = false;
     }
 
     //Mostly for controller - wait between inputs to prevent spamming and some button selection bugs
@@ -508,9 +504,9 @@ public class CastSpell : MonoBehaviour {
     //Start a cooldown on the button pressed. Needs current button position and queue index to replace.
     private IEnumerator StartCooldown(float cooldownTime, Vector3 buttonPosition, int index)
     {
-        Debug.Log(cooldownTime + ", " + buttonPosition + ", " + index);
         yield return new WaitForSeconds(cooldownTime);
-        
+
+        Destroy(queue[index]);
         GenerateNewSpell(buttonPosition, index);
     }
 
@@ -536,6 +532,7 @@ public class CastSpell : MonoBehaviour {
         return null;
     }
 
+    //---------------------------------------Not needed if we aren't swapping back and forth.
     //private void SwitchQueue()
     //{
     //    if (active == true)
