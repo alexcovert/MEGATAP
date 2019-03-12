@@ -187,7 +187,7 @@ public class MeshCollisionBaker
         tris.Add(vert0 + 1);
         tris.Add(vert0 + 0);
 
-        collider.enabled = false;
+        collider.enabled = true;
     }
         
     private static void BakeSpecificCollider(List<int> tris, List<Vector3> verts, MeshCollider collider)
