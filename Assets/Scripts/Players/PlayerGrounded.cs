@@ -18,7 +18,7 @@ public class PlayerGrounded : MonoBehaviour {
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.tag == "Platform")
+        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Trap")
         {
             grounded = true;
         }
@@ -26,7 +26,7 @@ public class PlayerGrounded : MonoBehaviour {
 
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.tag == "Platform")
+        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Trap")
         {
             grounded = false;
         }
