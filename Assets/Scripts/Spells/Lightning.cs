@@ -85,6 +85,10 @@ public class Lightning : MonoBehaviour
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
+        if(anim != null)
+        {
+            anim.SetBool("Stunned", false);
+        }
         Destroy(this.gameObject);
     }
 
