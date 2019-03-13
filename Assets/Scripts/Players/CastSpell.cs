@@ -341,7 +341,7 @@ public class CastSpell : MonoBehaviour {
                 else if (spellDirection == SpellDirection.Ceiling || spellDirection == SpellDirection.Floor)
                 {
                     GetComponent<MoveControllerCursor>().SpellCastDirection = SpellDirection.Ceiling;
-                    int playerFloor = playerOne.GetComponent<CameraOneRotator>().GetFloor() * 10;
+                    int playerFloor = playerOne.GetComponent<CameraOneRotator>().GetFloor() * 20;
                     switch (PlayerOneState)
                     {
                         case 1:
