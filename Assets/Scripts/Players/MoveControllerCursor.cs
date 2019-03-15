@@ -78,7 +78,7 @@ public class MoveControllerCursor : MonoBehaviour {
                 StartCoroutine(EnableVerticalCursorMove());
                // audioSource.PlayOneShot(spaceSelectionSFX);
             }
-            else if (Input.GetAxisRaw("Vertical_Joy_2") < -stickSensitivity && cursorVerticalMove && cursorPos.y > 0)
+            else if (Input.GetAxisRaw("Vertical_Joy_2") < -stickSensitivity && cursorVerticalMove && cursorPos.y > 70)
             {
                 controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(0, cursorGrid, 0);
                 cursorVerticalMove = false;
