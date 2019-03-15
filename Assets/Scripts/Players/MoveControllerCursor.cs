@@ -49,9 +49,10 @@ public class MoveControllerCursor : MonoBehaviour {
     }
 	
     //Move cursor with grid
-	void Update () {
+	void FixedUpdate () {
         p2Controller = checkControllers.GetControllerTwoState();
 
+        //CONTROLS FOR MOVING TRAPS---------------------------------------------------------------------------------------------
         if (p2Controller && !pause.GameIsPaused && MovingTraps)
         {
             Vector3 cursorPos = controllerCursor.GetComponent<RectTransform>().localPosition;
@@ -85,6 +86,7 @@ public class MoveControllerCursor : MonoBehaviour {
                 //audioSource.PlayOneShot(spaceSelectionSFX);
             }
         }
+        //CONTROLS FOR MOVING SPELLS---------------------------------------------------------------------------------------------
         else if (p2Controller && !pause.GameIsPaused && !MovingTraps)
         {
             if (SpellCastDirection == SpellDirection.Instant)

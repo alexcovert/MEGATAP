@@ -88,18 +88,22 @@ public class PlaceTrap : MonoBehaviour {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
         }
     }
-	
 
-	void Update () {
-        //Move ghost with cursor
+    private void FixedUpdate()
+    {
         MoveGhost();
+    }
+
+    void Update () {
+        //Move ghost with cursor
+        //MoveGhost();
 
         //Get controller select
         p2Controller = checkControllers.GetControllerTwoState();
         if (p2Controller && !pause.GameIsPaused)
         {
             if (Input.GetButtonDown("Place_Joy_2") && placeEnabled)
-            {
+            {  
                 MoveGhost();
                 SetTrap();
             }
