@@ -104,7 +104,7 @@ public class PlaceTrap : MonoBehaviour {
         {
             if (Input.GetButtonDown("Place_Joy_2") && placeEnabled)
             {  
-                MoveGhost();
+                //MoveGhost();
                 SetTrap();
             }
         }
