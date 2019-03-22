@@ -88,8 +88,8 @@ public class PlaceTrap : MonoBehaviour {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
         }
     }
-    private void LateUpdate()
-    {
+
+    void Update () {
         //Get controller select
         p2Controller = checkControllers.GetControllerTwoState();
         if (p2Controller && !pause.GameIsPaused)
@@ -98,12 +98,16 @@ public class PlaceTrap : MonoBehaviour {
             {
                 SetTrap();
             }
+            //Move ghost with cursor
+            else MoveGhost();
         }
-    }
-
-    void Update () {
-        //Move ghost with cursor
-        MoveGhost();
+        else
+        {
+            if(!Input.GetMouseButtonDown(0))
+            {
+                MoveGhost();
+            }
+        }
         //Reset queue's when tower rotates
         if (Input.GetButtonDown("Submit_Joy_2") && resetEnabled && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
