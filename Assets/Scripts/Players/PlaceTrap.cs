@@ -88,22 +88,22 @@ public class PlaceTrap : MonoBehaviour {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
         }
     }
-	
-
-	void Update () {
-        //Move ghost with cursor
-        MoveGhost();
-
+    private void LateUpdate()
+    {
         //Get controller select
         p2Controller = checkControllers.GetControllerTwoState();
         if (p2Controller && !pause.GameIsPaused)
         {
-            if (Input.GetButtonDown("Place_Joy_2") && placeEnabled)
+            if (Input.GetButtonDown("Place_Joy_2") && placeEnabled && Input.GetAxisRaw("Vertical_Joy_2") <= 0)
             {
-                MoveGhost();
                 SetTrap();
             }
         }
+    }
+
+    void Update () {
+        //Move ghost with cursor
+        MoveGhost();
         //Reset queue's when tower rotates
         if (Input.GetButtonDown("Submit_Joy_2") && resetEnabled && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
@@ -200,8 +200,11 @@ public class PlaceTrap : MonoBehaviour {
 
     private void SetTrap()
     {
-        if(ghostTrap != null)
+
+        Vector3 position = GetGridPosition().Value;
+        if (ghostTrap != null)
         {
+            
             //Check if trap is on correct surface
             bool validLocation;
             CheckMultipleBases bases = ghostTrap.GetComponentInChildren<CheckMultipleBases>();
@@ -225,7 +228,6 @@ public class PlaceTrap : MonoBehaviour {
             //CheckNearby() also checks the collider provided for the "safe zone" around the trap
             if (GetGridPosition() != null && CheckNearby() && validLocation)
             {
-                Vector3 position = GetGridPosition().Value;
                 if (ghostTrap != null && CheckFloor(position.y))
                 {
                     audioSource.PlayOneShot(trapPlacementGood);
