@@ -16,6 +16,13 @@ public class PickUp : MonoBehaviour {
 
     private bool active = true; // make sure only picks up once
 
+    //For making the pickup rotate and bob
+    private float time = 0.0f;
+    private bool up = false;
+    [SerializeField] private float timeForBobbing = 1;
+    [SerializeField] private float BobbingAmount = 0.02f;
+    [SerializeField] private float RotationAmount = 15f;
+
     private AudioSource audioSource;
     // active correlates to whether or not the pickup is faded out or not
 
@@ -39,7 +46,30 @@ public class PickUp : MonoBehaviour {
             currColor.a = 1f;
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = currColor;
         }
-	}
+
+        transform.Rotate(new Vector3(0f, RotationAmount, 0f) * Time.deltaTime);
+
+        time += Time.deltaTime;
+        if (up == false)
+        {
+            transform.position += new Vector3(0, BobbingAmount * time, 0);
+            if (time >= timeForBobbing)
+            {
+                up = true;
+                time = 0;
+            }
+        }
+
+        if (up == true)
+        {
+            transform.position -= new Vector3(0, BobbingAmount * time, 0);
+            if (time >= timeForBobbing)
+            {
+                up = false;
+                time = 0;
+            }
+        }
+    }
     
     void OnTriggerEnter(Collider other)
     {
