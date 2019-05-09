@@ -4,7 +4,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class NarrowPOVSpell : MonoBehaviour {
     [SerializeField] private float spellTime;
-    [SerializeField] private float vignetteIntensity;
+    [SerializeField] [Range(0, 1)] private float vignetteIntensity;
     [SerializeField] private float fadeTime;
     [SerializeField] private AudioClip inSound;
     [SerializeField] private AudioClip outSound;
@@ -37,7 +37,7 @@ public class NarrowPOVSpell : MonoBehaviour {
             if (!started && !vignette.active)
             {
                 vignette.active = true;
-                StartCoroutine(Blur());
+                StartCoroutine(Vignette());
                 started = true;
             }
             //For now, make them not stack
@@ -45,11 +45,10 @@ public class NarrowPOVSpell : MonoBehaviour {
             {
                 spellCast = false;
             }
-            //StartCoroutine(StopBlur());
         }
     }
 
-    private IEnumerator Blur()
+    private IEnumerator Vignette()
     {
 
         //Fade in
@@ -69,7 +68,6 @@ public class NarrowPOVSpell : MonoBehaviour {
 
         //Fade out
         audioSource.PlayOneShot(outSound);
-        Debug.Log("Sound Started");
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
         {
             vignette.intensity.value = Mathf.Lerp(vignetteIntensity, 0f, t / fadeTime);
