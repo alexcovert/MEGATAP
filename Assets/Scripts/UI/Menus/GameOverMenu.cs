@@ -31,6 +31,16 @@ public class GameOverMenu : MonoBehaviour {
     {
         SceneManager.LoadScene("Tower1");
     }
+    
+    public void onClickTutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
+    }
+    
+    public void onClickCharacterSelect()
+    {
+    	SceneManager.LoadScene("CharacterSelect");
+    }
 
     public void onClickMenu()
     {
@@ -38,4 +48,11 @@ public class GameOverMenu : MonoBehaviour {
         if (musicPlayer != null) Destroy(musicPlayer);
         SceneManager.LoadScene("Menu");
     }
+    
+    public void QuitGame()
+    {
+        Debug.Log("Quiting Game");
+        Application.Quit();
+    }
 }
+
