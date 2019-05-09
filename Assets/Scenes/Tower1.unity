@@ -2455,6 +2455,11 @@ Prefab:
       propertyPath: cameraTarget
       value: 
       objectReference: {fileID: 1338709831}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: speccyLosesUI
+      value: 
+      objectReference: {fileID: 891546006}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9af0d0883e6a51441b06cd7d26274b01, type: 2}
   m_IsPrefabAsset: 0
@@ -2961,8 +2966,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1016487809}
-        m_MethodName: LoadMenu
+      - m_Target: {fileID: 1888857408}
+        m_MethodName: onClickCharacterSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14654,8 +14659,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1016487809}
-        m_MethodName: LoadMenu
+      - m_Target: {fileID: 1888857408}
+        m_MethodName: onClickCharacterSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

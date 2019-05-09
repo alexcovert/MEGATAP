@@ -6,7 +6,7 @@ public class PlayerOneLose : MonoBehaviour {
     public bool Lose { get; private set; }
     private CameraOneRotator cam;
     [SerializeField] MoveVines vines;
-
+	public GameObject speccyLosesUI;
 
 
     private void Start () {
@@ -21,7 +21,10 @@ public class PlayerOneLose : MonoBehaviour {
         if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started)
         {
             Lose = true;
-            Initiate.Fade("GameOver", Color.black, 1);
+            // Initiate.Fade("GameOver", Color.black, 1);
+            speccyLosesUI.SetActive(true);
         }
     }
+    
+    
 }
