@@ -788,6 +788,10 @@ public class PlaceTrap : MonoBehaviour {
         }
         return atTop;
     }
+    public int GetNumRotated()
+    {
+        return numTimesRotated;
+    }
 }
 
 
