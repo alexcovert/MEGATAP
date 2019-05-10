@@ -52,7 +52,7 @@ public class PickUp : MonoBehaviour {
         time += Time.deltaTime;
         if (up == false)
         {
-            transform.position += new Vector3(0, BobbingAmount * time, 0);
+            transform.position += new Vector3(0, BobbingAmount * Time.deltaTime, 0);
             if (time >= timeForBobbing)
             {
                 up = true;
@@ -62,7 +62,7 @@ public class PickUp : MonoBehaviour {
 
         if (up == true)
         {
-            transform.position -= new Vector3(0, BobbingAmount * time, 0);
+            transform.position -= new Vector3(0, BobbingAmount * Time.deltaTime, 0);
             if (time >= timeForBobbing)
             {
                 up = false;
