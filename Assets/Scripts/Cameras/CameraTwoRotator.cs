@@ -65,7 +65,8 @@ public class CameraTwoRotator : MonoBehaviour {
         floor = 2;
 
         moveEnabled = true;
-        
+
+        SetCullingMask();
     }
 
     //Rotate camera around tower when arrow keys are pressed
