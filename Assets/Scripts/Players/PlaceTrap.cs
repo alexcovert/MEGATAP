@@ -349,6 +349,13 @@ public class PlaceTrap : MonoBehaviour {
             {
                 Destroy(ghostTrap.GetComponent<Spikes>());
             }
+            //Delete projectile shooter so it doesn't shoot
+            if (ghostTrap.GetComponentInChildren<ProjectileShooter>() != null)
+            {
+                Destroy(ghostTrap.GetComponentInChildren<ProjectileShooter>());
+                Destroy(ghostTrap.GetComponentInChildren<Animator>());
+            }
+
             //Make half transparent------------------------------------------------
             //Check for both mesh renderer and skinned mesh renderers
             MeshRenderer[] mrs = ghostTrap.GetComponentsInChildren<MeshRenderer>();
