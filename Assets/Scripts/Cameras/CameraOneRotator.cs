@@ -55,6 +55,7 @@ public class CameraOneRotator : MonoBehaviour
         floor = 1;
         rb = GetComponent<Rigidbody>();
         cinemachineCam = cinemachineSpeccy.GetComponent<CinemachineVirtualCamera>();
+        SetCullingMask();
     }
 
     private void Update()
@@ -138,7 +139,40 @@ public class CameraOneRotator : MonoBehaviour
         //Tween the vcam rotation
         camTween = TweenToPosition(goalPos, goalRot, moveSpeed);
         StartCoroutine(camTween);
+        SetCullingMask();
+    }
 
+
+    //src: https://forum.unity.com/threads/how-to-toggle-on-or-off-a-single-layer-of-the-cameras-culling-mask.340369/
+    public void SetCullingMask()
+    {
+        switch (cameraState)
+        {
+            case 1:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees1"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees4");
+                break;
+            case 2:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees2"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+                break;
+            case 3:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees3"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees2");
+                break;
+            case 4:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees4"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees3");
+                break;
+        }
     }
 
     private IEnumerator ChangeFOV(float time)
