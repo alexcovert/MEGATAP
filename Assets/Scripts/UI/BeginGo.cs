@@ -97,5 +97,9 @@ public class BeginGo : MonoBehaviour {
         playerMov.InputEnabled = true;
         pause.GameIsPaused = false;
         CountdownFinished = true;
+
+
+        //Show
+        ZoomCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
     }
 }
