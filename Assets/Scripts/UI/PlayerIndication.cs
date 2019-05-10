@@ -59,7 +59,7 @@ public class PlayerIndication : MonoBehaviour {
         {
             StartCoroutine(BotFading());
         }
-        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && numTimesRotated%3 == 0 &&numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
+        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && numTimesRotated%4 == 0 &&numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
             StartCoroutine(TopFading());
         }
@@ -67,11 +67,25 @@ public class PlayerIndication : MonoBehaviour {
 
         if (floorDifTop > 0)
         {
-            topText.text = "Speccy: " + (floorDifTop) + " floor below";
+            if (floorDifTop == 1)
+            {
+                topText.text = "Speccy: " + (floorDifTop) + " floor below";
+            }
+            else
+            {
+                topText.text = "Speccy: " + (floorDifTop) + " floors below";
+            }
         }
         else if (floorDifTop < 0)
         {
-            topText.text = "Speccy: " + (-floorDifTop) + "floor above";
+            if (floorDifTop == -1)
+            {
+                topText.text = "Speccy: " + (-floorDifTop) + "floor above";
+            }
+            else
+            {
+                topText.text = "Speccy: " + (-floorDifTop) + "floors above";
+            }
         }
         else
         {
@@ -80,11 +94,25 @@ public class PlayerIndication : MonoBehaviour {
 
         if (floorDifBot < 0)
         {
-            botText.text = "Ollie: " + (-floorDifBot) + " floor above";
+            if (floorDifBot == -1)
+            {
+                botText.text = "Ollie: " + (-floorDifBot) + " floor above";
+            }
+            else
+            {
+                botText.text = "Ollie: " + (-floorDifBot) + " floors above";
+            }
         }
         else if (floorDifBot > 0)
         {
-            botText.text = "Ollie: " + floorDifBot + " floor below";
+            if (floorDifBot == 1)
+            {
+                botText.text = "Ollie: " + floorDifBot + " floor below";
+            }
+            else
+            {
+                botText.text = "Ollie: " + floorDifBot + " floors below";
+            }
         }
         else
         {
