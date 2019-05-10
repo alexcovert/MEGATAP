@@ -21,13 +21,12 @@ public class Destroy : MonoBehaviour {
 
     private void Update()
     {
-        int topPlayerState = topPlayer.GetFloor() + topPlayer.GetState();
-        int bottomPlayerState = bottomPlayer.GetFloor() + bottomPlayer.GetState();
-        int currentState = floor + face;
-        Debug.Log(topPlayerState + ", " + bottomPlayerState + ", " + currentState);
+        int topPlayerState = (topPlayer.GetFloor() * 4) + topPlayer.GetState() - 4;
+        int bottomPlayerState = (bottomPlayer.GetFloor() * 4) + bottomPlayer.GetState() - 4;
+        int currentState = (floor * 4) + face - 4;
+        //Debug.Log(topPlayerState + ", " + bottomPlayerState + ", " + currentState);
 
-        if ((bottomPlayer.GetFloor() > floor || (bottomPlayer.GetFloor() == floor && bottomPlayer.GetState() > face)) &&
-            (topPlayer.GetFloor() > floor || (topPlayer.GetFloor() == floor && topPlayer.GetState() > face)))
+        if (topPlayerState >= currentState + 1 && bottomPlayerState >= currentState + 1)
         {
             Component[] components = GetComponents<Component>();
             Component[] childComponents = GetComponentsInChildren<Component>();
