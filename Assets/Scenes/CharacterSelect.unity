@@ -2098,6 +2098,7 @@ GameObject:
   - component: {fileID: 1903680710}
   - component: {fileID: 1903680712}
   - component: {fileID: 1903680711}
+  - component: {fileID: 1903680713}
   m_Layer: 5
   m_Name: LoadBlack
   m_TagString: Untagged
@@ -2157,6 +2158,24 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1903680709}
   m_CullTransparentMesh: 0
+--- !u!95 &1903680713
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1903680709}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7c2cda4da6f074a698a7d218320adc63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1939363266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,10 +2250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c56dae0724b42b3ba0df1d8670482d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadImg: {fileID: 0}
-  fadeAnim: {fileID: 0}
-  logoFadeSpeed: 0
-  loadTime: 0
+  loadImg: {fileID: 1953158200}
+  fadeAnim: {fileID: 1903680713}
+  logoFadeSpeed: 0.009
+  loadTime: 1
 --- !u!1 &1949321999
 GameObject:
   m_ObjectHideFlags: 0
