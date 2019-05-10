@@ -21,7 +21,12 @@ public class Destroy : MonoBehaviour {
 
     private void Update()
     {
-        if((bottomPlayer.GetFloor() > floor || (bottomPlayer.GetFloor() == floor && bottomPlayer.GetState() > face)) &&
+        int topPlayerState = topPlayer.GetFloor() + topPlayer.GetState();
+        int bottomPlayerState = bottomPlayer.GetFloor() + bottomPlayer.GetState();
+        int currentState = floor + face;
+        Debug.Log(topPlayerState + ", " + bottomPlayerState + ", " + currentState);
+
+        if ((bottomPlayer.GetFloor() > floor || (bottomPlayer.GetFloor() == floor && bottomPlayer.GetState() > face)) &&
             (topPlayer.GetFloor() > floor || (topPlayer.GetFloor() == floor && topPlayer.GetState() > face)))
         {
             Component[] components = GetComponents<Component>();
