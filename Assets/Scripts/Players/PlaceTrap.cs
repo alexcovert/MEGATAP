@@ -104,6 +104,7 @@ public class PlaceTrap : MonoBehaviour {
         if (p2Controller)
         {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
+            queue[0].gameObject.GetComponent<Button>().Select();
         }
     }
 	
@@ -138,6 +139,12 @@ public class PlaceTrap : MonoBehaviour {
             if(p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(0, 130);
+        }
+
+        //Cancel trap
+        if (Input.GetMouseButtonDown(1) && ghostTrap != null && !checkControllers.topPlayersController)
+        {
+            DestroyGhost();
         }
 
     }
@@ -343,6 +350,13 @@ public class PlaceTrap : MonoBehaviour {
             {
                 Destroy(ghostTrap.GetComponent<Spikes>());
             }
+            //Delete projectile shooter so it doesn't shoot
+            if (ghostTrap.GetComponentInChildren<ProjectileShooter>() != null)
+            {
+                Destroy(ghostTrap.GetComponentInChildren<ProjectileShooter>());
+                Destroy(ghostTrap.GetComponentInChildren<Animator>());
+            }
+
             //Make half transparent------------------------------------------------
             //Check for both mesh renderer and skinned mesh renderers
             MeshRenderer[] mrs = ghostTrap.GetComponentsInChildren<MeshRenderer>();
