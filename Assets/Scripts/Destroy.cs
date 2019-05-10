@@ -26,7 +26,7 @@ public class Destroy : MonoBehaviour {
         int currentState = (floor * 4) + face - 4;
         //Debug.Log(topPlayerState + ", " + bottomPlayerState + ", " + currentState);
 
-        if (topPlayerState >= currentState + 1 && bottomPlayerState >= currentState + 1)
+        if (topPlayerState >= currentState + 1 && bottomPlayerState > currentState + 1)
         {
             Component[] components = GetComponents<Component>();
             Component[] childComponents = GetComponentsInChildren<Component>();
