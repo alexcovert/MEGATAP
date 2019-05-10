@@ -43,11 +43,13 @@ public class CharacterSelect : MonoBehaviour {
 
     float quarterDist;
 
+    private SceneTransition loader;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         checkControllers = GameObject.Find("InputManager").GetComponent<CheckControllers>();
-
+        loader = GetComponent<SceneTransition>();
         if(!checkControllers.GetControllerOneState())
         {
             stickDelay *= 2;
@@ -185,11 +187,12 @@ public class CharacterSelect : MonoBehaviour {
 
                 if(inputManager.TutorialSelected)
                 {
-                    Initiate.Fade("Tutorial", Color.black, 2);
+                    //Initiate.Fade("Tutorial", Color.black, 2);
+                    StartCoroutine(loader.LoadScene("Tutorial"));
                 }
                 else
                 {
-                    Initiate.Fade("Tower1", Color.black, 2);
+                    StartCoroutine(loader.LoadScene("Tower1"));
                 }
             }
         }
