@@ -104,6 +104,7 @@ public class PlaceTrap : MonoBehaviour {
         if (p2Controller)
         {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
+            queue[0].gameObject.GetComponent<Button>().Select();
         }
     }
 	
