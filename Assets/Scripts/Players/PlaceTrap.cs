@@ -140,6 +140,12 @@ public class PlaceTrap : MonoBehaviour {
             controllerCursor.transform.localPosition = new Vector3(0, 130);
         }
 
+        //Cancel trap
+        if (Input.GetMouseButtonDown(1) && ghostTrap != null && !checkControllers.topPlayersController)
+        {
+            DestroyGhost();
+        }
+
     }
 
     //Returns cursor position on tower as a grid location rather than free-floating
