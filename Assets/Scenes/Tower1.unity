@@ -2261,6 +2261,31 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224688958369070702, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114889075209649832, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114889075209649832, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114889075209649832, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_fontColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114889075209649832, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_fontColor32.rgba
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 415a8da459df20b4ba20fdbb2acbdc98, type: 2}
   m_IsPrefabAsset: 0
@@ -3320,6 +3345,7 @@ MonoBehaviour:
   playerTwo: {fileID: 1027381073}
   topText: {fileID: 2077754590}
   botText: {fileID: 1054046135}
+  time: 1
   tower: {fileID: 1219273410}
   gameManager: {fileID: 1888857407}
 --- !u!4 &1888857409
@@ -3532,6 +3558,21 @@ Prefab:
         type: 2}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224819469020684874, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114040631370292360, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: m_fontColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114040631370292360, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: m_fontColor32.rgba
+      value: 16777215
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 295df6c694235764eac79c393ed826dc, type: 2}

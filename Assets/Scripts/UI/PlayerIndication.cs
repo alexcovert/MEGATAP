@@ -10,6 +10,7 @@ public class PlayerIndication : MonoBehaviour {
     [SerializeField] GameObject playerTwo;
     [SerializeField] TextMeshProUGUI topText;
     [SerializeField] TextMeshProUGUI botText;
+    [SerializeField] private float time = 1f;
 
     
     private InputManager inputManager;
@@ -27,10 +28,16 @@ public class PlayerIndication : MonoBehaviour {
     private int playerOneCurrentFace = 1;
     private int playerOneLastFace = 1;
 
+    private Color colorTop;
+    private Color colorBot;
+
     // Use this for initialization
     void Start () {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         pause = gameManager.GetComponent<PauseMenu>();
+        colorTop = topText.color;
+        colorBot = botText.color;
+        
     }
 	
 	// Update is called once per frame
@@ -50,40 +57,27 @@ public class PlayerIndication : MonoBehaviour {
         }
         if(playerOneLastFace > playerOneCurrentFace)
         {
-            if (floorDifBot < 0)
-            {
-                botText.text = "Ollie: " + (-floorDifBot) + " floor above";
-            }
-            else if (floorDifBot > 0)
-            {
-                botText.text = "Ollie: " + floorDifBot + " floor below";
-            }
-            else
-            {
-                botText.text = "Ollie: on same floor";
-            }
-            botText.CrossFadeAlpha(1, 2.0f, false);
+            StartCoroutine(BotFading());
         }
         if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && numTimesRotated%3 == 0 &&numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
-            if (floorDifTop > 0)
-            {
-                topText.text = "Speccy: " + (floorDifTop) + " floor below";
-            }
-            else if (floorDifTop < 0)
-            {
-                topText.text = "Speccy: " + (-floorDifTop) + "floor above";
-            }
-            else
-            {
-                topText.text = "Speccy: on same floor";
-            }
-            topText.CrossFadeAlpha(1, 2.0f, false);
+            StartCoroutine(TopFading());
         }
-            
-	}
-    private IEnumerator BotFading()
-    {
+
+
+        if (floorDifTop > 0)
+        {
+            topText.text = "Speccy: " + (floorDifTop) + " floor below";
+        }
+        else if (floorDifTop < 0)
+        {
+            topText.text = "Speccy: " + (-floorDifTop) + "floor above";
+        }
+        else
+        {
+            topText.text = "Speccy: on same floor";
+        }
+
         if (floorDifBot < 0)
         {
             botText.text = "Ollie: " + (-floorDifBot) + " floor above";
@@ -96,28 +90,35 @@ public class PlayerIndication : MonoBehaviour {
         {
             botText.text = "Ollie: on same floor";
         }
-        botText.CrossFadeAlpha(1, 2.0f, false);
-        
-        yield return new WaitForSeconds(2);
 
-        botText.CrossFadeAlpha(0, 2.0f, false);
+    }
+    private IEnumerator BotFading()
+    {
+        for (float t = 0; t < time; t += Time.deltaTime)
+        {
+            botText.color = new Color(colorBot.r, colorBot.g, colorBot.b, Mathf.Lerp(0, 1, t / time));
+            yield return null;
+        }
+        
+        for (float t = 0; t < time; t += Time.deltaTime)
+        {
+            botText.color = new Color(colorBot.r, colorBot.g, colorBot.b, Mathf.Lerp(1, 0, t / time));
+            yield return null;
+        }
     }
 
     private IEnumerator TopFading()
     {
-        if(floorDifTop > 0)
+        for (float t = 0; t < time; t += Time.deltaTime)
         {
-            topText.text = "Speccy: " + (floorDifTop) + " floor below";
+            topText.color = new Color(colorTop.r, colorTop.g, colorTop.b, Mathf.Lerp(0, 1, t / time));
+            yield return null;
         }
-        else if (floorDifTop< 0)
+
+        for (float t = 0; t < time; t += Time.deltaTime)
         {
-            topText.text = "Speccy: " + (-floorDifTop) + "floor above";
+            topText.color = new Color(colorTop.r, colorTop.g, colorTop.b, Mathf.Lerp(1, 0, t / time));
+            yield return null;
         }
-        else
-        {
-            topText.text = "Speccy: on same floor";
-        }
-        topText.CrossFadeAlpha(1, 2.0f, false);
-        yield return new WaitForSeconds(2);
     }
 }
