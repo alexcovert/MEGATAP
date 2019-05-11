@@ -10,7 +10,7 @@ public class PlayerIndication : MonoBehaviour {
     [SerializeField] GameObject playerTwo;
     [SerializeField] TextMeshProUGUI topText;
     [SerializeField] TextMeshProUGUI botText;
-    [SerializeField] private float time = 1f;
+    [SerializeField] private float time = 0.5f;
 
     
     private InputManager inputManager;
@@ -22,8 +22,8 @@ public class PlayerIndication : MonoBehaviour {
     private int floorTop = 2;
     private int floorBot = 1;
 
-    private int floorDifTop = 0;
-    private int floorDifBot = 0;
+    //private int floorDifTop = 0;
+    //private int floorDifBot = 0;
 
     private int playerOneCurrentFace = 1;
     private int playerOneLastFace = 1;
@@ -31,29 +31,34 @@ public class PlayerIndication : MonoBehaviour {
     private Color colorTop;
     private Color colorBot;
 
+    private CameraOneRotator cam1;
+    private CameraTwoRotator cam2;
+    private PlaceTrap placeTrap;
+
     // Use this for initialization
-    void Start () {
+    void Awake () {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         pause = gameManager.GetComponent<PauseMenu>();
         colorTop = topText.color;
         colorBot = botText.color;
-        
+
+        cam1 = playerOne.GetComponent<CameraOneRotator>();
+        cam2 = camTop.GetComponent<CameraTwoRotator>();
+        placeTrap = playerTwo.GetComponent<PlaceTrap>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        floorTop = camTop.GetComponent<CameraTwoRotator>().GetFloor();
-        floorBot = playerOne.GetComponent<CameraOneRotator>().GetFloor();
 
-        floorDifTop = floorTop - floorBot;
-        floorDifBot = floorBot - floorTop;
+        //floorDifTop = floorTop - floorBot;
+        //floorDifBot = floorBot - floorTop;
 
-        numTimesRotated = playerTwo.GetComponent<PlaceTrap>().GetNumRotated();
+        numTimesRotated = placeTrap.GetNumRotated();
         
-        if(playerOneCurrentFace != playerOne.GetComponent<CameraOneRotator>().GetState())
+        if(playerOneCurrentFace != cam1.GetState())
         {
             playerOneLastFace = playerOneCurrentFace;
-            playerOneCurrentFace = playerOne.GetComponent<CameraOneRotator>().GetState();
+            playerOneCurrentFace = cam1.GetState();
         }
         if(playerOneLastFace > playerOneCurrentFace)
         {
@@ -64,60 +69,65 @@ public class PlayerIndication : MonoBehaviour {
             StartCoroutine(TopFading());
         }
 
+        floorTop = cam2.GetFloor();
+        floorBot = cam1.GetFloor();
 
-        if (floorDifTop > 0)
-        {
-            if (floorDifTop == 1)
-            {
-                topText.text = "Speccy: " + (floorDifTop) + " floor below";
-            }
-            else
-            {
-                topText.text = "Speccy: " + (floorDifTop) + " floors below";
-            }
-        }
-        else if (floorDifTop < 0)
-        {
-            if (floorDifTop == -1)
-            {
-                topText.text = "Speccy: " + (-floorDifTop) + "floor above";
-            }
-            else
-            {
-                topText.text = "Speccy: " + (-floorDifTop) + "floors above";
-            }
-        }
-        else
-        {
-            topText.text = "Speccy: on same floor";
-        }
+        topText.text = "Floor " + floorTop;
+        botText.text = "Floor " + floorBot;
 
-        if (floorDifBot < 0)
-        {
-            if (floorDifBot == -1)
-            {
-                botText.text = "Ollie: " + (-floorDifBot) + " floor above";
-            }
-            else
-            {
-                botText.text = "Ollie: " + (-floorDifBot) + " floors above";
-            }
-        }
-        else if (floorDifBot > 0)
-        {
-            if (floorDifBot == 1)
-            {
-                botText.text = "Ollie: " + floorDifBot + " floor below";
-            }
-            else
-            {
-                botText.text = "Ollie: " + floorDifBot + " floors below";
-            }
-        }
-        else
-        {
-            botText.text = "Ollie: on same floor";
-        }
+        //if (floorDifTop > 0)
+        //{
+        //    if (floorDifTop == 1)
+        //    {
+        //        topText.text = "Speccy: " + (floorDifTop) + " floor below";
+        //    }
+        //    else
+        //    {
+        //        topText.text = "Speccy: " + (floorDifTop) + " floors below";
+        //    }
+        //}
+        //else if (floorDifTop < 0)
+        //{
+        //    if (floorDifTop == -1)
+        //    {
+        //        topText.text = "Speccy: " + (-floorDifTop) + "floor above";
+        //    }
+        //    else
+        //    {
+        //        topText.text = "Speccy: " + (-floorDifTop) + "floors above";
+        //    }
+        //}
+        //else
+        //{
+        //    topText.text = "Speccy: on same floor";
+        //}
+
+        //if (floorDifBot < 0)
+        //{
+        //    if (floorDifBot == -1)
+        //    {
+        //        botText.text = "Ollie: " + (-floorDifBot) + " floor above";
+        //    }
+        //    else
+        //    {
+        //        botText.text = "Ollie: " + (-floorDifBot) + " floors above";
+        //    }
+        //}
+        //else if (floorDifBot > 0)
+        //{
+        //    if (floorDifBot == 1)
+        //    {
+        //        botText.text = "Ollie: " + floorDifBot + " floor below";
+        //    }
+        //    else
+        //    {
+        //        botText.text = "Ollie: " + floorDifBot + " floors below";
+        //    }
+        //}
+        //else
+        //{
+        //    botText.text = "Ollie: on same floor";
+        //}
 
     }
     private IEnumerator BotFading()
