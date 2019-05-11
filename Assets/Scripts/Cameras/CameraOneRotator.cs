@@ -226,7 +226,6 @@ public class CameraOneRotator : MonoBehaviour
         float prevLock = vcamLock.m_YPosition;
         for(float t = 0; t < time; t += Time.deltaTime)
         {
-            Debug.Log("locking...");
             transposer.m_YDamping = Mathf.Lerp(1, 0, t / time);
             vcamLock.offsetAbove = Mathf.Lerp(20, 0, t / time);
             vcamLock.m_YPosition = Mathf.Lerp(prevLock, prevLock + 20, t / time);
