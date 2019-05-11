@@ -96,7 +96,7 @@ public class ProjectileShooter : MonoBehaviour {
     {
         projectile = Instantiate(prefab);
 
-        projectile.transform.position = transform.parent.position + new Vector3(0, 0.85f, 0) + transform.forward * 0.5f;
+        projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
         projectile.transform.rotation = projectileRotation;
 
         rb = projectile.GetComponent<Rigidbody>();

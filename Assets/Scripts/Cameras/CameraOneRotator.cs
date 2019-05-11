@@ -101,8 +101,9 @@ public class CameraOneRotator : MonoBehaviour
             case "Trigger3":
                 StartMove(new Vector3(playerModel.transform.position.x - camPosHorizontal, playerOneCam.transform.position.y, playerModel.transform.position.z), rotations[3], 4);
                 Destroy(other.gameObject);
+                break;
+            case "CamUnlock":
                 StartCoroutine(IncreaseOffset());
-
                 break;
             case "Trigger4":
                 if (cameraState == 4)

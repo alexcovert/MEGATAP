@@ -143,6 +143,8 @@ public class PlayerIndication : MonoBehaviour {
             botText.color = new Color(colorBot.r, colorBot.g, colorBot.b, Mathf.Lerp(1, 0, t / time));
             yield return null;
         }
+
+        botText.color = new Color(colorBot.r, colorBot.g, colorBot.b, 0);
     }
 
     private IEnumerator TopFading()
@@ -158,5 +160,7 @@ public class PlayerIndication : MonoBehaviour {
             topText.color = new Color(colorTop.r, colorTop.g, colorTop.b, Mathf.Lerp(1, 0, t / time));
             yield return null;
         }
+
+        topText.color = new Color(colorTop.r, colorTop.g, colorTop.b, 0);
     }
 }
