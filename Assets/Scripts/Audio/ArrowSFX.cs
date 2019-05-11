@@ -7,7 +7,8 @@ public class ArrowSFX : MonoBehaviour
 
     [SerializeField] private AudioClip stringDrawSFX;
     [SerializeField] private AudioClip stringReleaseSFX;
-
+    [SerializeField] private AudioClip arrowWhoosh;
+    
     private AudioSource audioSource;
     private ProjectileShooter shooter;
 
@@ -41,6 +42,11 @@ public class ArrowSFX : MonoBehaviour
     private void StringRelease()
     {
         if (floor == cam1.GetFloor() && face == cam1.GetState())
+        {
             audioSource.PlayOneShot(stringReleaseSFX);
+            audioSource.PlayOneShot(arrowWhoosh);
+        }
     }
+    
+
 }
