@@ -54,16 +54,15 @@ public class PlayerIndication : MonoBehaviour {
         //floorDifBot = floorBot - floorTop;
 
         numTimesRotated = placeTrap.GetNumRotated();
-        
-        if(playerOneCurrentFace != cam1.GetState())
-        {
-            playerOneLastFace = playerOneCurrentFace;
-            playerOneCurrentFace = cam1.GetState();
-        }
-        if(playerOneLastFace > playerOneCurrentFace)
+
+        playerOneCurrentFace = cam1.GetFloor();
+        if (playerOneLastFace != playerOneCurrentFace) 
         {
             StartCoroutine(BotFading());
+            playerOneLastFace = playerOneCurrentFace;
         }
+
+        //Top player up a floor
         if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && numTimesRotated%4 == 0 &&numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
             StartCoroutine(TopFading());

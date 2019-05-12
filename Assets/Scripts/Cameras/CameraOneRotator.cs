@@ -209,19 +209,20 @@ public class CameraOneRotator : MonoBehaviour
 
     private IEnumerator IncreaseOffset()
     {
-        float time = 10;
+        float time = 3;
         
         for (float t = 0; t < time; t += Time.deltaTime)
         {
             vcamLock.offsetAbove = Mathf.Lerp(0, 20, t / time);
             transposer.m_YDamping = Mathf.Lerp(0, 1, t / time);
+            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping);
             yield return null;
         }
     }
 
     private IEnumerator ReduceOffset(float amount)
     {
-        float time = 10;
+        float time = 3;
         
         float prevLock = vcamLock.m_YPosition;
         for(float t = 0; t < time; t += Time.deltaTime)
@@ -229,8 +230,14 @@ public class CameraOneRotator : MonoBehaviour
             transposer.m_YDamping = Mathf.Lerp(1, 0, t / time);
             vcamLock.offsetAbove = Mathf.Lerp(20, 0, t / time);
             vcamLock.m_YPosition = Mathf.Lerp(prevLock, prevLock + 20, t / time);
+
+            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping + ", " + vcamLock.m_YPosition);
             yield return null;
         }
+
+        transposer.m_YDamping = 0;
+        vcamLock.offsetAbove = 0;
+        vcamLock.m_YPosition = prevLock + 20;
     }
 
     //Camera movement coroutine
