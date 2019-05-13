@@ -283,6 +283,11 @@ public class PlayerOneMovement : MonoBehaviour {
         Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
         //WallJump Check at nose/head
         Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
+
+        animator.SetBool("Landing", landing);
+        animator.SetBool("Grounded", grounded);
+        animator.SetBool("Crouched", crouching);
+        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
 
@@ -300,7 +305,7 @@ public class PlayerOneMovement : MonoBehaviour {
             jumping = false;
             landing = false;
             speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
-            CheckLanding();
+            StartCoroutine(CheckLanding());
         }
         else if (crouching)
         {
@@ -340,10 +345,6 @@ public class PlayerOneMovement : MonoBehaviour {
             }
             //NOT WALL JUMPING
         }
-        animator.SetBool("Landing", landing);
-        animator.SetBool("Grounded", grounded);
-        animator.SetBool("Crouched", crouching);
-        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
     private IEnumerator DisableWallJump()
@@ -381,21 +382,23 @@ public class PlayerOneMovement : MonoBehaviour {
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
 
-    private void CheckLanding()
+    private IEnumerator CheckLanding()
     {
         while (landing == false)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Platform")) && grounded == false)
+            if ((Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Platform")) || 
+                Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Trap"))) && grounded == false)
             {
                 Debug.DrawRay(transform.position, -transform.up, Color.yellow);
-                if (hit.distance <= distanceFromGround && jumping == false)
+                if (hit.distance <= distanceFromGround)
                 {
+                    Debug.Log(hit.distance);
                     landing = true;
                 }
             }
+            yield return null;
         }
-        landing = false;
     }
 
     /////////////////////////////////////////////
