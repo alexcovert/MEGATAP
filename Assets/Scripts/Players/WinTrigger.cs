@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class WinTrigger : MonoBehaviour {
 	public GameObject speccyWinUI;
-	
+	public GameObject WinGameCamera;
+	public GameObject CanvasUI;
     public bool Win { get; private set; }
 
 	void Start () {
@@ -21,6 +22,8 @@ public class WinTrigger : MonoBehaviour {
             Win = true;
             speccyWinUI.SetActive(true);
             speccyWinUI.transform.SetAsLastSibling();
+            WinGameCamera.SetActive(true);
+            CanvasUI.SetActive(false);
         }
     }
 }
