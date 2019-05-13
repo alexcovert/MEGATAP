@@ -83,10 +83,12 @@ public class LogRoller : MonoBehaviour
                     logProjectile.transform.rotation = projectileRotation;
                     rb = logProjectile.GetComponentInChildren<Rigidbody>();
                     rb.useGravity = false;
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
                     once = false;
                 }
                 if (timer > timeToShoot)
                 {
+                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                     rb.useGravity = true;
                     rb.AddForce(-transform.right * speed);
                     timer = timer - timeToShoot;

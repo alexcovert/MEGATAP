@@ -14,6 +14,8 @@ public class LogProjectile : MonoBehaviour {
 
     [SerializeField] private float animationSpeed;
 
+    [SerializeField] private float speedForKnockback = 0.05f;
+
     // let the FixedUpdate method know that there was a collision with player
     private bool hit = false;
     // the player (or whatever collided with this trap)
@@ -76,7 +78,7 @@ public class LogProjectile : MonoBehaviour {
                 {
                     box.enabled = false;
                 }
-                if (rb.velocity.x < 0)
+                if (rb.velocity.x < -speedForKnockback)
                 {
                     box.enabled = true;
                 }
@@ -86,13 +88,13 @@ public class LogProjectile : MonoBehaviour {
                 {
                     box.enabled = false;
                 }
-                if(rb.velocity.z < 0)
+                if(rb.velocity.z < -speedForKnockback)
                 {
                     box.enabled = true;
                 }
                 break;
             case 3:
-                if(rb.velocity.x > 0)
+                if(rb.velocity.x > speedForKnockback)
                 {
                     box.enabled = true;
                 }
@@ -102,7 +104,7 @@ public class LogProjectile : MonoBehaviour {
                 }
                 break;
             case 4:
-                if (rb.velocity.z > 0)
+                if (rb.velocity.z > speedForKnockback)
                 {
                     box.enabled = true;
                 }
