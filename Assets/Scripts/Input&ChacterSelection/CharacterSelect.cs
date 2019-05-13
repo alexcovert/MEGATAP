@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using TMPro;
 
 public class CharacterSelect : MonoBehaviour {
     private InputManager inputManager;
@@ -12,6 +12,8 @@ public class CharacterSelect : MonoBehaviour {
     [SerializeField] private float stickDelay;
 
     [Header("Programmers - GameObjects/Script Refs -----")]
+    [SerializeField] private TextMeshProUGUI startText;
+
     [SerializeField] private Image playerOneSelector;
     [SerializeField] private Image playerTwoSelector;
     [SerializeField] private Image topBackgroundObj;
@@ -57,14 +59,14 @@ public class CharacterSelect : MonoBehaviour {
         }
     }
 
-	private void Update () {
+    private void Update() {
         Vector2 playerOnePos = playerOneSelector.transform.position;
         Vector2 playerTwoPos = playerTwoSelector.transform.position;
         quarterDist = Screen.height / 4;
         ChangeColors();
 
         //If only one controller is plugged in
-        if(!checkControllers.GetControllerOneState())
+        if (!checkControllers.GetControllerOneState())
         {
             //Keyboard
             if (Input.GetAxis("Vertical_Keyboard") < 0 && selectorOneState < 1 && stickMove)
@@ -83,7 +85,7 @@ public class CharacterSelect : MonoBehaviour {
             }
 
             //Mouse clicks
-            if(Input.GetMouseButtonDown(0) && Input.mousePosition.y >= Screen.height / 2)
+            if (Input.GetMouseButtonDown(0) && Input.mousePosition.y >= Screen.height / 2)
             {
                 playerOneSelector.transform.position = new Vector2(playerOnePos.x, Screen.height / 2 + quarterDist);
                 selectorOneState = 1;
@@ -146,13 +148,14 @@ public class CharacterSelect : MonoBehaviour {
             }
         }
 
-        
+
         //Check characters selected are opposite to allow scene start
         if (selectorOneState == -selectorTwoState && selectorOneState != 0)
         {
-            if(inputManager.GetButtonDown(InputCommand.Start) && checkControllers.GetControllerOneState())
+            startText.text = "Press Start to Start!";
+            if (inputManager.GetButtonDown(InputCommand.Start) && checkControllers.GetControllerOneState())
             {
-                if(selectorOneState == -1)
+                if (selectorOneState == -1)
                 {
                     inputManager.P1IsTop = false;
                 }
@@ -170,7 +173,7 @@ public class CharacterSelect : MonoBehaviour {
                     StartCoroutine(loader.LoadScene("Tower1"));
                 }
             }
-            else if(inputManager.GetButtonDown(InputCommand.Start) && !checkControllers.GetControllerOneState())
+            else if (inputManager.GetButtonDown(InputCommand.Start) && !checkControllers.GetControllerOneState())
             {
                 if (selectorOneState == -1)
                 {
@@ -185,7 +188,7 @@ public class CharacterSelect : MonoBehaviour {
                     inputManager.P1IsTop = false;
                 }
 
-                if(inputManager.TutorialSelected)
+                if (inputManager.TutorialSelected)
                 {
                     //Initiate.Fade("Tutorial", Color.black, 2);
                     StartCoroutine(loader.LoadScene("Tutorial"));
@@ -195,6 +198,10 @@ public class CharacterSelect : MonoBehaviour {
                     StartCoroutine(loader.LoadScene("Tower1"));
                 }
             }
+        }
+        else
+        {
+            startText.text = "";
         }
     }
 
