@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerOneLose : MonoBehaviour {
     public bool Lose { get; private set; }
@@ -23,6 +25,7 @@ public class PlayerOneLose : MonoBehaviour {
             Lose = true;
             // Initiate.Fade("GameOver", Color.black, 1);
             speccyLosesUI.SetActive(true);
+            speccyLosesUI.transform.SetAsLastSibling();
         }
     }
     

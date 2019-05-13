@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WinTrigger : MonoBehaviour {
+	public GameObject speccyWinUI;
+	
     public bool Win { get; private set; }
 
 	void Start () {
@@ -15,8 +17,10 @@ public class WinTrigger : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Initiate.Fade("VictoryScreen", Color.black, 1);
+            //Initiate.Fade("VictoryScreen", Color.black, 1);
             Win = true;
+            speccyWinUI.SetActive(true);
+            speccyWinUI.transform.SetAsLastSibling();
         }
     }
 }
