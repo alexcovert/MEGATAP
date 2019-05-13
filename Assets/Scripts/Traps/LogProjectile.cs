@@ -9,6 +9,8 @@ public class LogProjectile : MonoBehaviour {
     [SerializeField] private int knockBackValue = 75;
     [SerializeField] private int knockUpValue = 25;
     [SerializeField] private float stunDuration = 0.75f;
+    //Time before log disappears
+    [SerializeField] private float lifeTime = 2f;
 
     [SerializeField] private float animationSpeed;
 
@@ -20,23 +22,96 @@ public class LogProjectile : MonoBehaviour {
     private int knockTimer = 0;
     //Player's animator for knockback animation
     private Animator anim = null;
-    //To know there was collision with a platform or boundary
-    private bool hitWall = false;
-    //Time before log disappears
-    private float time = 0.0f;
     //Transform of log model
     private GameObject child;
+    //see if log is still moving
+    private Rigidbody rb;
+
+    //Log collider
+    private BoxCollider box;
+
+    //Figure out which face this is on
+    private CameraOneRotator playerOne;
+
+    //So this doesn't die prematurely
+    private bool canDie = false;
+
+    void Awake()
+    {
+        playerOne = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
+    }
 
     // Use this for initialization
     void Start () {
         trapBase = GetComponent<TrapBase>();
         child = transform.parent.gameObject.transform.GetChild(1).gameObject;
+        rb = child.GetComponent<Rigidbody>();
+        box = GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         this.transform.position = child.transform.position;
+
+        //So cannot die prematurely
+        if(rb.velocity.y != 0)
+        {
+            canDie = true;
+        }
+
+        //only needs to have 0 velocity once.
+        if ((rb.velocity.x <= 0.00001 && rb.velocity.x >= -0.00001) && (rb.velocity.z <= 0.00001 && rb.velocity.z >= -0.00001))
+        {
+            box.enabled = false;
+            if (canDie == true)
+            {
+                StartCoroutine(Death());
+            }
+        }
+        switch (playerOne.GetState())
+        {
+            case 1:
+                if (rb.velocity.x > 0)
+                {
+                    box.enabled = false;
+                }
+                if (rb.velocity.x < 0)
+                {
+                    box.enabled = true;
+                }
+                break;
+            case 2:
+                if(rb.velocity.z > 0)
+                {
+                    box.enabled = false;
+                }
+                if(rb.velocity.z < 0)
+                {
+                    box.enabled = true;
+                }
+                break;
+            case 3:
+                if(rb.velocity.x > 0)
+                {
+                    box.enabled = true;
+                }
+                if(rb.velocity.x < 0)
+                {
+                    box.enabled = false;
+                }
+                break;
+            case 4:
+                if (rb.velocity.z > 0)
+                {
+                    box.enabled = true;
+                }
+                if (rb.velocity.z < 0)
+                {
+                    box.enabled = false;
+                }
+                break;
+        }
     }
     void FixedUpdate () {
         
@@ -63,20 +138,9 @@ public class LogProjectile : MonoBehaviour {
                 }
             }
         }
-        Debug.Log(hitWall);
-        if (hitWall == true)
-        {
-            //Log disappears after stunDuration time
-            time += Time.deltaTime;
-            if (time >= stunDuration)
-            {
-                Destroy(this.transform.parent.gameObject);
-                hitWall = false;
-            }
-        }
     }
 
-    void OnTriggerEnter(Collider col)
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
@@ -87,26 +151,13 @@ public class LogProjectile : MonoBehaviour {
             {
                 anim.Play("Knockback", 0);
             }
-            //Reset time to 0 when plaer is hit so player doesn't get infinitely stunned.
-            time = 0.0f;
-        }
-        if (col.gameObject.tag == "Boundary" || col.gameObject.tag == "Platform")
-        {
-            hitWall = true;
         }
     }
-    private void OnTriggerStay(Collider col)
+
+    private IEnumerator Death()
     {
-        if (col.gameObject.tag == "Boundary" || col.gameObject.tag == "Platform")
-        {
-            hitWall = true;
-        }
+        yield return new WaitForSeconds(lifeTime);
+        Destroy(this.transform.parent.gameObject);
     }
-    private void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.tag == "Boundary" || col.gameObject.tag == "Platform")
-        {
-            hitWall = true;
-        }
-    }
+    
 }

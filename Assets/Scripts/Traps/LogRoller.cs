@@ -12,6 +12,7 @@ public class LogRoller : MonoBehaviour
     private float timer = 0.0f;
     private GameObject logProjectile;
     private Rigidbody rb;
+    private bool once = true;
 
     [SerializeField] private float speed = 40;
     //private Vector3 velocity;
@@ -54,16 +55,43 @@ public class LogRoller : MonoBehaviour
         timer += Time.deltaTime;
         if (trapBase.enabled == true)
         {
-            if (timer > timeToShoot)
+            CapsuleCollider col;
+            if (timer > timeToShoot - 1)
             {
-                logProjectile = Instantiate(logPrefab);
+                if (once == true)
+                {
+                    logProjectile = Instantiate(logPrefab);
+                    col = logProjectile.GetComponentInChildren<CapsuleCollider>();
 
-                logProjectile.transform.position = transform.position + new Vector3(0, 0, 0);
-                logProjectile.transform.rotation = projectileRotation;
+                    Physics.IgnoreCollision(col, this.GetComponent<Collider>());
 
-                rb = logProjectile.GetComponentInChildren<Rigidbody>();
-                rb.AddForce(-transform.right * speed);
-                timer = timer - timeToShoot;
+                    switch (cam.GetState())
+                    {
+                        case 1:
+                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
+                            break;
+                        case 2:
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, -0.5f);
+                            break;
+                        case 3:
+                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.5f, 0);
+                            break;
+                        case 4:
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, 0.5f);
+                            break;
+                    }
+                    logProjectile.transform.rotation = projectileRotation;
+                    rb = logProjectile.GetComponentInChildren<Rigidbody>();
+                    rb.useGravity = false;
+                    once = false;
+                }
+                if (timer > timeToShoot)
+                {
+                    rb.useGravity = true;
+                    rb.AddForce(-transform.right * speed);
+                    timer = timer - timeToShoot;
+                    once = true;
+                }
             }
         }
     }
