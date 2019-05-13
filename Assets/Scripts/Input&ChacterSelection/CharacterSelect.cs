@@ -63,7 +63,7 @@ public class CharacterSelect : MonoBehaviour {
         Vector2 playerOnePos = playerOneSelector.transform.position;
         Vector2 playerTwoPos = playerTwoSelector.transform.position;
         quarterDist = Screen.height / 4;
-        ChangeColors();
+        //ChangeColors();
 
         //If only one controller is plugged in
         if (!checkControllers.GetControllerOneState())
