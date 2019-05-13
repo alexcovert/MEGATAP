@@ -282,13 +282,13 @@ public class PlayerOneMovement : MonoBehaviour {
         }
 
         //WallJump Check at feet
-        Debug.DrawRay(transform.position, transform.forward, Color.green);
+        //Debug.DrawRay(transform.position, transform.forward, Color.green);
         //WallJump Check at knee
-        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
         //WallJump Check at chest
-        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
         //WallJump Check at nose/head
-        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
 
         //Distance from feet to platform
         //Debug.DrawRay(transform.position, -transform.up, Color.yellow, distanceFromGround);
