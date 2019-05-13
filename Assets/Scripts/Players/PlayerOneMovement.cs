@@ -62,8 +62,9 @@ public class PlayerOneMovement : MonoBehaviour {
     private PauseMenu pause;
     private Animator animator;
     private CapsuleCollider col;
+    private CapsuleCollider[] colArray;
     private ParticleSystemRenderer stun;
-    private SphereCollider sphere;
+    private SphereCollider[] sphere;
 
     private void Awake()
     {
@@ -76,9 +77,10 @@ public class PlayerOneMovement : MonoBehaviour {
         animator = GetComponent<Animator>();
         //checkControllers = gameManager.GetComponent<CheckControllers>();
         col = GetComponent<CapsuleCollider>();
+        colArray = GetComponents<CapsuleCollider>();
         stun = GetComponentInChildren<ParticleSystemRenderer>();
         pause = gameManager.GetComponent<PauseMenu>();
-        sphere = GetComponent<SphereCollider>();
+        sphere = GetComponents<SphereCollider>();
         stun.enabled = false;
         crouching = false;
         animator.SetBool("Grounded", grounded);
@@ -243,13 +245,17 @@ public class PlayerOneMovement : MonoBehaviour {
             CrouchPenalty = crouchSlow;
             col.height = 2.25f;
             col.center = new Vector3(0, 1.1f, 0);
-            sphere.center = new Vector3(0, 1f, 0); 
+            colArray[1].height = 2f;
+            colArray[1].center = new Vector3(0, 1f, 0.21f);
+            sphere[0].center = new Vector3(0, 1f, 0); 
         }
 
         if(crouching == false || grounded == false) {
             col.height = 4.5f;
             col.center = new Vector3(0, 2.2f, 0);
-            sphere.center = new Vector3(0, 3f, 0);
+            colArray[1].height = 4f;
+            colArray[1].center = new Vector3(0, 2.2f, 0.21f);
+            sphere[0].center = new Vector3(0, 3f, 0);
         }
 
         cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();

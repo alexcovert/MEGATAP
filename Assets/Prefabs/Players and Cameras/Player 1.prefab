@@ -1944,7 +1944,6 @@ MonoBehaviour:
   - {fileID: 0}
   pickupEmpty: {fileID: 21300000, guid: ece564ad1c3aa22429a5b4a98135c9bd, type: 3}
   cam: {fileID: 114614076012222384}
-  distanceFromGround: 0.05
   gameManager: {fileID: 0}
   speedBoostSFX: {fileID: 8300000, guid: e06853b6be043644f89a1ab20dc6cbe8, type: 3}
 --- !u!135 &135254525513457034
@@ -2021,7 +2020,7 @@ CapsuleCollider:
   m_Radius: 1.1501592
   m_Height: 4
   m_Direction: 1
-  m_Center: {x: 2.4990276e-15, y: 2.2, z: 0.20756459}
+  m_Center: {x: 0, y: 2.2, z: 0.21}
 --- !u!137 &137489807720363134
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
