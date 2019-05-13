@@ -45,7 +45,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
     //camera
     [SerializeField] private CameraOneRotator cam;
-    [SerializeField] private float distanceFromGround = 2f;
+    //[SerializeField] private float distanceFromGround = 2f;
     private int camOneState = 1;
 
     [SerializeField] private GameObject gameManager;
@@ -284,7 +284,9 @@ public class PlayerOneMovement : MonoBehaviour {
         //WallJump Check at nose/head
         Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
 
-        animator.SetBool("Landing", landing);
+        //Distance from feet to platform
+        //Debug.DrawRay(transform.position, -transform.up, Color.yellow, distanceFromGround);
+
         animator.SetBool("Grounded", grounded);
         animator.SetBool("Crouched", crouching);
         animator.SetFloat("YVelocity", rb.velocity.y);
@@ -303,9 +305,10 @@ public class PlayerOneMovement : MonoBehaviour {
                 animator.Play("Armature|JumpStart", 0);
             }
             jumping = false;
-            landing = false;
+           //landing = false;
             speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
-            StartCoroutine(CheckLanding());
+            //animator.SetBool("Landing", landing);
+            //StartCoroutine(CheckLanding());
         }
         else if (crouching)
         {
@@ -382,24 +385,19 @@ public class PlayerOneMovement : MonoBehaviour {
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
 
-    private IEnumerator CheckLanding()
+   /* private IEnumerator CheckLanding()
     {
         while (landing == false)
         {
             RaycastHit hit;
-            if ((Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Platform")) || 
-                Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Trap"))) && grounded == false)
+            if (Physics.Raycast(transform.position, -transform.up, out hit, distanceFromGround) && grounded == false)
             {
-                Debug.DrawRay(transform.position, -transform.up, Color.yellow);
-                if (hit.distance <= distanceFromGround)
-                {
-                    Debug.Log(hit.distance);
-                    landing = true;
-                }
+                landing = true;
+                animator.SetBool("Landing", landing);
             }
             yield return null;
         }
-    }
+    }*/
 
     /////////////////////////////////////////////
     // GETTERS AND SETTERS                     //
