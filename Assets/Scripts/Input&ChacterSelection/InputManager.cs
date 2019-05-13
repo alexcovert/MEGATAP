@@ -31,13 +31,14 @@ public enum InputCommand
 
 public class InputManager : MonoBehaviour {
     [HideInInspector] public bool P1IsTop;
+    [HideInInspector] public bool TutorialSelected;
 
     //P1 is not top by default
     private void Awake()
     {
         P1IsTop = false;
     }
-    
+
     //Set input enums for when controller 1 is top player
     private Dictionary<InputCommand, string> p2AsTop = new Dictionary<InputCommand, string>
     {
@@ -62,7 +63,7 @@ public class InputManager : MonoBehaviour {
         { InputCommand.BottomPlayerJump, "Jump_Joy_1" },
         { InputCommand.BottomPlayerMoveStick, "Horizontal_Joy_1_Stick"},
         { InputCommand.BottomPlayerMoveKeyboard, "Horizontal_Keyboard" },
-        { InputCommand.BottomPlayerBoost, "" }, //TODO
+        { InputCommand.BottomPlayerBoost, "Boost_Joy_1" }, //TODO
         { InputCommand.BottomPlayerCrouch, "Crouch_Joy_1" }
     };
 
@@ -90,7 +91,7 @@ public class InputManager : MonoBehaviour {
         { InputCommand.BottomPlayerJump, "Jump_Joy_2" },
         { InputCommand.BottomPlayerMoveStick, "Horizontal_Joy_2_Stick"},
         { InputCommand.BottomPlayerMoveKeyboard, "Horizontal_Keyboard" },
-        { InputCommand.BottomPlayerBoost, "" }, //TODO
+        { InputCommand.BottomPlayerBoost, "Boost_Joy_2" }, //TODO
         { InputCommand.BottomPlayerCrouch, "Crouch_Joy_2" }
     };
 

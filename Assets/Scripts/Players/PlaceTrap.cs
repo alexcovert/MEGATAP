@@ -16,11 +16,25 @@ public class PlaceTrap : MonoBehaviour {
     [Header("Design Values -------------")]
     [SerializeField] private int gridSize;
 
+    [Header("Percentage is X/100 currently.")]
+    [SerializeField] private int CommonRarityChance = 50;
+    [SerializeField] private int UncommonRarityChance = 35;
+    [SerializeField] private int RareRarityChance = 15;
+
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
 
-    [SerializeField] private GameObject[] trapButtons;
-    [SerializeField] private TrapBase[] trapPrefabs;
+    // [SerializeField] private GameObject[] trapButtons;
+     //[SerializeField] private TrapBase[] trapPrefabs;
+
+    [SerializeField] private GameObject[] CommonTrapButtons;
+    [SerializeField] private GameObject[] UncommonTrapButtons;
+    [SerializeField] private GameObject[] RareTrapButtons;
+
+    [SerializeField] private TrapBase[] CommonTrapPrefabs;
+    [SerializeField] private TrapBase[] UncommonTrapPrefabs;
+    [SerializeField] private TrapBase[] RareTrapPrefabs;
+
     [SerializeField] private GameObject trapQueue;
 
     [SerializeField] private Image controllerCursor;
@@ -90,6 +104,7 @@ public class PlaceTrap : MonoBehaviour {
         if (p2Controller)
         {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
+            queue[0].gameObject.GetComponent<Button>().Select();
         }
     }
 	
@@ -97,7 +112,6 @@ public class PlaceTrap : MonoBehaviour {
 	void Update () {
         //Move ghost with cursor
         MoveGhost();
-
         //Get controller select
         p2Controller = checkControllers.GetTopPlayerControllerState();
         if (p2Controller && !pause.GameIsPaused)
@@ -126,6 +140,13 @@ public class PlaceTrap : MonoBehaviour {
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(0, 130);
         }
+
+        //Cancel trap
+        if (Input.GetMouseButtonDown(1) && ghostTrap != null && !checkControllers.topPlayersController)
+        {
+            DestroyGhost();
+        }
+
     }
 
     //Returns cursor position on tower as a grid location rather than free-floating
@@ -313,50 +334,59 @@ public class PlaceTrap : MonoBehaviour {
     }
     private void SetGhost()
     {
-        if(trap != null)
+        if (active)
         {
-            ghostTrap = trap.InstantiateTrap(Vector3.zero);
-            placementSquares = ghostTrap.GetComponentInChildren<Canvas>().gameObject.GetComponentsInChildren<SpriteRenderer>();
-        }
-        
-        
-        Destroy(ghostTrap.GetComponent<Collider>());
-        
-        //Delete spikes script so animation doesn't play
-        if(ghostTrap.GetComponentInChildren<Spikes>() != null)
-        {
-            Destroy(ghostTrap.GetComponent<Spikes>());
-        }
-        //Make half transparent------------------------------------------------
-        //Check for both mesh renderer and skinned mesh renderers
-        MeshRenderer[] mrs = ghostTrap.GetComponentsInChildren<MeshRenderer>();
-        SkinnedMeshRenderer[] smrs = ghostTrap.GetComponentsInChildren<SkinnedMeshRenderer>();
-        //each mr can also have multiple materials
-        List<Material> mats = new List<Material>();
-
-        foreach (MeshRenderer mr in mrs)
-        {
-            mr.GetMaterials(mats);
-            foreach(Material mat in mats)
+            if (trap != null)
             {
-                Color color = mat.color;
-                color.a = 0.5f;
-                mat.color = color;
+                ghostTrap = trap.InstantiateTrap(Vector3.zero);
+                placementSquares = ghostTrap.GetComponentInChildren<Canvas>().gameObject.GetComponentsInChildren<SpriteRenderer>();
             }
-        }
 
-        foreach (SkinnedMeshRenderer smr in smrs)
-        {
-            smr.GetMaterials(mats);
-            foreach (Material mat in mats)
+
+            Destroy(ghostTrap.GetComponent<Collider>());
+
+            //Delete spikes script so animation doesn't play
+            if (ghostTrap.GetComponentInChildren<Spikes>() != null)
             {
-                Color color = mat.color;
-                color.a = 0.5f;
-                mat.color = color;
+                Destroy(ghostTrap.GetComponent<Spikes>());
             }
-        }
-        ghostTrap.GetComponent<TrapBase>().enabled = false;
+            //Delete projectile shooter so it doesn't shoot
+            if (ghostTrap.GetComponentInChildren<ProjectileShooter>() != null)
+            {
+                Destroy(ghostTrap.GetComponentInChildren<ProjectileShooter>());
+                Destroy(ghostTrap.GetComponentInChildren<Animator>());
+            }
 
+            //Make half transparent------------------------------------------------
+            //Check for both mesh renderer and skinned mesh renderers
+            MeshRenderer[] mrs = ghostTrap.GetComponentsInChildren<MeshRenderer>();
+            SkinnedMeshRenderer[] smrs = ghostTrap.GetComponentsInChildren<SkinnedMeshRenderer>();
+            //each mr can also have multiple materials
+            List<Material> mats = new List<Material>();
+
+            foreach (MeshRenderer mr in mrs)
+            {
+                mr.GetMaterials(mats);
+                foreach (Material mat in mats)
+                {
+                    Color color = mat.color;
+                    color.a = 0.5f;
+                    mat.color = color;
+                }
+            }
+
+            foreach (SkinnedMeshRenderer smr in smrs)
+            {
+                smr.GetMaterials(mats);
+                foreach (Material mat in mats)
+                {
+                    Color color = mat.color;
+                    color.a = 0.5f;
+                    mat.color = color;
+                }
+            }
+            ghostTrap.GetComponent<TrapBase>().enabled = false;
+        }
     }
 
     private void MoveGhost()
@@ -540,9 +570,32 @@ public class PlaceTrap : MonoBehaviour {
     }
 
     //Called from trap button / CallClick script
-    public void OnClickTrap(int trapNum)
+    public void OnClickTrapCommon(int trapNum)
     {
-        trap = trapPrefabs[trapNum];
+        trap = CommonTrapPrefabs[trapNum];
+
+        trapRot = 0;
+        StartCoroutine(EnableInput());
+        DestroyGhost();
+        GetComponent<CastSpell>().DestroyTarget();
+        SetGhost();
+    }
+
+    public void OnClickTrapUncommon(int trapNum)
+    {
+        trap = UncommonTrapPrefabs[trapNum];
+
+        trapRot = 0;
+        StartCoroutine(EnableInput());
+        DestroyGhost();
+        GetComponent<CastSpell>().DestroyTarget();
+        SetGhost();
+    }
+
+    public void OnClickTrapRare(int trapNum)
+    {
+        trap = RareTrapPrefabs[trapNum];
+
         trapRot = 0;
         StartCoroutine(EnableInput());
         DestroyGhost();
@@ -577,18 +630,59 @@ public class PlaceTrap : MonoBehaviour {
     private void CreateTrapQueue()
     {
         trapRot = 0;
+        active = true;
         for(int i = 0; i < queueSize; i++)
         {
-            int random = Random.Range(0, trapButtons.Length);
-            GameObject newTrap = Instantiate(trapButtons[random], new Vector3 (-230f + 40f*i, -30, 0), Quaternion.identity) as GameObject;
-            newTrap.transform.SetParent(trapQueue.transform, false);
+           int TrapChance = Random.Range(1, 100);
+           int randomIndex;
+           GameObject newTrap;
 
-            //Add click listeners for all trap buttons
-            newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrap(random));
-            newTrap.GetComponent<ButtonIndex>().ButtonIndexing(i);
-            newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+            if (TrapChance <= CommonRarityChance)
+            {
+                randomIndex = Random.Range(0, CommonTrapButtons.Length);
+                newTrap = Instantiate(CommonTrapButtons[randomIndex], new Vector3(-230f + 40f * i, -30, 0), Quaternion.identity) as GameObject;
 
-            queue.Add(newTrap);
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapCommon(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+            }
+            else if (TrapChance > CommonRarityChance && TrapChance < (100 - RareRarityChance))
+            {
+                randomIndex = Random.Range(0, UncommonTrapButtons.Length);
+                newTrap = Instantiate(UncommonTrapButtons[randomIndex], new Vector3(-230f + 40f * i, -30, 0), Quaternion.identity) as GameObject;
+
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapUncommon(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+            }
+            else if (TrapChance >= (CommonRarityChance + UncommonRarityChance))
+            {
+                randomIndex = Random.Range(0, RareTrapButtons.Length);
+                newTrap = Instantiate(RareTrapButtons[randomIndex], new Vector3(-230f + 40f * i, -30, 0), Quaternion.identity) as GameObject;
+
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapRare(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+            }
+            else
+            {
+                Debug.Log("Error. You weren't supposed to reach here.");
+            }
 
             if (active == false)
             {
@@ -611,6 +705,23 @@ public class PlaceTrap : MonoBehaviour {
     {
         //queue[queueIndex].SetActive(false);
         queue[queueIndex].GetComponent<Button>().interactable = false;
+
+        bool allUsed = true;
+        for (int i = 0; i < queue.Count; i++)
+        {
+            if (queue[i].GetComponent<Button>().interactable)
+            {
+                allUsed = false;
+            }
+        }
+
+        if(allUsed)
+        {
+            active = false;
+            SetSelectedButton();
+
+            DestroyGhost();
+        }
     }
 
     //Set new selected button if the controller is being used.
@@ -657,6 +768,13 @@ public class PlaceTrap : MonoBehaviour {
                     }
                 }
 
+                if(!buttonSet)
+                {
+                    Debug.Log("DOne");
+                    DestroyGhost();
+                    eventSystem.SetSelectedGameObject(null);
+                }
+
             }
         }
     }
@@ -669,6 +787,10 @@ public class PlaceTrap : MonoBehaviour {
             atTop = true;
         }
         return atTop;
+    }
+    public int GetNumRotated()
+    {
+        return numTimesRotated;
     }
 }
 

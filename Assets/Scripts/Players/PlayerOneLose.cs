@@ -3,33 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerOneLose : MonoBehaviour {
-    private bool lose;
+    public bool Lose { get; private set; }
     private CameraOneRotator cam;
     [SerializeField] MoveVines vines;
 
 
 
     private void Start () {
-        lose = false;
+        Lose = false;
         cam = GetComponent<CameraOneRotator>();
 	}
 
-	private void Update () {
-
-    }
 
     void OnTriggerEnter(Collider other)
     {
         //check collision with Rising walls that are tagged with "rise"
-        if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor())
+        if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started)
         {
-            lose = true;
-            GameOver();
+            Lose = true;
+            Initiate.Fade("GameOver", Color.black, 1);
         }
-    }
-
-    public bool GameOver()
-    {
-        return lose;
     }
 }

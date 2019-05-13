@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class BeginGo : MonoBehaviour {
-
+    public bool CountdownFinished { get; private set; }
     [SerializeField] private GameObject canvas;
     [SerializeField] private Camera camBot;
     [SerializeField] private Camera camTop;
     [SerializeField] private Camera ZoomCam;
-    //[SerializeField] private GameObject map;
     [SerializeField] GameObject playerTwo;
     [SerializeField] GameObject playerOne;
-    [SerializeField] private GameObject countdown;
     [SerializeField] private GameObject countdownCanvas;
     [SerializeField] EventSystem es;
-    [SerializeField] float CountdownTime = 4;
+    [SerializeField] float countdownTime = 4;
+    private bool once;
 
     private PlaceTrap pt;
     private CastSpell cs;
@@ -25,7 +25,6 @@ public class BeginGo : MonoBehaviour {
     [SerializeField] private PauseMenu pause;
 
     private Vector3 TargetPosition;
-    private bool once = false;
 
     [SerializeField] private float moveInSpeed = 0.1f;
 
@@ -38,11 +37,8 @@ public class BeginGo : MonoBehaviour {
         TargetPosition = new Vector3(camTop.transform.position.x, 21, camTop.transform.position.z + 5);
 
         canvas.SetActive(false);
-
-        countdown.SetActive(false);
         
         camBot.enabled = false;
-        //new Rect(Screen.width - xPos, Screen.height - yPos, width, height);
         camTop.enabled = false;
 
         es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu";
@@ -51,6 +47,7 @@ public class BeginGo : MonoBehaviour {
         playerMov.InputEnabled = false;
         pause.GameIsPaused = true;
 
+        CountdownFinished = false;
     }
 
     private void Update()
@@ -58,12 +55,7 @@ public class BeginGo : MonoBehaviour {
         ZoomCam.transform.position = Vector3.Lerp(ZoomCam.transform.position, TargetPosition , moveInSpeed);
         if (ZoomCam.transform.position.x <= camTop.transform.position.x && ZoomCam.transform.position.y <= 21 + 10 && ZoomCam.transform.position.z <= camTop.transform.position.z + 10 && once == false)
         {
-            if (countdownCanvas.transform.childCount == 0)
-            {
-                activeCountdown = Instantiate(countdown, new Vector3(0, 30, -50), Quaternion.identity);
-                activeCountdown.transform.parent = countdownCanvas.transform;
-                activeCountdown.transform.localScale = new Vector3(50, 50, 1);
-            }
+
             StartCoroutine(StartDelay());
         }
     }
@@ -71,12 +63,28 @@ public class BeginGo : MonoBehaviour {
     private IEnumerator StartDelay()
     {
         once = true;
-        countdownCanvas.SetActive(true);
-        activeCountdown.SetActive(true);
 
-        yield return new WaitForSeconds(CountdownTime);
-        Destroy(activeCountdown);
-        countdownCanvas.SetActive(false);
+        float timePerNum = countdownTime / 3;
+        GameObject count = Instantiate(countdownCanvas);
+        TextMeshProUGUI text = count.GetComponentInChildren<TextMeshProUGUI>();
+
+
+
+        count.SetActive(true);
+
+        text.text = "3";
+        yield return new WaitForSeconds(timePerNum);
+        text.text = "2";
+        yield return new WaitForSeconds(timePerNum);
+        text.text = "1";
+        yield return new WaitForSeconds(timePerNum);
+        text.text = "Go!";
+        yield return new WaitForSeconds(1);
+
+        count.SetActive(false);
+
+        es.GetComponent<StandaloneInputModule>().submitButton = "Nothing";
+
 
         canvas.SetActive(true);
 
@@ -88,5 +96,10 @@ public class BeginGo : MonoBehaviour {
         cs.InputEnabled = true;
         playerMov.InputEnabled = true;
         pause.GameIsPaused = false;
+        CountdownFinished = true;
+
+
+        //Show
+        ZoomCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
     }
 }

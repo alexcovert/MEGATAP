@@ -11,7 +11,7 @@ public class CheckControllers : MonoBehaviour {
     private bool controllerTwo;
     //whether the TOP and BOTTOM players controllers are PLUGGED IN
     //thise will not necessarily correspond to controllerOne/controllerTwo if the character selection decides differently
-    private bool topPlayersController;
+    public bool topPlayersController;
     private bool bottomPlayersController;
 
     private Canvas canvas;
@@ -23,6 +23,8 @@ public class CheckControllers : MonoBehaviour {
 
     string scene;
     private InputManager inputManager;
+    private PauseMenu pause;
+
 
     private void Awake()
     {
@@ -48,39 +50,41 @@ public class CheckControllers : MonoBehaviour {
 
     private void Update()
     {
-        CheckConnected();
-
-        if (topPlayersController)
+        if(Time.timeScale != 0)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            if (canvas != null && eventVars != null)
+            CheckConnected();
+            if (topPlayersController)
             {
-                canvas.GetComponent<GraphicRaycaster>().enabled = true;
-                foreach (SetEventTriggerVars v in eventVars)
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                if (canvas != null && eventVars != null)
                 {
-                    v.enabled = true;
-                }
-                foreach (SetPointerClickEvents p in clickEvents)
-                {
-                    p.enabled = true;
+                    canvas.GetComponent<GraphicRaycaster>().enabled = true;
+                    foreach (SetEventTriggerVars v in eventVars)
+                    {
+                        v.enabled = true;
+                    }
+                    foreach (SetPointerClickEvents p in clickEvents)
+                    {
+                        p.enabled = true;
+                    }
                 }
             }
-        }
-        else
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            if (canvas != null && eventVars != null && topPlayersController)
+            else if ((!inputManager.P1IsTop && !controllerOne) || !topPlayersController)
             {
-                canvas.GetComponent<GraphicRaycaster>().enabled = false;
-                foreach (SetEventTriggerVars v in eventVars)
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                if (canvas != null && eventVars != null && topPlayersController)
                 {
-                    v.enabled = false;
-                }
-                foreach (SetPointerClickEvents p in clickEvents)
-                {
-                    p.enabled = false;
+                    canvas.GetComponent<GraphicRaycaster>().enabled = false;
+                    foreach (SetEventTriggerVars v in eventVars)
+                    {
+                        v.enabled = false;
+                    }
+                    foreach (SetPointerClickEvents p in clickEvents)
+                    {
+                        p.enabled = false;
+                    }
                 }
             }
         }
@@ -89,7 +93,8 @@ public class CheckControllers : MonoBehaviour {
     private void CheckConnected()
     {
         joysticks = Input.GetJoystickNames();
-        if (joysticks.Length > 0)
+
+        if (joysticks.Length == 2)
         {
             for (int i = 0; i < joysticks.Length; i++)
             {
@@ -150,6 +155,20 @@ public class CheckControllers : MonoBehaviour {
 
                     }
                 }
+            }
+        }
+        else if(joysticks.Length == 1)
+        {
+            controllerOne = false;
+            controllerTwo = true;
+            if (inputManager.P1IsTop)
+            {
+                bottomPlayersController = false;
+            }
+            else // if P1 is bottom / p2 is top
+            {
+                bottomPlayersController = true;
+                //topPlayersController = true;
             }
         }
         else

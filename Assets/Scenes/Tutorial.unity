@@ -708,12 +708,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4285895652612146, guid: 26dfc7ca8379bc24185ef28fb6acd97d,
     type: 2}
   m_PrefabInternal: {fileID: 1500884541}
---- !u!114 &378012458 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114057293446807506, guid: c130ae0761b27334089036b39347c937,
-    type: 2}
-  m_PrefabInternal: {fileID: 2083158550}
-  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &382057357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,9 +1349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 856821951}
   - component: {fileID: 856821950}
-  - component: {fileID: 856821949}
   - component: {fileID: 856821948}
-  - component: {fileID: 856821947}
   - component: {fileID: 856821946}
   m_Layer: 0
   m_Name: GameManager
@@ -1461,20 +1453,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &856821947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114581610255898534, guid: 1e68709a28758204e8007f713ca729b2,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 856821945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66f93ba2ae77ace4388bbc5723b2216e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 500
-  TimerText: {fileID: 1967768375}
 --- !u!114 &856821948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,21 +1473,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   controlsCanvas: {fileID: 0}
+  topController: {fileID: 0}
+  bottomController: {fileID: 0}
+  topKeyboard: {fileID: 0}
+  bottomKeyboard: {fileID: 0}
   resumeButton: {fileID: 0}
   playerTwo: {fileID: 0}
   playerOne: {fileID: 0}
   es: {fileID: 0}
---- !u!114 &856821949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 856821945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 998996880c9de0047a107e2b37bec39b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &856821950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4832,12 +4803,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1922131343}
   m_CullTransparentMesh: 0
---- !u!114 &1967768375 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114959565977193170, guid: c130ae0761b27334089036b39347c937,
-    type: 2}
-  m_PrefabInternal: {fileID: 2083158550}
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1976984575
 GameObject:
   m_ObjectHideFlags: 0
@@ -5235,7 +5200,7 @@ Prefab:
         type: 2}
       propertyPath: gridToggle
       value: 
-      objectReference: {fileID: 378012458}
+      objectReference: {fileID: 0}
     - target: {fileID: 114956843716667498, guid: 295df6c694235764eac79c393ed826dc,
         type: 2}
       propertyPath: gridUI

@@ -136,12 +136,10 @@ public class TrapBase : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj, float stunDuration, GameObject trap = null)
     {
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(0);
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         yield return new WaitForSeconds(stunDuration);
 
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-        obj.GetComponent<PlayerOneMovement>().SetSpeed(obj.GetComponent<PlayerOneMovement>().GetConstantSpeed());
 
         once = false;
         if (trap != null)
@@ -155,7 +153,11 @@ public class TrapBase : MonoBehaviour {
     public void Slow(GameObject obj, float slowPercent, float jumpReductionPercent)
     {
         obj.gameObject.GetComponent<PlayerOneMovement>().SetJumpHeight(obj.gameObject.GetComponent<PlayerOneMovement>().GetJumpHeight() * jumpReductionPercent);
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(obj.gameObject.GetComponent<PlayerOneMovement>().GetSpeed() * slowPercent);
+        float GetPenalty = obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
+        if (slowPercent <= GetPenalty)
+        {
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
+        }
     }
 
     // apply knockback to inputted

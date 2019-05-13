@@ -290,17 +290,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 2
+  CommonRarityChance: 45
+  UncommonRarityChance: 35
+  RareRarityChance: 20
   tower: {fileID: 0}
-  trapButtons:
-  - {fileID: 1148860999998904, guid: ad3241910d1b2f54db2ac80af833dd05, type: 2}
+  CommonTrapButtons:
   - {fileID: 1110785462397992, guid: beb48e7d73b8a5949836542f424745f8, type: 2}
+  UncommonTrapButtons:
   - {fileID: 1881833347296892, guid: abd8a9fa5d7d7f24096cab103761e9a2, type: 2}
+  - {fileID: 1148860999998904, guid: ad3241910d1b2f54db2ac80af833dd05, type: 2}
+  RareTrapButtons:
   - {fileID: 1342018372598374, guid: 208c22d5edce409439fa7b3eb12a8ab6, type: 2}
-  - {fileID: 1724981058369430, guid: bcd2e4d2a1cf197439a28a522e490486, type: 2}
-  trapPrefabs:
-  - {fileID: 114374902745233234, guid: 978902421daf7ca4eb1ed6dc15ac1645, type: 2}
+  CommonTrapPrefabs:
   - {fileID: 114603356562152718, guid: 14716dac1aa2c7a488003f7bba1968d3, type: 2}
+  UncommonTrapPrefabs:
   - {fileID: 114426541480001402, guid: 7b86cd6111e958843812033b42c97d80, type: 2}
+  - {fileID: 114374902745233234, guid: 978902421daf7ca4eb1ed6dc15ac1645, type: 2}
+  RareTrapPrefabs:
   - {fileID: 114173747208991380, guid: b34de131824cbe447931d0a2d1e0696b, type: 2}
   - {fileID: 114893840394271494, guid: 890757bba411d2a49a09d335cf309d28, type: 2}
   trapQueue: {fileID: 0}
@@ -326,21 +332,28 @@ MonoBehaviour:
   queueSize: 3
   verticalSpellSpawnHeight: 100
   CooldownReductionPercentage: 0.25
+  CommonRarityChance: 50
+  UncommonRarityChance: 35
+  RareRarityChance: 15
   tower: {fileID: 0}
-  spellButtons:
+  CommonSpellButtons:
   - {fileID: 1113329559578948, guid: 9caafb2bc87b57a46a16da291b5e206d, type: 2}
-  - {fileID: 1613936015125488, guid: 4a067145d92a94685b6e22ef6edc3f4b, type: 2}
   - {fileID: 1113329559578948, guid: 4fcae1fa39201f24cb3eb5a005187de5, type: 2}
-  - {fileID: 1113329559578948, guid: 6a89e440e2925b14c9bb31d09e4d2c2f, type: 2}
+  UncommonSpellButtons:
   - {fileID: 1113329559578948, guid: d5688845a27f247f8856e27dbb5cf2e8, type: 2}
   - {fileID: 1113329559578948, guid: a515d837040864ce486d259b379aca39, type: 2}
-  spellPrefabs:
+  RareSpellButtons:
+  - {fileID: 1113329559578948, guid: 6a89e440e2925b14c9bb31d09e4d2c2f, type: 2}
+  - {fileID: 1613936015125488, guid: 4a067145d92a94685b6e22ef6edc3f4b, type: 2}
+  CommonSpellPrefabs:
   - {fileID: 114692542700711350, guid: 1be1b6caab1fd324698fced99786f928, type: 2}
-  - {fileID: 114692542700711350, guid: 7a8dfb4bd9fe5404c9de268e4b6a114f, type: 2}
   - {fileID: 114666726713938728, guid: a1877a9fcd9b1044b903f7eb78d4662f, type: 2}
-  - {fileID: 114692542700711350, guid: 4ccad5a5f67c07f48b38c70dbdfb34cb, type: 2}
+  UncommonSpellPrefabs:
   - {fileID: 114692542700711350, guid: 80156f25595d343399a190b204285c71, type: 2}
   - {fileID: 114666726713938728, guid: b22aaa237e58e459b8de7de4cc8a9106, type: 2}
+  RareSpellPrefabs:
+  - {fileID: 114692542700711350, guid: 4ccad5a5f67c07f48b38c70dbdfb34cb, type: 2}
+  - {fileID: 114692542700711350, guid: 7a8dfb4bd9fe5404c9de268e4b6a114f, type: 2}
   spellQueue: {fileID: 0}
   controllerCursor: {fileID: 0}
   eventSystem: {fileID: 0}

@@ -9,7 +9,7 @@ public class TrapOverlap : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        if ((other.gameObject.layer == LayerMask.NameToLayer("TrapOverlap") || other.tag == "Pickup" || other.tag == "Platform" || other.tag == "Trigger4") && !GameObject.Equals(this.transform.parent, other.transform.parent))
+        if ((other.gameObject.layer == LayerMask.NameToLayer("TrapOverlap") || other.tag == "PickUp" || other.tag == "Platform" || other.tag == "Trigger4") && !GameObject.Equals(this.transform.parent, other.transform.parent))
         {
             nearbyTrap = true;
         }

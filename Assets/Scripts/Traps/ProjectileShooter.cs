@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileShooter : MonoBehaviour {
-    [SerializeField] private float timeToShoot = 4;
-    [SerializeField] private int FaceNumberIfPrePlaced;
+    public int FaceNumberIfPrePlaced;
+    public int FaceNumber;
+    public int FloorNumber;
 
-    private TrapBase trapBase;
-    private CameraTwoRotator cam;
-    private Animator animator;
-	GameObject prefab;
-	private float timer = 0.0f;
+
+    public CameraTwoRotator cam2;
+
+	  GameObject prefab;
   	GameObject projectile;
     private Rigidbody rb;
     private CapsuleCollider col;
@@ -19,84 +19,93 @@ public class ProjectileShooter : MonoBehaviour {
     private Quaternion projectileRotation;
 	//private bool ghost = true;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		prefab = Resources.Load("projectile") as GameObject;
-		trapBase = GetComponent<TrapBase>();
-        cam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
-        animator = GetComponentInChildren<Animator>();
+        cam2 = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
 
-        if (!GetComponentInChildren<CheckMultipleBases>().Placed)
+        if (!transform.parent.GetComponentInChildren<CheckMultipleBases>().Placed)
         {
-            switch (cam.GetState())
+            switch (cam2.GetState())
             {
                 case 1:
-                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 0, 0);
                     projectileRotation = Quaternion.identity;
                     velocity = new Vector3(-20, 0, 0);
+                    FaceNumber = 1;
                     break;
                 case 2:
-                    transform.eulerAngles = new Vector3(0, 270, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 270, 0);
                     projectileRotation = Quaternion.Euler(0, -90, 0);
                     velocity = new Vector3(0, 0, -20);
+                    FaceNumber = 2;
                     break;
                 case 3:
-                    transform.eulerAngles = new Vector3(0, 180, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 180, 0);
                     projectileRotation = Quaternion.Euler(0, -180, 0);
                     velocity = new Vector3(20, 0, 0);
+                    FaceNumber = 3;
                     break;
                 case 4:
-                    transform.eulerAngles = new Vector3(0, 90, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 90, 0);
                     projectileRotation = Quaternion.Euler(0, -270, 0);
                     velocity = new Vector3(0, 0, 20);
+                    FaceNumber = 4;
                     break;
             }
+
+            FloorNumber = cam2.GetFloor();
         }
         else
         {
             switch (FaceNumberIfPrePlaced)
             {
                 case 1:
-                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 0, 0);
                     projectileRotation = Quaternion.identity;
                     velocity = new Vector3(-20, 0, 0);
+                    FloorNumber = 1;
+                    FaceNumber = 1;
                     break;
                 case 2:
-                    transform.eulerAngles = new Vector3(0, 270, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 270, 0);
                     projectileRotation = Quaternion.Euler(0, -90, 0);
                     velocity = new Vector3(0, 0, -20);
+                    FloorNumber = 1;
+                    FaceNumber = 2;
                     break;
                 case 3:
-                    transform.eulerAngles = new Vector3(0, 180, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 180, 0);
                     projectileRotation = Quaternion.Euler(0, -180, 0);
                     velocity = new Vector3(20, 0, 0);
+                    FloorNumber = 1;
+                    FaceNumber = 3;
                     break;
                 case 4:
-                    transform.eulerAngles = new Vector3(0, 90, 0);
+                    transform.parent.eulerAngles = new Vector3(0, 90, 0);
                     projectileRotation = Quaternion.Euler(0, -270, 0);
                     velocity = new Vector3(0, 0, 20);
+                    FloorNumber = 1;
+                    FaceNumber = 4;
                     break;
             }
         }
+
+        //Debug.Log(FloorNumber + ", " + FaceNumber, this);
     }
 
-	// Update is called once per frame
-	void Update () {
-		timer += Time.deltaTime;
-		if(trapBase.enabled == true){
-			if(timer > timeToShoot){
-                animator.SetTrigger("Fire");
-				projectile = Instantiate(prefab);
-                col = projectile.GetComponentInChildren<CapsuleCollider>();
-                col.enabled = false;
-                
-				projectile.transform.position = transform.position + new Vector3 (0, 0.5f, 0);
-                projectile.transform.rotation = projectileRotation;
+    private void LoadArrow()
+    {
+        projectile = Instantiate(prefab);
 
-                rb = projectile.GetComponentInChildren<Rigidbody>();
-                rb.velocity = velocity;
-                col.enabled = true;
-				timer = timer - timeToShoot;
-			}
-		}
-	}
+        projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
+        projectile.transform.rotation = projectileRotation;
+
+        rb = projectile.GetComponent<Rigidbody>();
+        
+    }
+
+    private void Projectile()
+    {
+        if(rb != null) rb.velocity = velocity;
+    }
 }

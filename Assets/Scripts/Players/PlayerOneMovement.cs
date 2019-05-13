@@ -20,13 +20,27 @@ public class PlayerOneMovement : MonoBehaviour {
     private bool landing;
     private bool wallJumping;
     private bool cantStandUp;
-    private bool slowed = false;
+    //private bool slowed = false;
+    private bool spedUp = false;
     public bool InputEnabled = true;
+
+    //Default Movement Penalties
+    private float SlowPenaltyTier1 = 1;
+    private float CrouchPenalty = 1;
+    private float StunPenalty = 1;
+    private float SuperSpeed = 1;
+
+    //Movement Penalty Multiplier
+    private float crouchSlow = 0.5f;
+
+    //Pickup stuff
+    [SerializeField] private Image[] pickupImages;
+    [SerializeField] private Sprite pickupEmpty;
 
     //Control if player can have input
     private bool move = true;
 
-    private float speed; //Change this when crouching, etc.; set it back to moveSpeed when done
+    private float speed;
     private float jumpH; // change this when in sap etc.; set it back to jumpHeight when done
 
     //camera
@@ -36,12 +50,14 @@ public class PlayerOneMovement : MonoBehaviour {
 
     [SerializeField] private GameObject gameManager;
 
+    // sound 
+    [SerializeField] private AudioClip speedBoostSFX;
+    private AudioSource audioSource;
+
     private float inputAxis; //used to get input axis from controller/keyboard
     private InputManager inputManager;
 
     private Rigidbody rb;
-
-
 
     private PauseMenu pause;
     private Animator animator;
@@ -52,6 +68,7 @@ public class PlayerOneMovement : MonoBehaviour {
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start() {
@@ -64,8 +81,9 @@ public class PlayerOneMovement : MonoBehaviour {
         sphere = GetComponent<SphereCollider>();
         stun.enabled = false;
         crouching = false;
+        animator.SetBool("Grounded", grounded);
 
-        speed = moveSpeed;
+        speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
         jumpH = jumpHeight;
 
         move = true;
@@ -107,22 +125,17 @@ public class PlayerOneMovement : MonoBehaviour {
             }
             if (inputManager.GetButtonUp(InputCommand.BottomPlayerCrouch) || (!inputManager.GetButton(InputCommand.BottomPlayerCrouch) && cantStandUp == false))
             {
-                if(cantStandUp == true)
+                if (cantStandUp == true)
                 {
                     crouching = true;
-                    if(slowed == false)
-                    {
-                        speed = moveSpeed / 2;
-                    }
+                    CrouchPenalty = crouchSlow;
                 }
                 if (cantStandUp == false)
                 {
                     crouching = false;
-                    if (slowed == false)
-                    {
-                        speed = moveSpeed;
-                    }
+                    CrouchPenalty = 1;
                 }
+                
             }
             // Animation parameters update
             animator.SetBool("Jumping", jumping);
@@ -227,10 +240,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
         if (crouching == true)
         {
-            if (slowed == false)
-            {
-                speed = moveSpeed / 2;
-            }
+            CrouchPenalty = crouchSlow;
             col.height = 2.25f;
             col.center = new Vector3(0, 1.1f, 0);
             sphere.center = new Vector3(0, 1f, 0); 
@@ -245,10 +255,25 @@ public class PlayerOneMovement : MonoBehaviour {
         cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
 
         if(!pause.GameIsPaused) Move();
-        animator.SetBool("Landing", landing);
-        animator.SetBool("Grounded", grounded);
-        animator.SetBool("Crouched", crouching);
-        animator.SetFloat("YVelocity", rb.velocity.y);
+
+        // initiate speed up
+        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost))
+        {
+            spedUp = true;
+            audioSource.PlayOneShot(speedBoostSFX);
+            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration));
+        }
+        //New Speed Function
+        speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
+
+        if(move == false)
+        {
+            StunPenalty = 0;
+        }
+        else
+        {
+            StunPenalty = 1;
+        }
     }
 
 
@@ -265,10 +290,7 @@ public class PlayerOneMovement : MonoBehaviour {
             }
             jumping = false;
             landing = false;
-            if (slowed == false)
-            {
-                speed = moveSpeed;
-            }
+            speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
         }
         else if (crouching)
         {
@@ -325,6 +347,10 @@ public class PlayerOneMovement : MonoBehaviour {
             }
             //NOT WALL JUMPING
         }
+        animator.SetBool("Landing", landing);
+        animator.SetBool("Grounded", grounded);
+        animator.SetBool("Crouched", crouching);
+        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
     private IEnumerator DisableWallJump()
@@ -339,6 +365,27 @@ public class PlayerOneMovement : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.5f);
         InputEnabled = true;
+    }
+
+    public IEnumerator SpeedBoost(float speedUpMultiplier, float speedUpDuration)
+    {
+        SuperSpeed = speedUpMultiplier;
+
+        float timePerPickup = speedUpDuration / 3;
+
+        yield return new WaitForSeconds(timePerPickup);
+        pickupImages[2].sprite = pickupEmpty;
+        pickupImages[2].rectTransform.sizeDelta = new Vector2(50, 40);
+        yield return new WaitForSeconds(timePerPickup);
+        pickupImages[1].sprite = pickupEmpty;
+        pickupImages[1].rectTransform.sizeDelta = new Vector2(50, 40);
+        yield return new WaitForSeconds(timePerPickup);
+        pickupImages[0].sprite = pickupEmpty;
+        pickupImages[0].rectTransform.sizeDelta = new Vector2(50, 40);
+
+        spedUp = false;
+        SuperSpeed = 1;
+        gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
 
     /////////////////////////////////////////////
@@ -364,9 +411,14 @@ public class PlayerOneMovement : MonoBehaviour {
         return speed;
     }
 
-    public void SetSpeed(float s)
+    public void SetSpedUp(bool s)
     {
-        speed = s;
+        spedUp = s;
+    }
+
+    public bool GetSpedUp()
+    {
+        return spedUp;
     }
 
     public float GetConstantSpeed()
@@ -394,10 +446,10 @@ public class PlayerOneMovement : MonoBehaviour {
         return inputAxis;
     }
 
-    public void IsSlowed(bool slow)
+    /*public void IsSlowed(bool slow)
     {
         slowed = slow;
-    }
+    }*/
 
     public bool IsCrouched()
     {
@@ -407,5 +459,16 @@ public class PlayerOneMovement : MonoBehaviour {
     public bool IsStunned()
     {
         return !move;
+    }
+
+    //Speed Penalties and Bonuses
+    public float GetSlowPenalty()
+    {
+        return SlowPenaltyTier1;
+    }
+    
+    public void SetSlowPenalty(float penalty)
+    {
+        SlowPenaltyTier1 = penalty;
     }
 }

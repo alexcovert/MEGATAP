@@ -12,13 +12,26 @@ public class GenerateFaceFromText
     // the name of the platform prefab you wish to use
     private static string horizontalPlatform = "HorizontalPlatform";
     private static string verticalPlatform = "VerticalPlatform";
+    private static string stairsPlatform = "Stairs";
 
-    [MenuItem("GameObject/Generate Face", false, 12)]
+    static DirectoryInfo dir;
+    static string state;
+
+    [MenuItem("GameObject/Generate Faces From Textfiles", false, 12)]
     private static void Create()
     {
         // Loops through full directory and generates prefabs by name
-        DirectoryInfo dir = new DirectoryInfo("Assets/TextLevels/");
+        state = "normal";
+        dir = new DirectoryInfo("Assets/TextLevels/");
         FileInfo[] info = dir.GetFiles("*.txt");
+        foreach (FileInfo f in info)
+        {
+            Load(f.Name);
+        }
+
+        state = "4th";
+        dir = new DirectoryInfo("Assets/TextLevels/4thFace");
+        info = dir.GetFiles("*.txt");
         foreach (FileInfo f in info)
         {
             Load(f.Name);
@@ -35,9 +48,18 @@ public class GenerateFaceFromText
         {
             string line;
             int lineNumber = 0; // the line we are on to get height correctly
-            // Create a new StreamReader, tell it which file to read and what encoding the file
-            // was saved as
-            StreamReader theReader = new StreamReader("Assets/TextLevels/" + file, Encoding.Default);
+                                // Create a new StreamReader, tell it which file to read and what encoding the file
+                                // was saved as
+
+            StreamReader theReader;
+            if (state == "normal")
+            {
+                theReader = new StreamReader("Assets/TextLevels/" + file, Encoding.Default);
+            } else
+            {
+                theReader = new StreamReader("Assets/TextLevels/4thFace/" + file, Encoding.Default);
+            }
+               
             using (theReader)
             {
                 // While there's lines left in the text file, do this:
@@ -82,6 +104,17 @@ public class GenerateFaceFromText
 
                                 transformList.Add(spawnedPlaceholder.transform);
                             }
+                            if (line[i].Equals('S'))
+                            {
+                                // load designated prefab, must be from proper folder
+                                Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Platforms/" + stairsPlatform + ".prefab", typeof(GameObject));
+                                GameObject spawnedPlatform = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                                spawnedPlatform.transform.position = new Vector3(i * 2, lineNumber * -2, 0);
+                                spawnedPlatform.transform.eulerAngles = new Vector3(-90, 180, 0);
+
+                                //store transform
+                                transformList.Add(spawnedPlatform.transform);
+                            }
                         }
 
                     }
@@ -108,7 +141,15 @@ public class GenerateFaceFromText
 
 
                 // create an empty prefab that will hold our new prefab soon
-                Object finalEmpty = PrefabUtility.CreateEmptyPrefab("Assets/Prefabs/Faces/" + file + ".prefab");
+                Object finalEmpty;
+                if(state == "normal")
+                {
+                    finalEmpty = PrefabUtility.CreateEmptyPrefab("Assets/Prefabs/Faces/" + file + ".prefab");
+                } else
+                {
+                    finalEmpty = PrefabUtility.CreateEmptyPrefab("Assets/Prefabs/Faces/4thFaces/" + file + ".prefab");
+                }
+                
                 // empty game object to attatch all of the platforms too 
                 GameObject finalFab = new GameObject();
                 foreach (Transform t in transformList)
@@ -118,8 +159,11 @@ public class GenerateFaceFromText
                 PrefabUtility.ReplacePrefab(finalFab.gameObject, finalEmpty, ReplacePrefabOptions.ConnectToPrefab);
                 UnityEngine.Object.DestroyImmediate(finalFab);
                 Debug.Log("Prefab " + file + ".prefab Created!");
+
                 return true;
+                
             }
+           
         }
         // If anything broke in the try block, we throw an exception with information
         // on what didn't work

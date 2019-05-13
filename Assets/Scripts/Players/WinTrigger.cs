@@ -4,23 +4,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WinTrigger : MonoBehaviour {
+    public bool Win { get; private set; }
 
-	// Use this for initialization
 	void Start () {
-		
+        Win = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            //SceneManager.LoadScene("VictoryScreen");
             Initiate.Fade("VictoryScreen", Color.black, 1);
+            Win = true;
         }
     }
 }

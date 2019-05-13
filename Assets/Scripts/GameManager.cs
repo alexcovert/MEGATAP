@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
-    //Game Over Status
-    [SerializeField] private PlayerOneLose lost;
-    private bool lose = false;
 
     private void Awake()
     {
@@ -20,16 +17,4 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene("Tutorial_Platforms", LoadSceneMode.Additive);
         }
     }
-
-    private void Update ()
-    {
-        //Game Over from timer
-        lose = lost.GameOver();
-        if(lose == true)
-        {
-            //SceneManager.LoadScene("GameOver");
-            Initiate.Fade("GameOver", Color.black, 1);
-        }
-
-	}
 }
