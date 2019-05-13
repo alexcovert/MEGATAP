@@ -274,6 +274,15 @@ public class PlayerOneMovement : MonoBehaviour {
         {
             StunPenalty = 1;
         }
+
+        //WallJump Check at feet
+        Debug.DrawRay(transform.position, transform.forward, Color.green);
+        //WallJump Check at knee
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
+        //WallJump Check at chest
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
+        //WallJump Check at nose/head
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
     }
 
 
@@ -291,6 +300,7 @@ public class PlayerOneMovement : MonoBehaviour {
             jumping = false;
             landing = false;
             speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
+            CheckLanding();
         }
         else if (crouching)
         {
@@ -303,26 +313,7 @@ public class PlayerOneMovement : MonoBehaviour {
         }
 
         if (!wallJumping) rb.velocity = movementVector;
-        else rb.velocity = wallJumpVector;
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, LayerMask.GetMask("Platform")) && grounded == false)
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * distanceFromGround, Color.yellow);
-            if (hit.distance <= distanceFromGround && jumping == false)
-            {
-                landing = true;
-            }
-            if (hit.distance > distanceFromGround)
-            {
-                landing = false;
-            }
-        }
-
-        if(grounded == true)
-        {
-            landing = true;
-        }
+        else rb.velocity = wallJumpVector;      
     }
 
 
@@ -334,7 +325,9 @@ public class PlayerOneMovement : MonoBehaviour {
             RaycastHit hit;
             RaycastHit downHit;
             bool raycastDown = Physics.Raycast(transform.position, -transform.up, out downHit, 1);
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f) && !raycastDown)
+            if ((Physics.Raycast(transform.position, transform.forward, out hit, 1.5f) || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f) || 
+                    Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, out hit, 1.5f) 
+                    || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f)) && !raycastDown)
             {
                 if (hit.transform.tag == "Platform" && inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded == false && move == true)
                 {
@@ -386,6 +379,23 @@ public class PlayerOneMovement : MonoBehaviour {
         spedUp = false;
         SuperSpeed = 1;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
+    }
+
+    private void CheckLanding()
+    {
+        while (landing == false)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, -transform.up, out hit, LayerMask.GetMask("Platform")) && grounded == false)
+            {
+                Debug.DrawRay(transform.position, -transform.up, Color.yellow);
+                if (hit.distance <= distanceFromGround && jumping == false)
+                {
+                    landing = true;
+                }
+            }
+        }
+        landing = false;
     }
 
     /////////////////////////////////////////////

@@ -1846,7 +1846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 573825152f644014eaa6302b43f5365f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: {fileID: 0}
+  vines: {fileID: 0}
 --- !u!114 &114614076012222384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1864,8 +1864,11 @@ MonoBehaviour:
   playerOneCam: {fileID: 0}
   cinemachineSpeccy: {fileID: 0}
   moveSpeed: 0.75
+  moveUpSlowMultiplier: 1.7
+  zoomOutAmount: 35
   playerModel: {fileID: 1428506183960842}
   vcamLock: {fileID: 0}
+  cameraTarget: {fileID: 1428506183960842}
   rotateTriggers:
   - {fileID: 0}
   - {fileID: 0}
@@ -1935,9 +1938,15 @@ MonoBehaviour:
   wallJumpDivider: 1.6
   wallJumpDirectionDivider: 0.75
   InputEnabled: 1
+  pickupImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pickupEmpty: {fileID: 21300000, guid: ece564ad1c3aa22429a5b4a98135c9bd, type: 3}
   cam: {fileID: 114614076012222384}
   distanceFromGround: 0.1
   gameManager: {fileID: 0}
+  speedBoostSFX: {fileID: 8300000, guid: e06853b6be043644f89a1ab20dc6cbe8, type: 3}
 --- !u!135 &135254525513457034
 SphereCollider:
   m_ObjectHideFlags: 1
