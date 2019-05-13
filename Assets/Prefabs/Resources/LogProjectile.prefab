@@ -112,7 +112,7 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1841610132472152}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -235,7 +235,9 @@ MonoBehaviour:
   knockBackValue: 75
   knockUpValue: 25
   stunDuration: 0.75
+  lifeTime: 2
   animationSpeed: 0
+  speedForKnockback: 5
 --- !u!114 &114832103473280570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,7 +258,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1529093763848754}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.0071
   m_Height: 0.035
   m_Direction: 1
