@@ -45,7 +45,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
     //camera
     [SerializeField] private CameraOneRotator cam;
-    [SerializeField] private float distanceFromGround = 2f;
+    //[SerializeField] private float distanceFromGround = 2f;
     private int camOneState = 1;
 
     [SerializeField] private GameObject gameManager;
@@ -62,8 +62,9 @@ public class PlayerOneMovement : MonoBehaviour {
     private PauseMenu pause;
     private Animator animator;
     private CapsuleCollider col;
+    private CapsuleCollider[] colArray;
     private ParticleSystemRenderer stun;
-    private SphereCollider sphere;
+    private SphereCollider[] sphere;
 
     private void Awake()
     {
@@ -76,9 +77,10 @@ public class PlayerOneMovement : MonoBehaviour {
         animator = GetComponent<Animator>();
         //checkControllers = gameManager.GetComponent<CheckControllers>();
         col = GetComponent<CapsuleCollider>();
+        colArray = GetComponents<CapsuleCollider>();
         stun = GetComponentInChildren<ParticleSystemRenderer>();
         pause = gameManager.GetComponent<PauseMenu>();
-        sphere = GetComponent<SphereCollider>();
+        sphere = GetComponents<SphereCollider>();
         stun.enabled = false;
         crouching = false;
         animator.SetBool("Grounded", grounded);
@@ -243,13 +245,17 @@ public class PlayerOneMovement : MonoBehaviour {
             CrouchPenalty = crouchSlow;
             col.height = 2.25f;
             col.center = new Vector3(0, 1.1f, 0);
-            sphere.center = new Vector3(0, 1f, 0); 
+            colArray[1].height = 2f;
+            colArray[1].center = new Vector3(0, 1f, 0.21f);
+            sphere[0].center = new Vector3(0, 1f, 0); 
         }
 
         if(crouching == false || grounded == false) {
             col.height = 4.5f;
             col.center = new Vector3(0, 2.2f, 0);
-            sphere.center = new Vector3(0, 3f, 0);
+            colArray[1].height = 4f;
+            colArray[1].center = new Vector3(0, 2.2f, 0.21f);
+            sphere[0].center = new Vector3(0, 3f, 0);
         }
 
         cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
@@ -274,6 +280,22 @@ public class PlayerOneMovement : MonoBehaviour {
         {
             StunPenalty = 1;
         }
+
+        //WallJump Check at feet
+        //Debug.DrawRay(transform.position, transform.forward, Color.green);
+        //WallJump Check at knee
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
+        //WallJump Check at chest
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
+        //WallJump Check at nose/head
+        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
+
+        //Distance from feet to platform
+        //Debug.DrawRay(transform.position, -transform.up, Color.yellow, distanceFromGround);
+
+        animator.SetBool("Grounded", grounded);
+        animator.SetBool("Crouched", crouching);
+        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
 
@@ -289,8 +311,10 @@ public class PlayerOneMovement : MonoBehaviour {
                 animator.Play("Armature|JumpStart", 0);
             }
             jumping = false;
-            landing = false;
+           //landing = false;
             speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
+            //animator.SetBool("Landing", landing);
+            //StartCoroutine(CheckLanding());
         }
         else if (crouching)
         {
@@ -303,26 +327,7 @@ public class PlayerOneMovement : MonoBehaviour {
         }
 
         if (!wallJumping) rb.velocity = movementVector;
-        else rb.velocity = wallJumpVector;
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, LayerMask.GetMask("Platform")) && grounded == false)
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * distanceFromGround, Color.yellow);
-            if (hit.distance <= distanceFromGround && jumping == false)
-            {
-                landing = true;
-            }
-            if (hit.distance > distanceFromGround)
-            {
-                landing = false;
-            }
-        }
-
-        if(grounded == true)
-        {
-            landing = true;
-        }
+        else rb.velocity = wallJumpVector;      
     }
 
 
@@ -334,7 +339,9 @@ public class PlayerOneMovement : MonoBehaviour {
             RaycastHit hit;
             RaycastHit downHit;
             bool raycastDown = Physics.Raycast(transform.position, -transform.up, out downHit, 1);
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f) && !raycastDown)
+            if ((Physics.Raycast(transform.position, transform.forward, out hit, 1.5f) || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f) || 
+                    Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, out hit, 1.5f) 
+                    || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f)) && !raycastDown)
             {
                 if (hit.transform.tag == "Platform" && inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded == false && move == true)
                 {
@@ -347,10 +354,6 @@ public class PlayerOneMovement : MonoBehaviour {
             }
             //NOT WALL JUMPING
         }
-        animator.SetBool("Landing", landing);
-        animator.SetBool("Grounded", grounded);
-        animator.SetBool("Crouched", crouching);
-        animator.SetFloat("YVelocity", rb.velocity.y);
     }
 
     private IEnumerator DisableWallJump()
@@ -387,6 +390,20 @@ public class PlayerOneMovement : MonoBehaviour {
         SuperSpeed = 1;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
+
+   /* private IEnumerator CheckLanding()
+    {
+        while (landing == false)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, -transform.up, out hit, distanceFromGround) && grounded == false)
+            {
+                landing = true;
+                animator.SetBool("Landing", landing);
+            }
+            yield return null;
+        }
+    }*/
 
     /////////////////////////////////////////////
     // GETTERS AND SETTERS                     //
