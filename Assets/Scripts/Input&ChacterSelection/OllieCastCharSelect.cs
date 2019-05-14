@@ -68,7 +68,9 @@ public class OllieCastCharSelect : MonoBehaviour {
                 yVelocity = 0;
                 yield return null;
             }
-        }  
+        }
+
+        trap.transform.position = new Vector3(trap.transform.position.x, targetPos.y, trap.transform.position.z);
         yVelocity = 0;
     }
 
