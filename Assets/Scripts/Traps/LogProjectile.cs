@@ -74,41 +74,68 @@ public class LogProjectile : MonoBehaviour {
         switch (playerOne.GetState())
         {
             case 1:
-                if (rb.velocity.x > 0)
+                if (rb.velocity.x > speedForKnockback)
                 {
-                    box.enabled = false;
-                }
-                if (rb.velocity.x < -speedForKnockback)
-                {
+                    box.center = new Vector3(0.0065f, 0, -0.0003f);
                     box.enabled = true;
+                }
+                //left
+                else if (rb.velocity.x < -speedForKnockback)
+                {
+                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                    box.enabled = true;
+                }
+                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback) {
+                    box.enabled = false;
                 }
                 break;
             case 2:
-                if(rb.velocity.z > 0)
+                if(rb.velocity.z > speedForKnockback)
+                {
+                    box.center = new Vector3(0.0065f, 0, -0.0003f);
+                    box.enabled = true;
+                }
+                //left
+                else if(rb.velocity.z < -speedForKnockback)
+                {
+                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                    box.enabled = true;
+                }
+                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
                 {
                     box.enabled = false;
                 }
-                if(rb.velocity.z < -speedForKnockback)
-                {
-                    box.enabled = true;
-                }
                 break;
             case 3:
+                //left
                 if(rb.velocity.x > speedForKnockback)
                 {
+                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
                     box.enabled = true;
                 }
-                if(rb.velocity.x < 0)
+                else if(rb.velocity.x < -speedForKnockback)
+                {
+                    box.center = new Vector3(0.0065f, 0, -0.0003f);
+                    box.enabled = true;
+                }
+                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
                 {
                     box.enabled = false;
                 }
                 break;
             case 4:
+                //left
                 if (rb.velocity.z > speedForKnockback)
                 {
+                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
                     box.enabled = true;
                 }
-                if (rb.velocity.z < 0)
+                else if (rb.velocity.z < 0)
+                {
+                    box.center = new Vector3(0.0065f, 0, -0.0003f);
+                    box.enabled = true;
+                }
+                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
                 {
                     box.enabled = false;
                 }
