@@ -11,7 +11,12 @@ public class PlayerOneLose : MonoBehaviour {
 	public GameObject speccyLosesUI;
 	public GameObject LoseGameCamera;
 	public GameObject CanvasUI;
-
+	public GameObject CanvasUI2;
+	public GameObject CanvasUI3;
+	public GameObject CanvasUI4;
+	public GameObject CanvasUI5;
+	public GameObject CanvasUI6;
+	
     private void Start () {
         Lose = false;
         cam = GetComponent<CameraOneRotator>();
@@ -29,6 +34,12 @@ public class PlayerOneLose : MonoBehaviour {
             speccyLosesUI.transform.SetAsLastSibling();
             LoseGameCamera.SetActive(true);
             CanvasUI.SetActive(false);
+            CanvasUI2.SetActive(false);
+            CanvasUI3.SetActive(false);
+            CanvasUI4.SetActive(false);
+            CanvasUI5.SetActive(false);
+            CanvasUI6.SetActive(false);
+           
         }
     }
     
