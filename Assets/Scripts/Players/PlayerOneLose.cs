@@ -9,7 +9,8 @@ public class PlayerOneLose : MonoBehaviour {
     private CameraOneRotator cam;
     [SerializeField] MoveVines vines;
 	public GameObject speccyLosesUI;
-
+	public GameObject LoseGameCamera;
+	public GameObject CanvasUI;
 
     private void Start () {
         Lose = false;
@@ -26,6 +27,8 @@ public class PlayerOneLose : MonoBehaviour {
             // Initiate.Fade("GameOver", Color.black, 1);
             speccyLosesUI.SetActive(true);
             speccyLosesUI.transform.SetAsLastSibling();
+            LoseGameCamera.SetActive(true);
+            CanvasUI.SetActive(false);
         }
     }
     
