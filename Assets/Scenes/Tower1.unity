@@ -4628,46 +4628,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 114169544570823518, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1016487807}
-    - target: {fileID: 114169544570823518, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: controllerCursor
-      value: 
-      objectReference: {fileID: 1513495130}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: tower
-      value: 
-      objectReference: {fileID: 1219273410}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: trapQueue
-      value: 
-      objectReference: {fileID: 1035929013}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: controllerCursor
-      value: 
-      objectReference: {fileID: 1513495130}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: eventSystem
-      value: 
-      objectReference: {fileID: 1160000097}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1888857407}
-    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
-        type: 2}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 412805862}
     - target: {fileID: 114871698429783546, guid: 7c17f18a57460024ba6258242e429410,
         type: 2}
       propertyPath: tower
@@ -4708,6 +4668,46 @@ Prefab:
       propertyPath: playerOne
       value: 
       objectReference: {fileID: 1338709831}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tower
+      value: 
+      objectReference: {fileID: 1219273410}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: trapQueue
+      value: 
+      objectReference: {fileID: 1035929013}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: controllerCursor
+      value: 
+      objectReference: {fileID: 1513495130}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 1160000097}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1888857407}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 412805862}
+    - target: {fileID: 114169544570823518, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1016487807}
+    - target: {fileID: 114169544570823518, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: controllerCursor
+      value: 
+      objectReference: {fileID: 1513495130}
     - target: {fileID: 114871698429783546, guid: 7c17f18a57460024ba6258242e429410,
         type: 2}
       propertyPath: UncommonSpellPrefabs.Array.data[0]
@@ -5156,7 +5156,7 @@ GameObject:
   - component: {fileID: 969984618}
   m_Layer: 12
   m_Name: Ground
-  m_TagString: Platform
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
