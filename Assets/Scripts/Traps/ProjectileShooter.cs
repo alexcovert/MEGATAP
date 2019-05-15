@@ -10,9 +10,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     public CameraTwoRotator cam2;
 
-	GameObject prefab;
+	  GameObject prefab;
   	GameObject projectile;
     private Rigidbody rb;
+    private CapsuleCollider col;
 
     private Vector3 velocity;
     private Quaternion projectileRotation;
@@ -92,15 +93,19 @@ public class ProjectileShooter : MonoBehaviour {
         //Debug.Log(FloorNumber + ", " + FaceNumber, this);
     }
 
-    private void Projectile()
+    private void LoadArrow()
     {
         projectile = Instantiate(prefab);
 
-        projectile.transform.position = transform.parent.position + new Vector3(0, 0.5f, 0) + transform.forward *0.5f;
+        projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
         projectile.transform.rotation = projectileRotation;
 
         rb = projectile.GetComponent<Rigidbody>();
-        rb.velocity = velocity;
+        
+    }
 
+    private void Projectile()
+    {
+        if(rb != null) rb.velocity = velocity;
     }
 }
