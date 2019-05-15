@@ -114,7 +114,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.33
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -210,7 +210,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellTime: 5
-  clip: {fileID: 0}
+  vignetteIntensity: 0.75
+  fadeTime: 2
+  inSound: {fileID: 8300000, guid: c7ce25b7e6acb754f8347a3074fc4487, type: 3}
+  outSound: {fileID: 8300000, guid: a26ae98b234c88e408ffc389779ee60d, type: 3}
 --- !u!114 &114692542700711350
 MonoBehaviour:
   m_ObjectHideFlags: 1

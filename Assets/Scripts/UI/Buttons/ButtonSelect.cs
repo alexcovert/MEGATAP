@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using UnityEngine.EventSystems;// Required when using Event data.
 using TMPro;
 
@@ -25,11 +26,16 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
     private InputManager inputManager;
 
     private CheckControllers cc;
+    private IEnumerator fader;
+    Color tooltipColor;
+    Color textColor;
+
 
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         cc = inputManager.GetComponent<CheckControllers>();
+
     }
 
     private void Start()
@@ -55,12 +61,18 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
         }
         es = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
-        if(es.currentSelectedGameObject != null) ChangeTooltip(es.currentSelectedGameObject.name, es.currentSelectedGameObject);
-
         cs = player.GetComponent<CastSpell>();
         pt = player.GetComponent<PlaceTrap>();
         controllerCursor = GameObject.Find("ControllerCursor").GetComponent<Image>();
         cursorMove = player.GetComponent<MoveControllerCursor>();
+
+        if (es.currentSelectedGameObject != null && this.gameObject.Equals(pt.queue[0].gameObject))
+        {
+            ChangeTooltip(es.currentSelectedGameObject.name, es.currentSelectedGameObject);
+        }
+
+        tooltipColor = tooltipBox.GetComponent<Image>().color;
+        textColor = new Color(1, 1, 1, 1);
     }
 
     public void Update()
@@ -121,6 +133,13 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
             tooltipBox.GetComponent<Image>().enabled = false;
             tooltipText.text = "";
         }
+        else
+        {
+            if (fader != null)
+            {
+                StopCoroutine(fader);
+            }
+        }
     }
 
     public void ScaleUp()
@@ -135,6 +154,16 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
         
         if(tooltipText != null)
         {
+
+            //Debug.Log(fader);
+            if (fader != null)
+            {
+                StopCoroutine(fader);
+                fader = null;
+            }
+            tooltipBox.GetComponent<Image>().color = new Color(tooltipColor.r, tooltipColor.g, tooltipColor.b, 1);
+            tooltipText.color = new Color(textColor.r, textColor.g, textColor.b, 1);
+
             tooltipBox.GetComponent<Image>().enabled = true;
             Vector3 tooltipPosition = tooltipBox.transform.position;
 
@@ -186,7 +215,28 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
                     break;
 
             }
+            if (cc.topPlayersController)
+            {
+                fader = Fade();
+                StartCoroutine(fader);
+            }
         }
+    }
+
+    private IEnumerator Fade()
+    {
+        float time = 3;
+
+        for(float t = 0; t < time; t += Time.deltaTime)
+        {
+            tooltipBox.GetComponent<Image>().color = new Color(tooltipColor.r, tooltipColor.g, tooltipColor.b, Mathf.Lerp(1, 0, t / time));
+            tooltipText.color = new Color(textColor.r, textColor.g, textColor.b, Mathf.Lerp(1, 0, t / time));
+            yield return null;
+        }
+
+        tooltipBox.GetComponent<Image>().color = new Color(tooltipColor.r, tooltipColor.g, tooltipColor.b, 0);
+        tooltipText.color = new Color(textColor.r, textColor.g, textColor.b, 0);
+        fader = null;
     }
 
     private void GetCurrentLastTrap()

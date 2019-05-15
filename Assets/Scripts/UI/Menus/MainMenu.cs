@@ -15,9 +15,12 @@ public class MainMenu : MonoBehaviour {
 
     private GameObject inputManager;
 
+    private SceneTransition loader;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager");
+        loader = GetComponent<SceneTransition>();
     }
 
     void Start ()
@@ -48,11 +51,11 @@ public class MainMenu : MonoBehaviour {
 
         if(cc.GetControllerOneState() || cc.GetControllerTwoState())
         {
-            SceneManager.LoadScene("CharacterSelect");
+            StartCoroutine(loader.LoadScene("CharacterSelect"));
         }
         else
         {
-            SceneManager.LoadScene("Tower1");
+            StartCoroutine(loader.LoadScene("Tower1"));
         }
     }
 
@@ -63,12 +66,11 @@ public class MainMenu : MonoBehaviour {
 
         if (cc.GetControllerOneState() || cc.GetControllerTwoState())
         {
-            //Initiate.Fade("CharacterSelect", Color.black, 2);
-            SceneManager.LoadScene("CharacterSelect");
+            StartCoroutine(loader.LoadScene("CharacterSelect"));
         }
         else
         {
-            SceneManager.LoadScene("Tutorial");
+            StartCoroutine(loader.LoadScene("Tutorial"));
         }
     }
 
@@ -108,5 +110,6 @@ public class MainMenu : MonoBehaviour {
             menuButtons[i].GetComponent<Button>().interactable = true;
         }
         es.SetSelectedGameObject(menuButtons[0]);
-    }	
+    }
+
 }

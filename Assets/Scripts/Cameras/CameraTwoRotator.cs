@@ -46,10 +46,12 @@ public class CameraTwoRotator : MonoBehaviour {
 
     private CinemachineVirtualCamera cinemachineCam;
 
+    private Camera theCam;
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         cinemachineCam = playerTwoCam.GetComponent<CinemachineVirtualCamera>();
+        theCam = GetComponent<Camera>();
     }
     private void Start()
     {
@@ -63,6 +65,8 @@ public class CameraTwoRotator : MonoBehaviour {
         floor = 2;
 
         moveEnabled = true;
+
+        SetCullingMask();
     }
 
     //Rotate camera around tower when arrow keys are pressed
@@ -125,7 +129,40 @@ public class CameraTwoRotator : MonoBehaviour {
 
 
         MoveGrid();
+        SetCullingMask();
 
+    }
+
+    //src: https://forum.unity.com/threads/how-to-toggle-on-or-off-a-single-layer-of-the-cameras-culling-mask.340369/
+    public void SetCullingMask()
+    {
+        switch(currentPos)
+        {
+            case 1:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees1"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees4");
+                break;
+            case 2:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees2"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+                break;
+            case 3:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees3"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees2");
+                break;
+            case 4:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees4"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees3");
+                break;
+        }
     }
 
     //Camera movement coroutine

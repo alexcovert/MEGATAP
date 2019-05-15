@@ -1600,6 +1600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stringDrawSFX: {fileID: 8300000, guid: b1e9cc5df9f82d2419178a94f3babd4e, type: 3}
   stringReleaseSFX: {fileID: 8300000, guid: c5a5069b615c8c4428069c18dfbb19fa, type: 3}
+  arrowWhoosh: {fileID: 8300000, guid: 935e597069f7521448202e0831a1d61f, type: 3}
 --- !u!114 &114458546575408374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1660,6 +1661,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FaceNumberIfPrePlaced: 0
+  FaceNumber: 0
+  FloorNumber: 0
+  cam2: {fileID: 0}
 --- !u!114 &114984443215902500
 MonoBehaviour:
   m_ObjectHideFlags: 1

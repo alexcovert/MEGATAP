@@ -126,23 +126,17 @@ public class CastSpell : MonoBehaviour
         PlayerOneState = playerOne.GetComponent<CameraOneRotator>().GetState();
 
 
-        if (Input.GetMouseButtonDown(1) && ValidLocation == 1)
+        //Cancel spell
+        if(Input.GetMouseButtonDown(1) && spellTarget != null && !cc.topPlayersController)
         {
-            SpellCast();
+            DestroyTarget();
         }
-
 
         //Safety check to make sure the player's cursor isn't lost / nothing is selected
         if (eventSystem.currentSelectedGameObject != null)
         {
             currentSelectedGameObject = eventSystem.currentSelectedGameObject;
         }
-
-        //if(Cursor.lockState == CursorLockMode.Locked && eventSystem.currentSelectedGameObject == null)
-        //{
-        //    eventSystem.SetSelectedGameObject(currentSelectedGameObject);
-        //}
-        //else
         
         if(Input.GetMouseButtonDown(0) && cc.topPlayersController)
         {
@@ -165,12 +159,6 @@ public class CastSpell : MonoBehaviour
 
     private Vector3? GetGridPosition()
     {
-        //if (RaycastFromCam() != null)
-        //{
-        //    RaycastHit hit = RaycastFromCam().Value;
-        //    return new Vector3(hit.point.x, hit.point.y, hit.point.z);
-        //}
-        //else return null;
         Vector3 pos;
         if (p2Controller) pos = controllerCursor.transform.position;
         else pos = Input.mousePosition;
@@ -218,7 +206,7 @@ public class CastSpell : MonoBehaviour
     //Called from event trigger on center column of tower when player clicks on it
     public void OnClickTower()
     {
-        if (!Input.GetMouseButtonUp(1) && ValidLocation == 1 && !p2Controller)
+        if (!Input.GetMouseButtonUp(1) && ValidLocation == 1 && !p2Controller && Input.mousePosition.y <= Screen.height / 2)
         {
             SpellCast();
         }
@@ -499,6 +487,7 @@ public class CastSpell : MonoBehaviour
         DestroyTarget();
         GetComponent<PlaceTrap>().DestroyGhost();
         SetTarget();
+        Debug.Log(spell);
         spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
     }
 

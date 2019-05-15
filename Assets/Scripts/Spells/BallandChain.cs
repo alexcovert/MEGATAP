@@ -67,6 +67,8 @@ public class BallandChain : MonoBehaviour {
         {
             hit = true;
             player = other.gameObject;
+
+            //Turn on slow effect on PLAYER
             MeshRenderer[] mrs = player.GetComponentsInChildren<MeshRenderer>();
             int slowEffectCount = 0;
             foreach(MeshRenderer mr in mrs)
@@ -86,7 +88,16 @@ public class BallandChain : MonoBehaviour {
                 }
             }
             StartCoroutine(DisableSlowEffect());
+
+            //Turn of spells mesh renderer
             this.GetComponent<Renderer>().enabled = false;
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+            foreach(ParticleSystem p in particles)
+            {
+                Destroy(p);
+            }
+
+            //play sfx
             audioSource.PlayOneShot(clip);
         }
       

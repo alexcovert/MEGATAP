@@ -45,7 +45,7 @@ public class CameraOneRotator : MonoBehaviour
     private int cameraState, floor;
     private Rigidbody rb;
     private CinemachineVirtualCamera cinemachineCam;
-
+    private CinemachineFramingTransposer transposer;
     private void Start()
     {
         numFloors = tower.GetComponent<NumberOfFloors>().NumFloors;
@@ -54,7 +54,12 @@ public class CameraOneRotator : MonoBehaviour
         cameraState = 1;
         floor = 1;
         rb = GetComponent<Rigidbody>();
+
+        //Camera
         cinemachineCam = cinemachineSpeccy.GetComponent<CinemachineVirtualCamera>();
+        transposer = cinemachineCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+
+        SetCullingMask();
     }
 
     private void Update()
@@ -96,8 +101,9 @@ public class CameraOneRotator : MonoBehaviour
             case "Trigger3":
                 StartMove(new Vector3(playerModel.transform.position.x - camPosHorizontal, playerOneCam.transform.position.y, playerModel.transform.position.z), rotations[3], 4);
                 Destroy(other.gameObject);
-                vcamLock.Lock = false;
-
+                break;
+            case "CamUnlock":
+                StartCoroutine(IncreaseOffset());
                 break;
             case "Trigger4":
                 if (cameraState == 4)
@@ -107,14 +113,20 @@ public class CameraOneRotator : MonoBehaviour
                     {
                         floor++;
                         audioSource.volume += windVolIncreasePerLevel;
-                        //vcamLock.Lock = true;
-                        vcamLock.m_YPosition += 20;
+
+
+                        StartCoroutine(ReduceOffset(0));
+
                         StartMove(new Vector3(playerModel.transform.position.x, playerOneCam.transform.position.y + 20, playerModel.transform.position.z - camPosHorizontal), rotations[0], 1);
-                        StartCoroutine(ChangeFOV(moveSpeed * moveUpSlowMultiplier));
+
+                        //Commented out bc it looks bad
+                        //StartCoroutine(ChangeFOV(moveSpeed * moveUpSlowMultiplier));
+
                         break;
                     }
                     else
                     {
+                        StartCoroutine(ReduceOffset(0));
                         StartMove(new Vector3(playerModel.transform.position.x, playerOneCam.transform.position.y + 20, playerModel.transform.position.z - camPosHorizontal), rotations[0], 1);
                         break;
                     }
@@ -138,7 +150,40 @@ public class CameraOneRotator : MonoBehaviour
         //Tween the vcam rotation
         camTween = TweenToPosition(goalPos, goalRot, moveSpeed);
         StartCoroutine(camTween);
+        SetCullingMask();
+    }
 
+
+    //src: https://forum.unity.com/threads/how-to-toggle-on-or-off-a-single-layer-of-the-cameras-culling-mask.340369/
+    public void SetCullingMask()
+    {
+        switch (cameraState)
+        {
+            case 1:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees1"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees4");
+                break;
+            case 2:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees2"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+                break;
+            case 3:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees3"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees2");
+                break;
+            case 4:
+                //Hide
+                playerOneCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees4"));
+                //Show
+                playerOneCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees3");
+                break;
+        }
     }
 
     private IEnumerator ChangeFOV(float time)
@@ -159,7 +204,40 @@ public class CameraOneRotator : MonoBehaviour
             cinemachineCam.m_Lens.FieldOfView = Mathf.Lerp(zoomedFOV, normalFOV, t / time);
             yield return null;
         }
-        vcamLock.Lock = true;
+        
+    }
+
+    private IEnumerator IncreaseOffset()
+    {
+        float time = 3;
+        
+        for (float t = 0; t < time; t += Time.deltaTime)
+        {
+            vcamLock.offsetAbove = Mathf.Lerp(0, 20, t / time);
+            transposer.m_YDamping = Mathf.Lerp(0, 1, t / time);
+            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping);
+            yield return null;
+        }
+    }
+
+    private IEnumerator ReduceOffset(float amount)
+    {
+        float time = 3;
+        
+        float prevLock = vcamLock.m_YPosition;
+        for(float t = 0; t < time; t += Time.deltaTime)
+        {
+            transposer.m_YDamping = Mathf.Lerp(1, 0, t / time);
+            vcamLock.offsetAbove = Mathf.Lerp(20, 0, t / time);
+            vcamLock.m_YPosition = Mathf.Lerp(prevLock, prevLock + 20, t / time);
+
+            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping + ", " + vcamLock.m_YPosition);
+            yield return null;
+        }
+
+        transposer.m_YDamping = 0;
+        vcamLock.offsetAbove = 0;
+        vcamLock.m_YPosition = prevLock + 20;
     }
 
     //Camera movement coroutine

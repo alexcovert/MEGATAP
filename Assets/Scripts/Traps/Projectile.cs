@@ -5,7 +5,6 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
     [SerializeField] private float stunDuration;
     [SerializeField] private AudioClip impactSFX;
-    [SerializeField] private AudioClip releaseSFX;
     private AudioSource audioSource;
     private TrapBase trapBase;
     //private CameraTwoRotator cam;
@@ -22,8 +21,8 @@ public class Projectile : MonoBehaviour {
         child = this.GetComponentsInChildren<Renderer>();
         hit = false;
         audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(releaseSFX);
     }
+
 	void FixedUpdate(){
 		if (player != null)
 		{
