@@ -72,7 +72,14 @@ public class Petrify : MonoBehaviour {
             hit = true;
             player = other.gameObject;
             anim = player.gameObject.GetComponent<PlayerOneMovement>().GetAnim();
+
+            //Turn off renderer & particles
             this.GetComponent<Renderer>().enabled = false;
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+            foreach (ParticleSystem p in particles)
+            {
+                Destroy(p);
+            }
         }
         if (hit == false && other.tag == "Boundary" && once == false)
         {
