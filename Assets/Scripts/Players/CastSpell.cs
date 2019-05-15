@@ -487,6 +487,7 @@ public class CastSpell : MonoBehaviour
         DestroyTarget();
         GetComponent<PlaceTrap>().DestroyGhost();
         SetTarget();
+        Debug.Log(spell);
         spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
     }
 
