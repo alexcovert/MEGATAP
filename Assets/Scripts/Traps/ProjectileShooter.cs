@@ -10,9 +10,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     public CameraTwoRotator cam2;
 
-	GameObject prefab;
+	  GameObject prefab;
   	GameObject projectile;
     private Rigidbody rb;
+    private CapsuleCollider col;
 
     private Vector3 velocity;
     private Quaternion projectileRotation;

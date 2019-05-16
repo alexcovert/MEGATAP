@@ -43,9 +43,14 @@ public class CheckValidLocations : MonoBehaviour {
                         Valid = valid;
                     }
                     break;
+                case Location.Ceiling:
+                    if (dir == Direction.Up)
+                    {
+                        Valid = valid;
+                    }
+                    break;
                 //<ac> TODO: All other directions; need traps to test with first.
                 case Location.AnyWall:
-                case Location.Ceiling:
                 case Location.FloorAndCeiling:
                 case Location.FreeFloat:
                 case Location.LeftWall:

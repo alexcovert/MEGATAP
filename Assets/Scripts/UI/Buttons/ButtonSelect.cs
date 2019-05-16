@@ -213,6 +213,10 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
                     tooltipText.text = "Spike";
                     tooltipTransform.sizeDelta = new Vector2(75, tooltipTransform.rect.height);
                     break;
+                case "LogRollerButton(Clone)":
+                    tooltipText.text = "Log Roller";
+                    tooltipTransform.sizeDelta = new Vector2(120, tooltipTransform.rect.height);
+                    break;
 
             }
             if (cc.topPlayersController)
