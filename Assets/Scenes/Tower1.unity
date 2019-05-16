@@ -878,7 +878,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.59089
+      value: -80.59088
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3687,6 +3687,46 @@ Prefab:
       propertyPath: speedBoostSFX
       value: 
       objectReference: {fileID: 8300000, guid: e06853b6be043644f89a1ab20dc6cbe8, type: 3}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: speccyLosesUI
+      value: 
+      objectReference: {fileID: 2085020460}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: LoseGameCamera
+      value: 
+      objectReference: {fileID: 50689280}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI
+      value: 
+      objectReference: {fileID: 2004897671}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI2
+      value: 
+      objectReference: {fileID: 2004897672}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI3
+      value: 
+      objectReference: {fileID: 1035929013}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI4
+      value: 
+      objectReference: {fileID: 10065831}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI5
+      value: 
+      objectReference: {fileID: 2004897670}
+    - target: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
+        type: 2}
+      propertyPath: CanvasUI6
+      value: 
+      objectReference: {fileID: 2004897669}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9af0d0883e6a51441b06cd7d26274b01, type: 2}
   m_IsPrefabAsset: 0
@@ -7426,7 +7466,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1888857412}
         m_MethodName: onClickMenu
         m_Mode: 1
         m_Arguments:
@@ -21079,6 +21119,7 @@ GameObject:
   - component: {fileID: 1888857411}
   - component: {fileID: 1888857408}
   - component: {fileID: 1888857410}
+  - component: {fileID: 1888857412}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -21237,6 +21278,19 @@ MonoBehaviour:
   countdownTime: 4
   pause: {fileID: 1016487809}
   moveInSpeed: 0.025
+--- !u!114 &1888857412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1888857407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a358d455b6a308e44904e78ac6567f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  es: {fileID: 1160000097}
+  menuButtons: []
 --- !u!4 &1917265628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4063479449427360, guid: c95eca2a304e62c4abe3cc7a52590fd5,
@@ -22696,7 +22750,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.59089
+      value: -80.59088
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalRotation.x
