@@ -204,11 +204,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 29.999998
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.20629
+      value: -80.60231
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1057,7 +1057,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4118745448429798, guid: 4177dabbb2b6dc24aa87ac8ef64cc13e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 11.150881
+      value: 10.668821
       objectReference: {fileID: 0}
     - target: {fileID: 4118745448429798, guid: 4177dabbb2b6dc24aa87ac8ef64cc13e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1493,7 +1493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 545b8f67a8d5a7642bd064985b9b5f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lost: {fileID: 2040656225}
 --- !u!4 &856821951
 Transform:
   m_ObjectHideFlags: 0
@@ -1783,7 +1782,6 @@ GameObject:
   m_Component:
   - component: {fileID: 940917165}
   - component: {fileID: 940917164}
-  - component: {fileID: 940917166}
   m_Layer: 0
   m_Name: MusicPlayer
   m_TagString: Untagged
@@ -1800,7 +1798,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2d28081c1f5997a418fe1dfe2003123b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4af8a20958b197849a3f61900da1a4f0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -1899,17 +1897,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &940917166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 940917163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c49d9b2a3110a34c99ae9a1515e5c17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &969984617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,7 +2389,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4743651345122740, guid: 415a8da459df20b4ba20fdbb2acbdc98, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 11.150881
+      value: 10.668821
       objectReference: {fileID: 0}
     - target: {fileID: 4743651345122740, guid: 415a8da459df20b4ba20fdbb2acbdc98, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2432,6 +2419,11 @@ Prefab:
         type: 2}
       propertyPath: field of view
       value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 224688958369070702, guid: 415a8da459df20b4ba20fdbb2acbdc98,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 415a8da459df20b4ba20fdbb2acbdc98, type: 2}
@@ -4983,12 +4975,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2029986807}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2040656225 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114452904007992328, guid: 9af0d0883e6a51441b06cd7d26274b01,
-    type: 2}
-  m_PrefabInternal: {fileID: 262886467}
-  m_Script: {fileID: 11500000, guid: 573825152f644014eaa6302b43f5365f, type: 3}
 --- !u!1 &2044598763
 GameObject:
   m_ObjectHideFlags: 0
@@ -5140,11 +5126,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 29.999998
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.20629
+      value: -80.60231
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5206,6 +5192,11 @@ Prefab:
       propertyPath: gridUI
       value: 
       objectReference: {fileID: 1601420784}
+    - target: {fileID: 224819469020684874, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 295df6c694235764eac79c393ed826dc, type: 2}
   m_IsPrefabAsset: 0
