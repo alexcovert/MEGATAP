@@ -49,6 +49,8 @@ public class CharacterSelect : MonoBehaviour {
 
     private bool p1LockIn = false;
     private bool p2LockIn = false;
+    [SerializeField] private Light ollieLight;
+    [SerializeField] private Light speccyLight;
 
     float quarterDist;
 
@@ -179,6 +181,16 @@ public class CharacterSelect : MonoBehaviour {
                 {
                     p1LockIn = true;
                     audioSource.PlayOneShot(lockInSFX);
+
+                    //Spotlight
+                    if(selectorOneState == 1)
+                    {
+                        ollieLight.enabled = true;
+                    }
+                    else
+                    {
+                        speccyLight.enabled = true;
+                    }
                 }
             }
             //Player one cancel
@@ -186,6 +198,16 @@ public class CharacterSelect : MonoBehaviour {
             {
                 p1LockIn = false;
                 audioSource.PlayOneShot(unlockSFX);
+
+                //Spotlight
+                if (selectorOneState == 1)
+                {
+                    ollieLight.enabled = false;
+                }
+                else
+                {
+                    speccyLight.enabled = false;
+                }
             }
         }
         else
@@ -199,6 +221,16 @@ public class CharacterSelect : MonoBehaviour {
                 {
                     p1LockIn = true;
                     audioSource.PlayOneShot(lockInSFX);
+
+                    //Spotlight
+                    if (selectorOneState == 1)
+                    {
+                        ollieLight.enabled = true;
+                    }
+                    else
+                    {
+                        speccyLight.enabled = true;
+                    }
                 }
             }
             //Player one cancel
@@ -206,6 +238,16 @@ public class CharacterSelect : MonoBehaviour {
             {
                 p1LockIn = false;
                 audioSource.PlayOneShot(unlockSFX);
+
+                //Spotlight
+                if (selectorOneState == 1)
+                {
+                    ollieLight.enabled = false;
+                }
+                else
+                {
+                    speccyLight.enabled = false;
+                }
             }
         }
 
@@ -216,6 +258,16 @@ public class CharacterSelect : MonoBehaviour {
             {
                 p2LockIn = true;
                 audioSource.PlayOneShot(lockInSFX);
+
+                //Spotlight
+                if (selectorTwoState == 1)
+                {
+                    ollieLight.enabled = true;
+                }
+                else
+                {
+                    speccyLight.enabled = true;
+                }
             }
         }
         //Player two cancel
@@ -223,11 +275,19 @@ public class CharacterSelect : MonoBehaviour {
         {
             p2LockIn = false;
             audioSource.PlayOneShot(unlockSFX);
+
+            if (selectorTwoState == 1)
+            {
+                ollieLight.enabled = false;
+            }
+            else
+            {
+                speccyLight.enabled = false;
+            }
         }
 
     }
-
-
+    
 
     private void CheckStart()
     {
