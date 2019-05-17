@@ -66,6 +66,9 @@ public class PlayerOneMovement : MonoBehaviour {
     private ParticleSystemRenderer stun;
     private SphereCollider[] sphere;
 
+    // used for tutorial
+    GameObject tutorialOverlay;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
@@ -89,6 +92,7 @@ public class PlayerOneMovement : MonoBehaviour {
         jumpH = jumpHeight;
 
         move = true;
+        tutorialOverlay = GameObject.Find("ToolTipBottomGoal");
     }
 
     private void Update()
@@ -261,6 +265,12 @@ public class PlayerOneMovement : MonoBehaviour {
         cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
 
         if(!pause.GameIsPaused) Move();
+        // remove tutorial overlay
+        tutorialOverlay = GameObject.Find("ToolTipBottomGoal");
+        if (tutorialOverlay != null && tutorialOverlay.activeSelf == true && inputManager.GetButtonDown(InputCommand.BottomPlayerJump))
+        {
+            tutorialOverlay.SetActive(false);
+        }
 
         // initiate speed up
         if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost))

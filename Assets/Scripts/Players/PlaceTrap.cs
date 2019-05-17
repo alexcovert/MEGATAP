@@ -79,6 +79,9 @@ public class PlaceTrap : MonoBehaviour {
     private int numTimesRotated = 0;
     private bool atTop = false;
 
+    // tutorial
+    GameObject tutorialOverlay;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
@@ -110,6 +113,13 @@ public class PlaceTrap : MonoBehaviour {
 	
 
 	void Update () {
+
+        // tutorial stuff
+        tutorialOverlay = GameObject.Find("ToolTipTopGoal");
+        if (tutorialOverlay != null && tutorialOverlay.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
+        {
+            tutorialOverlay.SetActive(false);
+        }
         //Move ghost with cursor
         MoveGhost();
         //Get controller select
