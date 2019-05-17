@@ -19,9 +19,9 @@ public class GameOverMenu : MonoBehaviour {
         charSelectText = charSelectButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    private void Update()
+    public void Open()
     {
-        if(cc != null && charSelectText != null)
+        if (cc != null && charSelectText != null)
         {
             if (!(cc.GetControllerOneState() || cc.GetControllerTwoState()))
             {
@@ -30,6 +30,7 @@ public class GameOverMenu : MonoBehaviour {
             }
             else
             {
+                es.SetSelectedGameObject(charSelectButton);
                 charSelectButton.GetComponent<Button>().interactable = true;
                 charSelectText.color = new Color(charSelectText.color.r, charSelectText.color.g, charSelectText.color.b, 1);
             }
