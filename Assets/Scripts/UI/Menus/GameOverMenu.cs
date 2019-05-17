@@ -33,10 +33,15 @@ public class GameOverMenu : MonoBehaviour {
             }
             else
             {
-                es.SetSelectedGameObject(restartButton);
                 charSelectButton.GetComponent<Button>().interactable = true;
                 charSelectText.color = new Color(charSelectText.color.r, charSelectText.color.g, charSelectText.color.b, 1);
             }
+        }
+
+        if (cc.GetBottomPlayerControllerState() || cc.topPlayersController)
+        {
+
+            es.SetSelectedGameObject(restartButton);
         }
     }
 
