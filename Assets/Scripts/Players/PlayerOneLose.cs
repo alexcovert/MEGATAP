@@ -16,7 +16,8 @@ public class PlayerOneLose : MonoBehaviour {
 	public GameObject CanvasUI4;
 	public GameObject CanvasUI5;
 	public GameObject CanvasUI6;
-	
+    [SerializeField] private GameOverMenu menu;
+
     private void Start () {
         Lose = false;
         cam = GetComponent<CameraOneRotator>();
@@ -39,7 +40,7 @@ public class PlayerOneLose : MonoBehaviour {
             CanvasUI4.SetActive(false);
             CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
-           
+            menu.Open(false);
         }
     }
     

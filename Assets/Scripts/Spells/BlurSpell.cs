@@ -17,11 +17,11 @@ public class BlurSpell : MonoBehaviour {
     private SpellBase sb;
     private bool spellCast = true;
     private bool started;
-    //private AudioSource audioSource;
+    private AudioSource audioSource;
 
     private void Start()
     {
-        //audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         sb = GetComponent<SpellBase>();
     }
 
@@ -53,7 +53,7 @@ public class BlurSpell : MonoBehaviour {
         spellCast = false;
         float targetBlur = 2 - blurIntensity;
         //Fade in
-        //audioSource.PlayOneShot(inSound);
+        audioSource.PlayOneShot(inSound);
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
         {
             blur.aperture.value = Mathf.Lerp(2f, targetBlur, t / fadeTime);
@@ -68,7 +68,7 @@ public class BlurSpell : MonoBehaviour {
         }
 
         //Fade out
-        //audioSource.PlayOneShot(outSound);
+        audioSource.PlayOneShot(outSound);
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
         {
             blur.aperture.value = Mathf.Lerp(targetBlur, 2f, t / fadeTime);

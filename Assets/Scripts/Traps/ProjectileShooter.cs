@@ -10,10 +10,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     public CameraTwoRotator cam2;
 
-	  GameObject prefab;
+	GameObject prefab;
   	GameObject projectile;
     private Rigidbody rb;
-    private CapsuleCollider col;
+    private BoxCollider col;
 
     private Vector3 velocity;
     private Quaternion projectileRotation;
@@ -106,6 +106,8 @@ public class ProjectileShooter : MonoBehaviour {
 
     private void Projectile()
     {
+        col = projectile.GetComponent<BoxCollider>();
+        col.enabled = true;
         if(rb != null) rb.velocity = velocity;
     }
 }
