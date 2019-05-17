@@ -13,6 +13,7 @@ public class LogRoller : MonoBehaviour
     private GameObject logProjectile;
     private Rigidbody rb;
     private bool once = true;
+    private int face;
 
     [SerializeField] private float speed = 40;
     //private Vector3 velocity;
@@ -23,6 +24,7 @@ public class LogRoller : MonoBehaviour
         trapBase = GetComponent<TrapBase>();
         cam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
         logPrefab = Resources.Load("LogProjectile") as GameObject;
+        face = cam.GetState();
 
         switch (cam.GetState())
         {
@@ -65,7 +67,7 @@ public class LogRoller : MonoBehaviour
 
                     Physics.IgnoreCollision(col, this.GetComponent<Collider>());
 
-                    switch (cam.GetState())
+                    switch (face)
                     {
                         case 1:
                             logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
@@ -88,7 +90,21 @@ public class LogRoller : MonoBehaviour
                 }
                 if (timer > timeToShoot)
                 {
-                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                    switch (face)
+                    {
+                        case 1:
+                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                            break;
+                        case 2:
+                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                            break;
+                        case 3:
+                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                            break;
+                        case 4:
+                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                            break;
+                    }
                     rb.useGravity = true;
                     rb.AddForce(-transform.right * speed);
                     timer = timer - timeToShoot;
