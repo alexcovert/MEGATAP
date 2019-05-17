@@ -29,6 +29,7 @@ public class PauseMenu : MonoBehaviour {
     //For changing controls images
     private CheckControllers cc;
     private BeginGo countdown;
+    private SceneTransition loader;
 
     //When we pause/resume we need to set the trap/spell buttons uninteractable, then interactable again
     //these bool arrays keep track of which ones are used/on cooldown so we don't set them interactable on resume
@@ -48,6 +49,7 @@ public class PauseMenu : MonoBehaviour {
         pt = playerTwo.GetComponent<PlaceTrap>();
         cs = playerTwo.GetComponent<CastSpell>();
         playerMov = playerOne.GetComponent<PlayerOneMovement>();
+        loader = GetComponent<SceneTransition>();
 
         //Get input refs
         GameObject inputManager = GameObject.Find("InputManager");
@@ -246,16 +248,26 @@ public class PauseMenu : MonoBehaviour {
 
 
 
-	public void LoadMenu(){
+	public void LoadMenu()
+    {
         GameObject musicPlayer = GameObject.Find("MusicPlayer");
         if (musicPlayer != null) Destroy(musicPlayer);
-        Initiate.Fade("Menu", Color.black, 2);
+        StartCoroutine(loader.LoadScene("Menu"));
 		Time.timeScale = 1f;
 	}
 
 
-
-
+    public void Restart()
+    {
+        Resume();
+        SceneManager.LoadScene("Tower1");
+    }
+    
+    public void CharacterSelect()
+    {
+        Resume();
+        StartCoroutine(loader.LoadScene("CharacterSelect"));
+    }
 
 	public void ControlScreen(){
         controlsUp = true;
