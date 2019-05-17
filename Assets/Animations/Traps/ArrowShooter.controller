@@ -70,7 +70,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: MainBowRig|BowIdle
-  m_Speed: 1
+  m_Speed: 0.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101717772099423984}
@@ -96,7 +96,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: MainBowRig|Firing
-  m_Speed: 0.5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101067541692911550}
@@ -128,7 +128,7 @@ AnimatorStateMachine:
     m_Position: {x: 298.814, y: 128.1149, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102750555929978684}
-    m_Position: {x: 452.37375, y: 67.82846, z: 0}
+    m_Position: {x: 588, y: 24, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
