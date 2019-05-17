@@ -6,26 +6,6 @@ using UnityEngine.EventSystems;
 
 public class GameOverMenu : MonoBehaviour {
     [SerializeField] private EventSystem es;
-    [SerializeField] private GameObject[] menuButtons;
-    private CheckControllers cc;
-
-    private void Start()
-    {
-        GameObject inputManager = GameObject.Find("InputManager");
-        cc = inputManager.GetComponent<CheckControllers>();
-        if(cc.GetControllerOneState() || cc.GetControllerTwoState())
-        {
-            es.SetSelectedGameObject(menuButtons[0]);
-        }
-    }
-
-    private void Update()
-    {
-        if ((cc.GetControllerOneState() || cc.GetControllerTwoState()) && es.currentSelectedGameObject == null)
-        {
-            es.SetSelectedGameObject(menuButtons[0]);
-        }
-    }
 
     public void onClickRetry()
     {
