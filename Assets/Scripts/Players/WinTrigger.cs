@@ -13,7 +13,7 @@ public class WinTrigger : MonoBehaviour {
 	public GameObject CanvasUI5;
 	public GameObject CanvasUI6;
     public bool Win { get; private set; }
-
+    [SerializeField] private GameOverMenu menu;
 	void Start () {
         Win = false;
 	}
@@ -34,6 +34,8 @@ public class WinTrigger : MonoBehaviour {
             CanvasUI4.SetActive(false);
             CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
+
+            menu.Open(true);
         }
     }
 }

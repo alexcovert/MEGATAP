@@ -26,6 +26,7 @@ public class Petrify : MonoBehaviour {
     private Animator anim;
 
 	 private AudioSource audioSource;
+    [SerializeField] private AudioClip cast;
     [SerializeField] private AudioClip clip;
 
 
@@ -33,7 +34,7 @@ public class Petrify : MonoBehaviour {
     {
         spellBase = GetComponent<SpellBase>();
         audioSource = GetComponent<AudioSource>();
-        
+        audioSource.PlayOneShot(cast);
         switch (GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
