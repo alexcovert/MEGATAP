@@ -65,6 +65,7 @@ public class PlayerOneMovement : MonoBehaviour {
     private CapsuleCollider[] colArray;
     private ParticleSystemRenderer stun;
     private SphereCollider[] sphere;
+    private GhostTrail ghostTrail;
 
     private void Awake()
     {
@@ -81,6 +82,7 @@ public class PlayerOneMovement : MonoBehaviour {
         stun = GetComponentInChildren<ParticleSystemRenderer>();
         pause = gameManager.GetComponent<PauseMenu>();
         sphere = GetComponents<SphereCollider>();
+        ghostTrail = GetComponent<GhostTrail>();
         stun.enabled = false;
         crouching = false;
         animator.SetBool("Grounded", grounded);
@@ -266,6 +268,7 @@ public class PlayerOneMovement : MonoBehaviour {
         if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost))
         {
             spedUp = true;
+            ghostTrail.On = true;
             audioSource.PlayOneShot(speedBoostSFX);
             StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration));
         }
@@ -388,6 +391,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
         spedUp = false;
         SuperSpeed = 1;
+        ghostTrail.On = false;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
 
