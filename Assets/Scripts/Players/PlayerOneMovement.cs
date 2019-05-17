@@ -65,6 +65,7 @@ public class PlayerOneMovement : MonoBehaviour {
     private CapsuleCollider[] colArray;
     private ParticleSystemRenderer stun;
     private SphereCollider[] sphere;
+    private bool once = false;
 
     private void Awake()
     {
@@ -263,10 +264,11 @@ public class PlayerOneMovement : MonoBehaviour {
         if(!pause.GameIsPaused) Move();
 
         // initiate speed up
-        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost))
+        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
         {
             spedUp = true;
             audioSource.PlayOneShot(speedBoostSFX);
+            once = true;
             StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration));
         }
         //New Speed Function
@@ -387,6 +389,7 @@ public class PlayerOneMovement : MonoBehaviour {
         pickupImages[0].rectTransform.sizeDelta = new Vector2(50, 40);
 
         spedUp = false;
+        once = false;
         SuperSpeed = 1;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
