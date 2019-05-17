@@ -40,7 +40,7 @@ public class PlayerOneLose : MonoBehaviour {
             CanvasUI4.SetActive(false);
             CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
-            menu.Open();
+            menu.Open(false);
         }
     }
     

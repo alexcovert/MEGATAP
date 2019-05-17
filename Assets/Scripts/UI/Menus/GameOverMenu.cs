@@ -10,7 +10,7 @@ public class GameOverMenu : MonoBehaviour {
     [SerializeField] private EventSystem es;
     [SerializeField] private GameObject charSelectButton;
     [SerializeField] private GameObject restartButton;
-
+    [SerializeField] private TextMeshProUGUI text;
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
 
@@ -20,8 +20,16 @@ public class GameOverMenu : MonoBehaviour {
         charSelectText = charSelectButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public void Open()
+    public void Open(bool speccyWin)
     {
+        if(speccyWin)
+        {
+            text.text = "Bottom Player Wins!";
+        }
+        else
+        {
+            text.text = "Top Player Wins!";
+        }
 
         es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu";
         if (cc != null && charSelectText != null)

@@ -35,7 +35,7 @@ public class WinTrigger : MonoBehaviour {
             CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
 
-            menu.Open();
+            menu.Open(true);
         }
     }
 }
