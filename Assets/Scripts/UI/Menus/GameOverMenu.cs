@@ -21,6 +21,8 @@ public class GameOverMenu : MonoBehaviour {
 
     public void Open()
     {
+
+        es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu";
         if (cc != null && charSelectText != null)
         {
             if (!(cc.GetControllerOneState() || cc.GetControllerTwoState()))
