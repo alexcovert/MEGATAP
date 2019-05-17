@@ -9,6 +9,7 @@ using TMPro;
 public class GameOverMenu : MonoBehaviour {
     [SerializeField] private EventSystem es;
     [SerializeField] private GameObject charSelectButton;
+    [SerializeField] private GameObject restartButton;
 
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
@@ -32,7 +33,7 @@ public class GameOverMenu : MonoBehaviour {
             }
             else
             {
-                es.SetSelectedGameObject(charSelectButton);
+                es.SetSelectedGameObject(restartButton);
                 charSelectButton.GetComponent<Button>().interactable = true;
                 charSelectText.color = new Color(charSelectText.color.r, charSelectText.color.g, charSelectText.color.b, 1);
             }
