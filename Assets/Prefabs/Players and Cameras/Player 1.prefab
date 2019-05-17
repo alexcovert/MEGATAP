@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 114692266925298726}
   - component: {fileID: 82333417526295136}
   - component: {fileID: 223606388147917922}
+  - component: {fileID: 114863193110041638}
   - component: {fileID: 136537822502040418}
   - component: {fileID: 135254525513457034}
   - component: {fileID: 135893660688449324}
@@ -1932,6 +1933,22 @@ MonoBehaviour:
   sapSteps:
   - {fileID: 8300000, guid: 77d1864985f5a574387ff5ad47eb4816, type: 3}
   - {fileID: 8300000, guid: 55755609799d75444b4a629c6ee201dd, type: 3}
+--- !u!114 &114863193110041638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1428506183960842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b606297ea10d204e9cb8713689497be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  On: 0
+  startTime: 0
+  ghost: {fileID: 1199897317200884, guid: 1885e5ac2d918c44ebee6a2f766571ed, type: 2}
+  crouchGhost: {fileID: 1199897317200884, guid: d56ed1f31f6545640a30981671812a94,
+    type: 2}
 --- !u!114 &114940724036334842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1948,6 +1965,7 @@ MonoBehaviour:
   wallJumpTime: 0.3
   wallJumpDivider: 1.6
   wallJumpDirectionDivider: 0.75
+  crouching: 0
   InputEnabled: 1
   pickupImages:
   - {fileID: 0}
