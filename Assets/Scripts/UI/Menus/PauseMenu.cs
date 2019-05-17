@@ -232,8 +232,8 @@ public class PauseMenu : MonoBehaviour {
         //Bring up Pause menu
         pauseMenuUI.SetActive(true);
         pauseMenuUI.transform.SetAsLastSibling();
-        
-        if(controllerThatPaused == 1 || controllerThatPaused == 2)
+
+        if (controllerThatPaused == 1 || controllerThatPaused == 2)
             es.SetSelectedGameObject(resumeButton.gameObject);
         Time.timeScale = 0f;
 
