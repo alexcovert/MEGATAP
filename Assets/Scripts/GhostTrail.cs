@@ -7,15 +7,18 @@ public class GhostTrail : MonoBehaviour {
     public bool On;
 
 	private float timeBetween;
-	public float startTime;
+	[SerializeField] private float startTime;
 
-	public GameObject ghost;
-    [SerializeField] private CameraOneRotator cam;
+	[SerializeField] private GameObject ghost;
+    [SerializeField] private GameObject crouchGhost;
+    private CameraOneRotator cam;
+    private PlayerOneMovement movement;
     private Quaternion projectileRotation;
 
 	void Start () {
         On = false;
         cam = GetComponent<CameraOneRotator>();
+        movement = GetComponent<PlayerOneMovement>();
 	}
 
 	void Update () {
@@ -40,8 +43,17 @@ public class GhostTrail : MonoBehaviour {
         {
             if (timeBetween < 0)
             {
-                GameObject instance = (GameObject)Instantiate(ghost, transform.position + new Vector3(0, 2.5f, 0), projectileRotation);
-                Destroy(instance, 3f);
+                GameObject instance;
+                if(!movement.crouching)
+                {
+                    instance = (GameObject)Instantiate(ghost, transform.position + new Vector3(0, 2.5f, 0), projectileRotation);
+
+                }
+                else
+                {
+                    instance = (GameObject)Instantiate(ghost, transform.position + new Vector3(0, 1f, 0), projectileRotation);
+                }
+                Destroy(instance, 1f);
                 timeBetween = startTime;
             }
             else
