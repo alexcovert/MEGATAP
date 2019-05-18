@@ -215,7 +215,6 @@ public class CameraOneRotator : MonoBehaviour
         {
             vcamLock.offsetAbove = Mathf.Lerp(0, 20, t / time);
             transposer.m_YDamping = Mathf.Lerp(0, 1, t / time);
-            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping);
             yield return null;
         }
     }
@@ -231,7 +230,6 @@ public class CameraOneRotator : MonoBehaviour
             vcamLock.offsetAbove = Mathf.Lerp(20, 0, t / time);
             vcamLock.m_YPosition = Mathf.Lerp(prevLock, prevLock + 20, t / time);
 
-            Debug.Log(vcamLock.offsetAbove + ", " + transposer.m_YDamping + ", " + vcamLock.m_YPosition);
             yield return null;
         }
 
