@@ -14,7 +14,7 @@ public class PlayerOneMovement : MonoBehaviour {
     //other movement vars
     private Vector3 movementVector;
     private Vector3 wallJumpVector;
-    private bool crouching;
+    public bool crouching;
     private bool grounded;
     private bool jumping;
     private bool landing;
@@ -65,6 +65,8 @@ public class PlayerOneMovement : MonoBehaviour {
     private CapsuleCollider[] colArray;
     private ParticleSystemRenderer stun;
     private SphereCollider[] sphere;
+    private GhostTrail ghost;
+    private bool once = false;
 
     // used for tutorial
     GameObject tutorialOverlay;
@@ -84,6 +86,7 @@ public class PlayerOneMovement : MonoBehaviour {
         stun = GetComponentInChildren<ParticleSystemRenderer>();
         pause = gameManager.GetComponent<PauseMenu>();
         sphere = GetComponents<SphereCollider>();
+        ghost = GetComponent<GhostTrail>();
         stun.enabled = false;
         crouching = false;
         animator.SetBool("Grounded", grounded);
@@ -273,10 +276,12 @@ public class PlayerOneMovement : MonoBehaviour {
         }
 
         // initiate speed up
-        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost))
+        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
         {
             spedUp = true;
             audioSource.PlayOneShot(speedBoostSFX);
+            ghost.On = true;
+            once = true;
             StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration));
         }
         //New Speed Function
@@ -397,7 +402,9 @@ public class PlayerOneMovement : MonoBehaviour {
         pickupImages[0].rectTransform.sizeDelta = new Vector2(50, 40);
 
         spedUp = false;
+        once = false;
         SuperSpeed = 1;
+        ghost.On = false;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
 

@@ -4,7 +4,6 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class NarrowPOVSpell : MonoBehaviour {
     [SerializeField] private float spellTime;
-    [SerializeField] [Range(0, 1)] private float vignetteIntensity;
     [SerializeField] private float fadeTime;
     [SerializeField] private AudioClip inSound;
     [SerializeField] private AudioClip outSound;
@@ -55,11 +54,11 @@ public class NarrowPOVSpell : MonoBehaviour {
         audioSource.PlayOneShot(inSound);
         for(float t = 0; t < fadeTime; t += Time.deltaTime)
         {
-            vignette.intensity.value = Mathf.Lerp(0f, vignetteIntensity, t / fadeTime);
+            vignette.opacity.value = Mathf.Lerp(0, 1, t / fadeTime);
             yield return null;
         }
+        vignette.opacity.value = 1;
 
-        vignette.intensity.value = vignetteIntensity;
         //Spell duration
         for(float t = 0; t < spellTime; t += Time.deltaTime)
         {
@@ -70,10 +69,10 @@ public class NarrowPOVSpell : MonoBehaviour {
         audioSource.PlayOneShot(outSound);
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
         {
-            vignette.intensity.value = Mathf.Lerp(vignetteIntensity, 0f, t / fadeTime);
+            vignette.opacity.value = Mathf.Lerp(1, 0, t / fadeTime);
             yield return null;
         }
-        vignette.intensity.value = 0;
+        vignette.opacity.value = 0;
 
         vignette.active = false;
 

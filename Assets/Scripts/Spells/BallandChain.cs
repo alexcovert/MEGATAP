@@ -24,11 +24,13 @@ public class BallandChain : MonoBehaviour {
     private AudioSource audioSource;
     [SerializeField]
     private AudioClip clip;
+    [SerializeField] private AudioClip cast;
 
     private void Start()
     {
         spellBase = GetComponent<SpellBase>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(cast);
         switch(GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
