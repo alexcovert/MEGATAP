@@ -16,26 +16,9 @@ public class CharacterSelect : MonoBehaviour {
 
     [SerializeField] private Image playerOneSelector;
     [SerializeField] private Image playerTwoSelector;
-    [SerializeField] private Image topBackgroundObj;
-    [SerializeField] private Image botBackgroundObj;
-    [SerializeField] private Image topCharObj;
-    [SerializeField] private Image bottomCharObj;
 
 
-    [SerializeField] private Sprite topBackgroundColored;
-    [SerializeField] private Sprite topBackgroundGrey;
-    [SerializeField] private Sprite bottomBackgroundColored;
-    [SerializeField] private Sprite bottomBackgroundGrey;
-
-    [SerializeField] private Sprite topCharColored;
-    [SerializeField] private Sprite topCharGrey;
-    [SerializeField] private Sprite bottomCharColored;
-    [SerializeField] private Sprite bottomCharGrey;
-
-    [SerializeField] private Sprite controllerBlue;
-    [SerializeField] private Sprite controllerRed;
-    [SerializeField] private Sprite controllerGrey;
-
+    [SerializeField] private Image backImg;
 
     [SerializeField] private AudioClip lockInSFX;
     [SerializeField] private AudioClip unlockSFX;
@@ -56,6 +39,8 @@ public class CharacterSelect : MonoBehaviour {
     float quarterDist;
 
     private SceneTransition loader;
+
+    private float returnTimer = 0;
 
     private void Awake()
     {
@@ -159,14 +144,35 @@ public class CharacterSelect : MonoBehaviour {
                 StartCoroutine(StickDelay());
             }
         }
-
-        Debug.Log(p1LockIn + ", " + p2LockIn);
+        
 
         LockIn();
         CheckStart();
+        CheckReturn();
     }
 
+    private void CheckReturn()
+    {
+        backImg.fillAmount = 1 / (3 / returnTimer);
+        if(Input.GetButton("Cancel_Joy_1") || Input.GetButton("Cancel_Joy_2") || Input.GetButton("Escape"))
+        {
+            returnTimer += Time.deltaTime;
+        }
+        else if(Input.GetButtonUp("Cancel_Joy_1") || Input.GetButtonUp("Cancel_Joy_2") || Input.GetButtonUp("Escape"))
+        {
+            returnTimer = 0;
+        }
 
+        if(returnTimer > 3)
+        {
+            ReturnToMenu();
+        }
+    }
+
+    public void ReturnToMenu()
+    {
+        StartCoroutine(loader.LoadScene("Menu"));
+    }
     
     private void LockIn()
     {
