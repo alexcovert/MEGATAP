@@ -375,7 +375,7 @@ public class CharacterSelect : MonoBehaviour {
         }
         else
         {
-            startText.text = "Choose your side!";
+            startText.text = "Choose Your Side!";
         }
     }
     

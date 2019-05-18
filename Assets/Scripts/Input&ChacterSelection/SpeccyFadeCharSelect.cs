@@ -12,15 +12,24 @@ public class SpeccyFadeCharSelect : MonoBehaviour {
     void Start()
     {
         smrs = GetComponentsInChildren<SkinnedMeshRenderer>();
+
     }
 
     public void FadeIn()
     {
         //StartCoroutine(FadeSpeccy(true));
+        foreach (SkinnedMeshRenderer smr in smrs)
+        {
+            smr.enabled = true;
+        }
     }
 
     public void FadeOut()
     {
+        foreach (SkinnedMeshRenderer smr in smrs)
+        {
+            smr.enabled = false;
+        }
         //StartCoroutine(FadeSpeccy(false));
     }
     
