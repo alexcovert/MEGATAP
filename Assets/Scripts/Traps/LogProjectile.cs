@@ -10,7 +10,7 @@ public class LogProjectile : MonoBehaviour {
     [SerializeField] private int knockUpValue = 25;
     [SerializeField] private float stunDuration = 0.75f;
     //Time before log disappears
-    [SerializeField] private float lifeTime = 2f;
+    [SerializeField] private float lifeTime = 8f;
 
     [SerializeField] private float animationSpeed;
 
@@ -35,8 +35,6 @@ public class LogProjectile : MonoBehaviour {
     //Figure out which face this is on
     private CameraOneRotator playerOne;
 
-    //So this doesn't die prematurely
-    private bool canDie = false;
 
     void Awake()
     {
@@ -49,6 +47,7 @@ public class LogProjectile : MonoBehaviour {
         child = transform.parent.gameObject.transform.GetChild(1).gameObject;
         rb = child.GetComponent<Rigidbody>();
         box = GetComponent<BoxCollider>();
+        StartCoroutine(Death());
     }
 
     // Update is called once per frame
@@ -56,20 +55,10 @@ public class LogProjectile : MonoBehaviour {
     {
         this.transform.position = child.transform.position;
 
-        //So cannot die prematurely
-        if(rb.velocity.y != 0)
-        {
-            canDie = true;
-        }
-
         //only needs to have 0 velocity once.
         if ((rb.velocity.x <= 0.00001 && rb.velocity.x >= -0.00001) && (rb.velocity.z <= 0.00001 && rb.velocity.z >= -0.00001))
         {
             box.enabled = false;
-            if (canDie == true)
-            {
-                StartCoroutine(Death());
-            }
         }
         switch (playerOne.GetState())
         {
@@ -186,6 +175,8 @@ public class LogProjectile : MonoBehaviour {
     private IEnumerator Death()
     {
         yield return new WaitForSeconds(lifeTime);
+        box.enabled = false;
+        yield return new WaitForSeconds(2f);
         Destroy(this.transform.parent.gameObject);
     }
     

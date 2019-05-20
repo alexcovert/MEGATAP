@@ -341,7 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4571769353520592}
   - component: {fileID: 137667570552281550}
-  - component: {fileID: 135989092476003694}
+  - component: {fileID: 136664384495375320}
   - component: {fileID: 114649696406007716}
   m_Layer: 0
   m_Name: Body
@@ -1859,6 +1859,7 @@ MonoBehaviour:
   CanvasUI4: {fileID: 0}
   CanvasUI5: {fileID: 0}
   CanvasUI6: {fileID: 0}
+  menu: {fileID: 0}
 --- !u!114 &114614076012222384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1999,18 +2000,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.8
   m_Center: {x: 0, y: 1, z: 0}
---- !u!135 &135989092476003694
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1409754767501936}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.015
-  m_Center: {x: 0, y: -0.002, z: 0.02}
 --- !u!136 &136407975964972082
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2050,6 +2039,19 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 2.2, z: 0.21}
+--- !u!136 &136664384495375320
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1409754767501936}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.01
+  m_Height: 0.03
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.02}
 --- !u!137 &137489807720363134
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

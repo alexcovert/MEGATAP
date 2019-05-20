@@ -120,7 +120,7 @@ public class Petrify : MonoBehaviour {
     {
         yield return new WaitForSeconds(stunDuration - 0.1f);
         Revert();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         Destroy(obj);
     }
 
