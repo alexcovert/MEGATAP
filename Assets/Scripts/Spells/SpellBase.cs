@@ -191,6 +191,12 @@ public class SpellBase : MonoBehaviour {
 
         player.GetComponent<PlayerOneMovement>().SetJumpHeight(player.GetComponent<PlayerOneMovement>().GetConstantJumpHeight());
         player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+
+        while(player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty() != 1)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+            yield retrun null;
+        }
     }
 
     public void RestartFace(GameObject obj)
