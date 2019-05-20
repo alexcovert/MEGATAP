@@ -307,7 +307,6 @@ public class PlayerOneMovement : MonoBehaviour {
         //Turn on slow effect on PLAYER
         if (SlowPenaltyTier1 != 1)
         {
-
             foreach (MeshRenderer e in slowEffect)
             {
                 if (e != null)
