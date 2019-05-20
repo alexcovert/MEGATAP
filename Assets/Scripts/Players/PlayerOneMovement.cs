@@ -68,6 +68,11 @@ public class PlayerOneMovement : MonoBehaviour {
     private GhostTrail ghost;
     private bool once = false;
 
+    //Slow Effect
+    private MeshRenderer[] slowEffect = new MeshRenderer[2];
+    private MeshRenderer[] mrs;
+    private int slowEffectCount = 0;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
@@ -92,6 +97,19 @@ public class PlayerOneMovement : MonoBehaviour {
         jumpH = jumpHeight;
 
         move = true;
+
+        mrs = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in mrs)
+        {
+            if (mr.name == "SlowEffect")
+            {
+                slowEffect[slowEffectCount] = mr;
+                if (slowEffectCount <= 1)
+                {
+                    slowEffectCount++;
+                }
+            }
+        }
     }
 
     private void Update()
@@ -284,6 +302,30 @@ public class PlayerOneMovement : MonoBehaviour {
         else
         {
             StunPenalty = 1;
+        }
+
+        //Turn on slow effect on PLAYER
+        if (SlowPenaltyTier1 != 1)
+        {
+
+            foreach (MeshRenderer e in slowEffect)
+            {
+                if (e != null)
+                {
+                    e.enabled = true;
+                }
+            }
+        }
+
+        else
+        {
+            foreach (MeshRenderer e in slowEffect)
+            {
+                if (e != null)
+                {
+                    e.enabled = false;
+                }
+            }
         }
 
         //WallJump Check at feet
