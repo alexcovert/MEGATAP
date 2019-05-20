@@ -296,7 +296,7 @@ public class PlayerOneMovement : MonoBehaviour {
             audioSource.PlayOneShot(speedBoostSFX);
             ghost.On = true;
             once = true;
-            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultiplier));
+            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
         }
         //New Speed Function
         speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
