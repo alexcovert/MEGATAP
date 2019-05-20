@@ -141,6 +141,13 @@ public class SpellBase : MonoBehaviour {
 
         //  yield return new WaitForSeconds(stunDuration);
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
+        
+        while(player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == true)
+        {
+            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
+            yield return null;
+        }
+
         if (anim != null)
         {
             anim.enabled = true;
