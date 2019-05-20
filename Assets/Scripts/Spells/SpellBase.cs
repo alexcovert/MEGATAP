@@ -195,7 +195,7 @@ public class SpellBase : MonoBehaviour {
         while(player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty() != 1)
         {
             player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
-            yield retrun null;
+            yield return null;
         }
     }
 
