@@ -10,8 +10,7 @@ public class WinTrigger : MonoBehaviour {
 	public GameObject CanvasUI2;
 	public GameObject CanvasUI3;
 	public GameObject CanvasUI4;
-	public GameObject CanvasUI5;
-	public GameObject CanvasUI6;
+    public GameObject CanvasUI6;
     public bool Win { get; private set; }
     [SerializeField] private GameOverMenu menu;
 	void Start () {
@@ -32,7 +31,6 @@ public class WinTrigger : MonoBehaviour {
             CanvasUI2.SetActive(false);
             CanvasUI3.SetActive(false);
             CanvasUI4.SetActive(false);
-            CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
 
             menu.Open(true);
