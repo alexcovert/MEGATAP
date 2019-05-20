@@ -460,11 +460,6 @@ public class PlayerOneMovement : MonoBehaviour {
         move = m;
     }
 
-    public bool GetMove()
-    {
-        return move;
-    }
-
     public Animator GetAnim()
     {
         return animator;
