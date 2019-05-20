@@ -55,12 +55,6 @@ public class LogProjectile : MonoBehaviour {
     {
         this.transform.position = child.transform.position;
 
-        //So cannot die prematurely
-        if(rb.velocity.y != 0)
-        {
-            canDie = true;
-        }
-
         //only needs to have 0 velocity once.
         if ((rb.velocity.x <= 0.00001 && rb.velocity.x >= -0.00001) && (rb.velocity.z <= 0.00001 && rb.velocity.z >= -0.00001))
         {
