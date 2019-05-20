@@ -163,7 +163,11 @@ public class TrapBase : MonoBehaviour {
     // input directions: both "percents" should be between 0 and 1
     public void Slow(GameObject obj, float slowPercent, float jumpReductionPercent)
     {
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetJumpHeight(obj.gameObject.GetComponent<PlayerOneMovement>().GetJumpHeight() * jumpReductionPercent);
+        float GetJumpPenalty = obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty();
+        if (GetJumpPenlaty <= obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty())
+        {
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetJumpPenalty(jumpReductionPercent);
+        }
         float GetPenalty = obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
         if (slowPercent <= GetPenalty)
         {

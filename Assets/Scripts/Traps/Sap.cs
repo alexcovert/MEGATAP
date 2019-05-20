@@ -42,7 +42,7 @@ public class Sap : MonoBehaviour {
             }
             else if (slowTriggered)
             {
-                player.GetComponent<PlayerOneMovement>().SetJumpHeight(player.GetComponent<PlayerOneMovement>().GetConstantJumpHeight());
+                player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
                 slowTriggered = false;
             }
             if(slowTimer == 1 && anim != null)
