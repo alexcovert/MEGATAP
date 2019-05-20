@@ -69,8 +69,6 @@ public class TrapBase : MonoBehaviour {
         }
     }
 
-    private float time;
-
 
     //for stun function and its enum
     //private bool waitActive = true;
@@ -136,10 +134,23 @@ public class TrapBase : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj, float stunDuration, GameObject trap = null)
     {
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
-        yield return new WaitForSeconds(stunDuration);
+        float stunTimePassed = 0;
+        while (stunTimePassed <= stunDuration)
+        {
+            stunTimePassed += Time.deltaTime;
+
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+
+            yield return null;
+        }
 
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
+
+        while(obj.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == true)
+        {
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
+            yield return null;
+        }
 
         once = false;
         if (trap != null)
