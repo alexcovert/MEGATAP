@@ -118,13 +118,7 @@ public class SpellBase : MonoBehaviour {
     {
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
-        if (mat != null)
-        {
-            foreach (Renderer r in child)
-            {
-                if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
-            }
-        }
+        
         if(anim != null)
         {
             anim.enabled = false;
@@ -135,6 +129,14 @@ public class SpellBase : MonoBehaviour {
             stunTimePassed += Time.deltaTime;
 
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+
+            if (mat != null)
+            {
+                foreach (Renderer r in child)
+                {
+                    if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
+                }
+            }
 
             yield return null;
         }
