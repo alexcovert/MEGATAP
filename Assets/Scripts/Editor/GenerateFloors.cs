@@ -27,7 +27,7 @@ public class GenerateFloors {
                 {
                     //Generate Win Trigger
                     GameObject winTrigger = PrefabUtility.InstantiatePrefab(Resources.Load("WinTrigger")) as GameObject;
-                    winTrigger.transform.position = new Vector3(winTrigger.transform.position.x, floorHeight * floor + 10, winTrigger.transform.position.z);
+                    winTrigger.transform.position = new Vector3(winTrigger.transform.position.x, floorHeight * floor + 30, winTrigger.transform.position.z);
                     winTrigger.transform.SetParent(tower.transform);
 
                     //Make boundaries taller
