@@ -78,10 +78,21 @@ public class PlayerOneMovement : MonoBehaviour {
     private MeshRenderer[] mrs;
     private int slowEffectCount = 0;
 
+    private ParticleSystem dustParticles; 
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         audioSource = GetComponent<AudioSource>();
+
+        ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem p in particles)
+        {
+            if (p.name == "DustParticles")
+            {
+                dustParticles = p;
+            }
+        }
     }
 
     void Start() {
@@ -403,6 +414,7 @@ public class PlayerOneMovement : MonoBehaviour {
                     wallJumpVector = (-transform.forward + transform.up / wallJumpDirectionDivider).normalized * (jumpH / wallJumpDivider);
                     wallJumping = true;
                     //jumping = false;
+                    dustParticles.Play();
                     StartCoroutine(DisableWallJump());
                 }
             }
