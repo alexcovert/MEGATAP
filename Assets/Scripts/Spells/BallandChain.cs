@@ -18,8 +18,6 @@ public class BallandChain : MonoBehaviour {
     //Hit two boundaries to die
     private bool once = false;
 
-    private MeshRenderer[] slowEffect = new MeshRenderer[2];
-
     // SFX
     private AudioSource audioSource;
     [SerializeField]
@@ -70,27 +68,6 @@ public class BallandChain : MonoBehaviour {
             hit = true;
             player = other.gameObject;
 
-            //Turn on slow effect on PLAYER
-            MeshRenderer[] mrs = player.GetComponentsInChildren<MeshRenderer>();
-            int slowEffectCount = 0;
-            foreach(MeshRenderer mr in mrs)
-            { 
-                if (mr.name == "SlowEffect")
-                {
-                    slowEffect[slowEffectCount] = mr;
-                    slowEffectCount++;
-                }
-            }
-            
-            foreach(MeshRenderer e in slowEffect)
-            {
-                if(e != null)
-                {
-                    e.enabled = true;
-                }
-            }
-            StartCoroutine(DisableSlowEffect());
-
             //Turn of spells mesh renderer
             this.GetComponent<Renderer>().enabled = false;
             ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
@@ -116,7 +93,7 @@ public class BallandChain : MonoBehaviour {
     private IEnumerator Wait(GameObject obj)
     {
         yield return new WaitForSeconds(spellDuration);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         Destroy(obj);
     }
 
@@ -128,19 +105,7 @@ public class BallandChain : MonoBehaviour {
 
     private IEnumerator DestroyObj()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(spellDuration + 2f);
         Destroy(this.gameObject);
-    }
-
-    private IEnumerator DisableSlowEffect()
-    {
-        yield return new WaitForSeconds(spellDuration);
-        foreach (MeshRenderer e in slowEffect)
-        {
-            if (e != null)
-            {
-                e.enabled = false;
-            }
-        }
     }
 }

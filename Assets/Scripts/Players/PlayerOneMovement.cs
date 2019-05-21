@@ -30,6 +30,10 @@ public class PlayerOneMovement : MonoBehaviour {
     private float StunPenalty = 1;
     private float SuperSpeed = 1;
 
+    private float SlowJumpPenalty = 1;
+
+    private float SuperJump = 1;
+
     //Movement Penalty Multiplier
     private float crouchSlow = 0.5f;
 
@@ -42,6 +46,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private float speed;
     private float jumpH; // change this when in sap etc.; set it back to jumpHeight when done
+    private float jump;
 
     //camera
     [SerializeField] private CameraOneRotator cam;
@@ -68,6 +73,11 @@ public class PlayerOneMovement : MonoBehaviour {
     private GhostTrail ghost;
     private bool once = false;
 
+    //Slow Effect
+    private MeshRenderer[] slowEffect = new MeshRenderer[2];
+    private MeshRenderer[] mrs;
+    private int slowEffectCount = 0;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
@@ -90,8 +100,22 @@ public class PlayerOneMovement : MonoBehaviour {
 
         speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
         jumpH = jumpHeight;
+        jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
         move = true;
+
+        mrs = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in mrs)
+        {
+            if (mr.name == "SlowEffect")
+            {
+                slowEffect[slowEffectCount] = mr;
+                if (slowEffectCount <= 1)
+                {
+                    slowEffectCount++;
+                }
+            }
+        }
     }
 
     private void Update()
@@ -272,18 +296,43 @@ public class PlayerOneMovement : MonoBehaviour {
             audioSource.PlayOneShot(speedBoostSFX);
             ghost.On = true;
             once = true;
-            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration));
+            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
         }
         //New Speed Function
         speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
+        //New Jump Function
+        jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
-        if(move == false)
+        if (move == false)
         {
             StunPenalty = 0;
         }
         else
         {
             StunPenalty = 1;
+        }
+
+        //Turn on slow effect on PLAYER
+        if (SlowPenaltyTier1 != 1)
+        {
+            foreach (MeshRenderer e in slowEffect)
+            {
+                if (e != null)
+                {
+                    e.enabled = true;
+                }
+            }
+        }
+
+        else
+        {
+            foreach (MeshRenderer e in slowEffect)
+            {
+                if (e != null)
+                {
+                    e.enabled = false;
+                }
+            }
         }
 
         //WallJump Check at feet
@@ -310,7 +359,7 @@ public class PlayerOneMovement : MonoBehaviour {
         if (jumping)
         {
             crouching = false;
-            movementVector = new Vector3(movementVector.x, jumpH, movementVector.z);
+            movementVector = new Vector3(movementVector.x, jump, movementVector.z);
             if (move == true && wallJumping == false)
             {
                 animator.Play("Armature|JumpStart", 0);
@@ -344,9 +393,9 @@ public class PlayerOneMovement : MonoBehaviour {
             RaycastHit hit;
             RaycastHit downHit;
             bool raycastDown = Physics.Raycast(transform.position, -transform.up, out downHit, 1);
-            if ((Physics.Raycast(transform.position, transform.forward, out hit, 1.5f) || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f) || 
-                    Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, out hit, 1.5f) 
-                    || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 1.5f)) && !raycastDown)
+            if ((Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.forward, out hit, 2f) || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 2f) || 
+                    Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, out hit, 2f) 
+                    || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 2f)) && !raycastDown)
             {
                 if (hit.transform.tag == "Platform" && inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded == false && move == true)
                 {
@@ -375,9 +424,10 @@ public class PlayerOneMovement : MonoBehaviour {
         InputEnabled = true;
     }
 
-    public IEnumerator SpeedBoost(float speedUpMultiplier, float speedUpDuration)
+    public IEnumerator SpeedBoost(float speedUpMultiplier, float speedUpDuration, float speedUpJumpMultipler)
     {
         SuperSpeed = speedUpMultiplier;
+        SuperJump = speedUpJumpMultipler;
 
         float timePerPickup = speedUpDuration / 3;
 
@@ -394,6 +444,7 @@ public class PlayerOneMovement : MonoBehaviour {
         spedUp = false;
         once = false;
         SuperSpeed = 1;
+        SuperJump = 1;
         ghost.On = false;
         gameObject.GetComponent<PlayerOneStats>().pickupCount = 0;
     }
@@ -494,5 +545,15 @@ public class PlayerOneMovement : MonoBehaviour {
     public void SetSlowPenalty(float penalty)
     {
         SlowPenaltyTier1 = penalty;
+    }
+
+    public float GetSlowJumpPenalty()
+    {
+        return SlowJumpPenalty;
+    }
+    
+    public void SetSlowJumpPenalty(float penalty)
+    {
+        SlowJumpPenalty = penalty;
     }
 }

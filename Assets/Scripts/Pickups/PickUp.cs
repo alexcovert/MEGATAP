@@ -7,6 +7,7 @@ public class PickUp : MonoBehaviour {
 
     [SerializeField] public float speedUpDuration = 7f;
     [SerializeField] public float speedUpMultiplier = 2f;
+    [SerializeField] public float speedUpJumpMultipler = 1.5f;
     [SerializeField] private AudioClip pickUpSFX1;
     [SerializeField] private AudioClip pickUpSFX2;
     [SerializeField] private AudioClip pickUpSFX3;

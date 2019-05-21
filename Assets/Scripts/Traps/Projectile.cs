@@ -53,7 +53,10 @@ public class Projectile : MonoBehaviour {
 		else if(col.gameObject.tag == "Boundary" || col.gameObject.tag == "Platform"){
             if (hit == true)
             {
-                Unrender();
+                if (col.gameObject.tag == "Platform")
+                {
+                    Unrender();
+                }
                 StartCoroutine(Death(stunDuration));
             }
             else if(hit == false)
