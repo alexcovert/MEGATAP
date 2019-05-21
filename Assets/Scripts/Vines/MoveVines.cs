@@ -19,7 +19,7 @@ public class MoveVines : MonoBehaviour {
     //Bools to help with moving the vines up
     private bool moveUp;                 //true while the vines are moving up
     private bool movedUpThisFloor;       //true if the vines have already moved up this floor (so they don't do it repeatedly)
-
+    private int firstMoveUp = 0;
 
     //floats to add randomness to vine movement
     private List<float> offset, multiplier;
@@ -51,6 +51,13 @@ public class MoveVines : MonoBehaviour {
         {
             for(int p = 0; p < vines.Count; p++)
             {
+                if (firstMoveUp < vines.Count)
+                {
+                    targetHeight = 10;
+                    moveUp = true;
+                    CheckMoveUp(vines[p]);
+                    firstMoveUp++;
+                }
                 MoveVine(vines[p], p);
                 CheckRotate(vines[p]);
                 CheckMoveUp(vines[p]);
