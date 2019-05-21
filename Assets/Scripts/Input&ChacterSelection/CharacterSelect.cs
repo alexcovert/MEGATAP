@@ -41,6 +41,7 @@ public class CharacterSelect : MonoBehaviour {
     private SceneTransition loader;
 
     private float returnTimer = 0;
+    private float startReturnTimer = 0;
 
     private void Awake()
     {
@@ -61,7 +62,7 @@ public class CharacterSelect : MonoBehaviour {
         quarterDist = Screen.height / 4;
         SpotlightFollow();
 
-        //Movement
+        //Movement---------------------------------------------------------------------------------------------------
         //If only one controller is plugged in
         if (!checkControllers.GetControllerOneState())
         {
@@ -144,7 +145,9 @@ public class CharacterSelect : MonoBehaviour {
                 StartCoroutine(StickDelay());
             }
         }
-        
+        //End movement ---------------------------------------------------------------------------------------------------------
+
+
 
         LockIn();
         CheckStart();
@@ -156,11 +159,15 @@ public class CharacterSelect : MonoBehaviour {
         backImg.fillAmount = 1 / (3 / returnTimer);
         if(Input.GetButton("Cancel_Joy_1") || Input.GetButton("Cancel_Joy_2") || Input.GetButton("Escape"))
         {
-            returnTimer += Time.deltaTime;
+            if (startReturnTimer >= 0.5f)
+                returnTimer += Time.deltaTime;
+            else
+                startReturnTimer += Time.deltaTime;
         }
         else if(Input.GetButtonUp("Cancel_Joy_1") || Input.GetButtonUp("Cancel_Joy_2") || Input.GetButtonUp("Escape"))
         {
             returnTimer = 0;
+            startReturnTimer = 0;
         }
 
         if(returnTimer > 3)
