@@ -57,6 +57,7 @@ public class Sap : MonoBehaviour {
                 if (hit == true)
                 {
                     player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+                    player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
                 }
                 hit = false;
 

@@ -176,7 +176,6 @@ public class SpellBase : MonoBehaviour {
             player.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
         }
 
-        player.gameObject.GetComponent<PlayerOneMovement>().SetJumpHeight(player.gameObject.GetComponent<PlayerOneMovement>().GetJumpHeight() * jumpReductionPercent);
         float GetPenalty = player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
         if (slowPercent <= GetPenalty)
         {
@@ -205,13 +204,6 @@ public class SpellBase : MonoBehaviour {
 
         player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
         player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
-
-        while(player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty() != 1 && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty() != 1)
-        {
-            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
-            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
-            yield return null;
-        }
     }
 
     public void RestartFace(GameObject obj)

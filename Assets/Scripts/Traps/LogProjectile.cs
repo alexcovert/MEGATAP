@@ -35,6 +35,8 @@ public class LogProjectile : MonoBehaviour {
     //Figure out which face this is on
     private CameraOneRotator playerOne;
 
+    private bool canHit = true;
+
 
     void Awake()
     {
@@ -60,75 +62,79 @@ public class LogProjectile : MonoBehaviour {
         {
             box.enabled = false;
         }
-        switch (playerOne.GetState())
+        if (canHit == true)
         {
-            case 1:
-                if (rb.velocity.x > speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                //left
-                else if (rb.velocity.x < -speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback) {
-                    box.enabled = false;
-                }
-                break;
-            case 2:
-                if(rb.velocity.z > speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                //left
-                else if(rb.velocity.z < -speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
-            case 3:
-                //left
-                if(rb.velocity.x > speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if(rb.velocity.x < -speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
-            case 4:
-                //left
-                if (rb.velocity.z > speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z < 0)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
+            switch (playerOne.GetState())
+            {
+                case 1:
+                    if (rb.velocity.x > speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    //left
+                    else if (rb.velocity.x < -speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 2:
+                    if (rb.velocity.z > speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    //left
+                    else if (rb.velocity.z < -speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 3:
+                    //left
+                    if (rb.velocity.x > speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x < -speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 4:
+                    //left
+                    if (rb.velocity.z > speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z < 0)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+            }
         }
     }
     void FixedUpdate () {
@@ -175,6 +181,7 @@ public class LogProjectile : MonoBehaviour {
     private IEnumerator Death()
     {
         yield return new WaitForSeconds(lifeTime);
+        canHit = false;
         box.enabled = false;
         yield return new WaitForSeconds(2f);
         Destroy(this.transform.parent.gameObject);
