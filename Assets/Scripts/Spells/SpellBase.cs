@@ -103,33 +103,28 @@ public class SpellBase : MonoBehaviour {
 
     // apply stun to inputted
     // goes to enumerator for its waitforseconds
-    public void Stun(GameObject player, float stunDuration, Material mat = null, Animator anim = null)
+    public void Stun(GameObject player, float stunDuration, Material mat = null)
     {
         Renderer[] child = player.GetComponentsInChildren<Renderer>();
         if (once == false)
         {
             once = true;
-            StartCoroutine(WaitStun(player, stunDuration, mat, child, anim));
+            StartCoroutine(WaitStun(player, stunDuration, mat, child));
         }
 
     }
 
-    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null, Animator anim = null)
+    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null)
     {
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
-        
-        if(anim != null)
+
+        float stunTime = 0;
+
+        while (stunTime <= stunDuration)
         {
-            anim.enabled = false;
-        }
-        float stunTimePassed = 0;
-        while (stunTimePassed <= stunDuration)
-        {            
-            stunTimePassed += Time.deltaTime;
-
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
-
+            stunTime += Time.deltaTime;
             if (mat != null)
             {
                 foreach (Renderer r in child)
@@ -137,23 +132,10 @@ public class SpellBase : MonoBehaviour {
                     if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
                 }
             }
-
             yield return null;
         }
-
         //  yield return new WaitForSeconds(stunDuration);
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-        
-        while(player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == true)
-        {
-            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-            yield return null;
-        }
-
-        if (anim != null)
-        {
-            anim.enabled = true;
-        }
     }
 
     // apply slow to inputted
@@ -182,7 +164,13 @@ public class SpellBase : MonoBehaviour {
             player.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
         }
 
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowSpellTime(slowDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnSlow(false);
+
         float slowTimePassed = 0;
+        bool noSlow = false;
+
         while (slowTimePassed <= slowDuration)
         {
             slowTimePassed += Time.deltaTime;
@@ -199,11 +187,20 @@ public class SpellBase : MonoBehaviour {
                 player.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
             }
 
+            noSlow = player.gameObject.GetComponent<PlayerOneMovement>().GetUnSlow();
+
             yield return null;
         }
-
-        player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
-        player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+        if (noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == false)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+        }
+        else if(noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == true)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
+        }
     }
 
     public void RestartFace(GameObject obj)

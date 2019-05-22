@@ -59,8 +59,16 @@ public class Petrify : MonoBehaviour {
             if (hit)
             {
                 child = player.GetComponentsInChildren<Renderer>();
-                spellBase.Stun(player, stunDuration, turnStone, anim);
+                spellBase.Stun(player, stunDuration, turnStone);
+                anim.enabled = false;
+                StartCoroutine(CheckPetrifyStatus());
                 StartCoroutine(Wait(this.gameObject));
+            }
+
+            if (player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
+            {
+                Revert();
+                anim.enabled = true;
             }
         }
     }
@@ -88,7 +96,7 @@ public class Petrify : MonoBehaviour {
         }
         if(hit == false && other.tag == "Boundary" && once == true)
         {
-            Destroy(this.gameObject);
+            StartCoroutine(Die(3f));
         }
          
     }
@@ -118,9 +126,17 @@ public class Petrify : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(stunDuration - 0.1f);
-        Revert();
-        yield return new WaitForSeconds(1f);
+        float time = 0;
+        while (time <= stunDuration + 0.2f)
+        {
+            if (player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify() == true)
+            {
+                Revert();
+                anim.enabled = true;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(2f);
         Destroy(obj);
     }
 
@@ -128,5 +144,21 @@ public class Petrify : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
         once = true;
+    }
+
+    private IEnumerator Die(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(this.gameObject);
+    }
+
+    private IEnumerator CheckPetrifyStatus()
+    {
+        //For petrify's materials to stop flickering
+        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
+
+        yield return null;
     }
 }

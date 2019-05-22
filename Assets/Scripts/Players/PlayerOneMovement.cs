@@ -78,7 +78,18 @@ public class PlayerOneMovement : MonoBehaviour {
     private MeshRenderer[] mrs;
     private int slowEffectCount = 0;
 
-    private ParticleSystem dustParticles; 
+    private ParticleSystem dustParticles;
+
+    //For Petrify flicker
+    private float PetrifyTime = -1;
+    private float StunTimeInitial = 0;
+    private bool unPetrify = true;
+
+    //For slow effect flicker
+    private float SlowSpellTime = -1;
+    private float SlowTimeInitial = 0;
+    private bool unSlow = true;
+    private bool slowed = false;
 
     private void Awake()
     {
@@ -314,13 +325,22 @@ public class PlayerOneMovement : MonoBehaviour {
         //New Jump Function
         jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
-        if (move == false)
+        //Petrify flicker fix
+        StunTimeInitial += Time.deltaTime;
+        if (StunTimeInitial >= PetrifyTime)
         {
-            StunPenalty = 0;
+            unPetrify = true;
         }
         else
         {
-            StunPenalty = 1;
+            unPetrify = false;
+        }
+
+        //Slow flicker fix
+        SlowTimeInitial += Time.deltaTime;
+        if (SlowTimeInitial >= SlowSpellTime)
+        {
+            unSlow = true;
         }
 
         //Turn on slow effect on PLAYER
@@ -389,6 +409,11 @@ public class PlayerOneMovement : MonoBehaviour {
         {
             movementVector = new Vector3(0, Physics.gravity.y * 0.255f, 0);
             stun.enabled = true;
+            StunPenalty = 0;
+        }
+        else
+        {
+            StunPenalty = 1;
         }
 
         if (!wallJumping) rb.velocity = movementVector;
@@ -533,10 +558,15 @@ public class PlayerOneMovement : MonoBehaviour {
         return inputAxis;
     }
 
-    /*public void IsSlowed(bool slow)
+    public bool GetSlowed()
+    {
+        return slowed;
+    }
+
+    public void SetSlowed(bool slow)
     {
         slowed = slow;
-    }*/
+    }
 
     public bool IsCrouched()
     {
@@ -546,6 +576,68 @@ public class PlayerOneMovement : MonoBehaviour {
     public bool IsStunned()
     {
         return !move;
+    }
+
+    //For effect flickering
+    public float GetPetrifyTime()
+    {
+        return PetrifyTime;
+    }
+
+    public void SetPetrifyTime(float f)
+    {
+        PetrifyTime = f;
+    }
+
+    public float GetStunTimeInitial()
+    {
+        return StunTimeInitial;
+    }
+    
+    public void SetStunTimeInitial(float f)
+    {
+        StunTimeInitial = f;
+    }
+
+    public bool GetUnPetrify()
+    {
+        return unPetrify;
+    }
+    
+    public void SetUnPetrify(bool b)
+    {
+        unPetrify = b;
+    }
+
+
+    public float GetSlowSpellTime()
+    {
+        return SlowSpellTime;
+    }
+
+    public void SetSlowSpellTime(float f)
+    {
+        SlowSpellTime = f;
+    }
+
+    public float GetSlowTimeInitial()
+    {
+        return SlowTimeInitial;
+    }
+
+    public void SetSlowTimeInitial(float f)
+    {
+        SlowTimeInitial = f;
+    }
+
+    public bool GetUnSlow()
+    {
+        return unSlow;
+    }
+
+    public void SetUnSlow(bool b)
+    {
+        unSlow = b;
     }
 
     //Speed Penalties and Bonuses
