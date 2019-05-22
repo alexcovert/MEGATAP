@@ -45,13 +45,6 @@ public class Sap : MonoBehaviour {
                 player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
                 slowTriggered = false;
             }
-            if(slowTimer == 1 && anim != null)
-            {
-                //Animation ends 1 frame earlier than slow so that the next instance of sap touched will do the animation properly
-                //If this ended at the same time as the slow (= 0) then the previous instance of sap touched will call this function over and over again.
-                anim.SetBool("Slowed", hit);
-
-            }
             if(slowTimer <= 0)
             {
                 if (hit == true)
@@ -67,6 +60,7 @@ public class Sap : MonoBehaviour {
                         player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
                         player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
                     }
+                    anim.SetBool("Slowed", false);
                 }
                 hit = false;
 
