@@ -230,25 +230,34 @@ public class CastSpell : MonoBehaviour
                 //Spell comes from right side
                 if (spellDirection == SpellDirection.Right)
                 {
+                    float pos;
+                    if(spell.ToString() == "Wind (SpellBase)")
+                    {
+                        pos = 45;
+                    }                
+                    else
+                    {
+                        pos = 50;
+                    }
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(50, spellTarget.transform.position.y, -42);
+                            castedSpell = spell.InstantiateSpell(pos, spellTarget.transform.position.y, -42);
                             movementVector = new Vector3(-spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, 50);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, pos);
                             movementVector = new Vector3(0, 0, -spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(-50, spellTarget.transform.position.y, 42);
+                            castedSpell = spell.InstantiateSpell(-pos, spellTarget.transform.position.y, 42);
                             movementVector = new Vector3(spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -50);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -pos);
                             movementVector = new Vector3(0, 0, spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
@@ -487,7 +496,6 @@ public class CastSpell : MonoBehaviour
         DestroyTarget();
         GetComponent<PlaceTrap>().DestroyGhost();
         SetTarget();
-        Debug.Log(spell);
         spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
     }
 

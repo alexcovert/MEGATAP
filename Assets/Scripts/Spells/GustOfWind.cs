@@ -92,7 +92,6 @@ public class GustOfWind : MonoBehaviour {
           //player = other.gameObject;
           trig = true;
           count++;
-          Debug.Log(count);
       }
 
         if (other.gameObject.tag == "Boundary" && once == false)
