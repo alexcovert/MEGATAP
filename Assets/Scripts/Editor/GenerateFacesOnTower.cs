@@ -29,6 +29,8 @@ public class GenerateFacesOnTower : MonoBehaviour {
     private static void Create()
     {
         Debug.Log("Generating Faces on Tower in Sequence");
+        Faces.Clear();
+        Stairs.Clear();
         GetAtPath(Faces);
         GetStairs(Stairs);
         if (Faces != null && Stairs != null)
