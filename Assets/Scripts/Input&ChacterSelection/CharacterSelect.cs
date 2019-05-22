@@ -156,7 +156,7 @@ public class CharacterSelect : MonoBehaviour {
 
     private void CheckReturn()
     {
-        backImg.fillAmount = 1 / (3 / returnTimer);
+        backImg.fillAmount = 1 / (1.5f / returnTimer);
         if(Input.GetButton("Cancel_Joy_1") || Input.GetButton("Cancel_Joy_2") || Input.GetButton("Escape"))
         {
             if (startReturnTimer >= 0.5f)
@@ -170,7 +170,7 @@ public class CharacterSelect : MonoBehaviour {
             startReturnTimer = 0;
         }
 
-        if(returnTimer > 3)
+        if(returnTimer > 1.5f)
         {
             ReturnToMenu();
         }
