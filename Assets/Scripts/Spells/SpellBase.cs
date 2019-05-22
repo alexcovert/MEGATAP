@@ -144,6 +144,7 @@ public class SpellBase : MonoBehaviour {
         while (stunTime <= stunDuration)
         {
             noPetrify = player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify();
+            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
             stunTime += Time.deltaTime;
             yield return null;
         }

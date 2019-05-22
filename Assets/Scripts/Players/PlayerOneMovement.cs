@@ -83,7 +83,7 @@ public class PlayerOneMovement : MonoBehaviour {
     //For Petrify flicker
     private float PetrifyTime = -1;
     private float StunTimeInitial = 0;
-    private bool unPetrify = false;
+    private bool unPetrify = true;
 
     //For slow effect flicker
     private float SlowSpellTime = -1;
@@ -330,6 +330,10 @@ public class PlayerOneMovement : MonoBehaviour {
         if (StunTimeInitial >= PetrifyTime)
         {
             unPetrify = true;
+        }
+        else
+        {
+            unPetrify = false;
         }
 
         //Slow flicker fix
