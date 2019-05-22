@@ -234,7 +234,7 @@ public class CastSpell : MonoBehaviour
                     if(spell.ToString() == "Wind (SpellBase)")
                     {
                         Debug.Log("name");
-                        pos = 15;
+                        pos = 45;
                     }                
                     else
                     {
