@@ -135,7 +135,7 @@ public class SpellBase : MonoBehaviour {
         //For petrify's materials to stop flickering
 
         player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
-        player.gameObject.GetComponent<PlayerOneMovement>().SetTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
         player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
 
         float stunTime = 0;
@@ -185,7 +185,13 @@ public class SpellBase : MonoBehaviour {
             player.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
         }
 
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowSpellTime(slowDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnSlow(false);
+
         float slowTimePassed = 0;
+        bool noSlow = false;
+
         while (slowTimePassed <= slowDuration)
         {
             slowTimePassed += Time.deltaTime;
@@ -202,11 +208,20 @@ public class SpellBase : MonoBehaviour {
                 player.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
             }
 
+            noSlow = player.gameObject.GetComponent<PlayerOneMovement>().GetUnSlow();
+
             yield return null;
         }
-
-        player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
-        player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+        if (noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == false)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+        }
+        else
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
+        }
     }
 
     public void RestartFace(GameObject obj)

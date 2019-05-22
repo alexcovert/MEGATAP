@@ -56,8 +56,17 @@ public class Sap : MonoBehaviour {
             {
                 if (hit == true)
                 {
-                    player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
-                    player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
+                    player.GetComponent<PlayerOneMovement>().SetSlowed(false);
+                    if (player.GetComponent<PlayerOneMovement>().GetUnSlow() == true)
+                    {
+                        player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+                        player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
+                    }
+                    else
+                    {
+                        player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
+                        player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
+                    }
                 }
                 hit = false;
 
@@ -87,6 +96,7 @@ public class Sap : MonoBehaviour {
                 }
                 anim.SetBool("Slowed", hit);
             }
+            player.GetComponent<PlayerOneMovement>().SetSlowed(true);
             slowTimer = slowDuration;
         }
     }

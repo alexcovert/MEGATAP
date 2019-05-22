@@ -80,9 +80,16 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private ParticleSystem dustParticles;
 
+    //For Petrify flicker
     private float PetrifyTime = -1;
-    private float timeInital = 0;
+    private float StunTimeInitial = 0;
     private bool unPetrify = false;
+
+    //For slow effect flicker
+    private float SlowSpellTime = -1;
+    private float SlowTimeInitial = 0;
+    private bool unSlow = true;
+    private bool slowed = false;
 
     private void Awake()
     {
@@ -318,11 +325,18 @@ public class PlayerOneMovement : MonoBehaviour {
         //New Jump Function
         jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
-        //Petrify stuff here.
-        timeInital += Time.deltaTime;
-        if (timeInital >= PetrifyTime)
+        //Petrify flicker fix
+        StunTimeInitial += Time.deltaTime;
+        if (StunTimeInitial >= PetrifyTime)
         {
             unPetrify = true;
+        }
+
+        //Slow flicker fix
+        SlowTimeInitial += Time.deltaTime;
+        if (SlowTimeInitial >= SlowSpellTime)
+        {
+            unSlow = true;
         }
 
         //Turn on slow effect on PLAYER
@@ -540,10 +554,15 @@ public class PlayerOneMovement : MonoBehaviour {
         return inputAxis;
     }
 
-    /*public void IsSlowed(bool slow)
+    public bool GetSlowed()
+    {
+        return slowed;
+    }
+
+    public void SetSlowed(bool slow)
     {
         slowed = slow;
-    }*/
+    }
 
     public bool IsCrouched()
     {
@@ -555,6 +574,7 @@ public class PlayerOneMovement : MonoBehaviour {
         return !move;
     }
 
+    //For effect flickering
     public float GetPetrifyTime()
     {
         return PetrifyTime;
@@ -565,14 +585,14 @@ public class PlayerOneMovement : MonoBehaviour {
         PetrifyTime = f;
     }
 
-    public float GetTimeInitial()
+    public float GetStunTimeInitial()
     {
-        return timeInital;
+        return StunTimeInitial;
     }
     
-    public void SetTimeInitial(float f)
+    public void SetStunTimeInitial(float f)
     {
-        timeInital = f;
+        StunTimeInitial = f;
     }
 
     public bool GetUnPetrify()
@@ -583,6 +603,37 @@ public class PlayerOneMovement : MonoBehaviour {
     public void SetUnPetrify(bool b)
     {
         unPetrify = b;
+    }
+
+
+    public float GetSlowSpellTime()
+    {
+        return SlowSpellTime;
+    }
+
+    public void SetSlowSpellTime(float f)
+    {
+        SlowSpellTime = f;
+    }
+
+    public float GetSlowTimeInitial()
+    {
+        return SlowTimeInitial;
+    }
+
+    public void SetSlowTimeInitial(float f)
+    {
+        SlowTimeInitial = f;
+    }
+
+    public bool GetUnSlow()
+    {
+        return unSlow;
+    }
+
+    public void SetUnSlow(bool b)
+    {
+        unSlow = b;
     }
 
     //Speed Penalties and Bonuses
