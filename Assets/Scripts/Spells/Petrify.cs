@@ -93,7 +93,7 @@ public class Petrify : MonoBehaviour {
         }
         if(hit == false && other.tag == "Boundary" && once == true)
         {
-            Destroy(this.gameObject);
+            StartCoroutine(Die(3f));
         }
          
     }
@@ -140,5 +140,11 @@ public class Petrify : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
         once = true;
+    }
+
+    private IEnumerator Die(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(this.gameObject);
     }
 }
