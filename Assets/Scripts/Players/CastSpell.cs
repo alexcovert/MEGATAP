@@ -387,12 +387,12 @@ public class CastSpell : MonoBehaviour
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(180, 0, 90);
                             //spellTarget.transform.position = new Vector3(transform.position.x, position.y, 45);
-                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x + 5, position.y, 45);
+                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x - 5, position.y, 45);
                             break;
                         case 4:
                             spellTarget.transform.eulerAngles = new Vector3(0, 90, -90);
                             //spellTarget.transform.position = new Vector3(-45, position.y, transform.position.z);
-                            spellTarget.transform.position = new Vector3(-45, position.y, cam2.ScreenToWorldPoint(center).z + 5);
+                            spellTarget.transform.position = new Vector3(-45, position.y, cam2.ScreenToWorldPoint(center).z - 5);
                             break;
                     }
                 }
