@@ -13,6 +13,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
     private CastSpell cs;
     private PlaceTrap pt;
     private Image controllerCursor;
+    private Image spellCursor;
     private TextMeshProUGUI tooltipText;
     private GameObject tooltipBox;
     private MoveControllerCursor cursorMove;
@@ -64,6 +65,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
         cs = player.GetComponent<CastSpell>();
         pt = player.GetComponent<PlaceTrap>();
         controllerCursor = GameObject.Find("ControllerCursor").GetComponent<Image>();
+        spellCursor = GameObject.Find("SpellControllerCursor").GetComponent<Image>();
         cursorMove = player.GetComponent<MoveControllerCursor>();
 
         if (es.currentSelectedGameObject != null && this.gameObject.Equals(pt.queue[0].gameObject))
@@ -112,7 +114,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
                 if (pt != null) pt.DestroyGhost();
                 if (currentFirstSpell != null && currentFirstSpell.gameObject == this.gameObject)
                 {
-                    controllerCursor.transform.localPosition = new Vector3(0, -20, 0);
+                    spellCursor.transform.localPosition = new Vector3(0, -130, 0);
                     cursorMove.MovingTraps = false;
                 }
             }

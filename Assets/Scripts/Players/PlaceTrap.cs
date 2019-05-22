@@ -231,12 +231,10 @@ public class PlaceTrap : MonoBehaviour {
 
             if (bases != null)
             {
-                Debug.Log(bases.Valid);
                 validLocation = bases.Valid;
             }
             else if (check != null)
             {
-                Debug.Log(check.Valid);
                 validLocation = check.Valid;
             }
             else
@@ -246,7 +244,6 @@ public class PlaceTrap : MonoBehaviour {
             }
 
             //CheckNearby() also checks the collider provided for the "safe zone" around the trap
-            Debug.Log(CheckNearby() + ", " + validLocation);
             if (CheckNearby() && validLocation)
             {
                 Vector3 position = GetGridPosition();
@@ -454,93 +451,6 @@ public class PlaceTrap : MonoBehaviour {
         }
     }
 
-
-    //Change x/z rotation based on player input
-    //private int trapRot = 0;
-    //private void UpdateRotationInput()
-    //{
-    //    if (RaycastFromCam() != null)
-    //    {
-    //        RaycastHit hit = RaycastFromCam().Value;
-
-    //        //Commented out while we are not doing trap rotation - KEEP for later
-    //        //if (Input.GetButtonDown("RotateLeft_Joy_2") && !pause.GameIsPaused)
-    //        //{
-    //        //    if (hit.normal.x == -1 || hit.normal.x == 1)
-    //        //    {
-    //        //        trapRot--;
-    //        //    }
-    //        //    else
-    //        //    {
-    //        //        trapRot++;
-    //        //    }
-    //        //}
-    //        //else if (Input.GetButtonDown("RotateRight_Joy_2") && !pause.GameIsPaused)
-    //        //{
-    //        //    if (hit.normal.x == -1 || hit.normal.x == 1)
-    //        //    {
-    //        //        trapRot++;
-    //        //    }
-    //        //    else
-    //        //    {
-    //        //        trapRot--;
-    //        //    }
-    //        //}
-
-    //        //Add Offsets so they still stick to grid
-    //        if(trapRot % 4 == 0)
-    //        {//Facing Up
-    //            CurrentDirection = Direction.Up;
-    //            gridYOffset = 0.35f;
-    //            gridXOffset = 0;
-    //            gridZOffset = 0;
-    //        }
-    //        else if((trapRot - 1) % 4 == 0)
-    //        {//Facing Left
-    //            CurrentDirection = Direction.Left;
-    //            gridYOffset = 1;
-    //            switch(cam.GetComponent<CameraTwoRotator>().GetState())
-    //            {
-    //                case 1:
-    //                case 3:
-    //                    gridXOffset = 0.6f;
-    //                    gridZOffset = 0;
-    //                    break;
-    //                case 2:
-    //                case 4:
-    //                    gridXOffset = 0;
-    //                    gridZOffset = -0.6f;
-    //                    break;
-    //            }
-    //        }
-    //        else if((trapRot - 2) % 4 == 0)
-    //        {//Facing Down
-    //            CurrentDirection = Direction.Down;
-    //            gridYOffset = 1.7f;
-    //            gridXOffset = 0;
-    //            gridZOffset = 0;
-    //        }
-    //        else if((trapRot - 3) % 4 == 0)
-    //        {//Facing Right
-    //            CurrentDirection = Direction.Right;
-    //            gridYOffset = 1;
-    //            switch (cam.GetComponent<CameraTwoRotator>().GetState())
-    //            {
-    //                case 1:
-    //                case 3:
-    //                    gridXOffset = -0.6f;
-    //                    gridZOffset = 0;
-    //                    break;
-    //                case 2:
-    //                case 4:
-    //                    gridXOffset = 0;
-    //                    gridZOffset = 0.6f;
-    //                    break;
-    //            }
-    //        }
-    //    }
-    //}
-
     //Change y rotation of hit based on current side of tower
     private void FinalizeRotationInput()
     {
@@ -573,7 +483,6 @@ public class PlaceTrap : MonoBehaviour {
     {
         trap = CommonTrapPrefabs[trapNum];
 
-//        trapRot = 0;
         StartCoroutine(EnableInput());
         DestroyGhost();
         GetComponent<CastSpell>().DestroyTarget();
@@ -584,7 +493,6 @@ public class PlaceTrap : MonoBehaviour {
     {
         trap = UncommonTrapPrefabs[trapNum];
 
-    //    trapRot = 0;
         StartCoroutine(EnableInput());
         DestroyGhost();
         GetComponent<CastSpell>().DestroyTarget();
@@ -594,8 +502,7 @@ public class PlaceTrap : MonoBehaviour {
     public void OnClickTrapRare(int trapNum)
     {
         trap = RareTrapPrefabs[trapNum];
-
-      //  trapRot = 0;
+        
         StartCoroutine(EnableInput());
         DestroyGhost();
         GetComponent<CastSpell>().DestroyTarget();
@@ -628,7 +535,6 @@ public class PlaceTrap : MonoBehaviour {
 
     private void CreateTrapQueue()
     {
-     //   trapRot = 0;
         active = true;
         for(int i = 0; i < queueSize; i++)
         {

@@ -4284,7 +4284,7 @@ Prefab:
         type: 2}
       propertyPath: controllerCursor
       value: 
-      objectReference: {fileID: 275735871}
+      objectReference: {fileID: 1485128196}
     - target: {fileID: 114871698429783546, guid: 7c17f18a57460024ba6258242e429410,
         type: 2}
       propertyPath: eventSystem
@@ -4310,6 +4310,11 @@ Prefab:
       propertyPath: playerOne
       value: 
       objectReference: {fileID: 1338709831}
+    - target: {fileID: 114169544570823518, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: spellCursor
+      value: 
+      objectReference: {fileID: 1485128196}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c17f18a57460024ba6258242e429410, type: 2}
   m_IsPrefabAsset: 0
@@ -7646,6 +7651,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1485128194}
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+--- !u!114 &1485128196 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114177211616325478, guid: c130ae0761b27334089036b39347c937,
+    type: 2}
+  m_PrefabInternal: {fileID: 1485128194}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!4 &1499000591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4063479449427360, guid: c95eca2a304e62c4abe3cc7a52590fd5,
