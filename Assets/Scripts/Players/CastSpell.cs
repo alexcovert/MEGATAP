@@ -233,7 +233,6 @@ public class CastSpell : MonoBehaviour
                     float pos;
                     if(spell.ToString() == "Wind (SpellBase)")
                     {
-                        Debug.Log("name");
                         pos = 45;
                     }                
                     else
