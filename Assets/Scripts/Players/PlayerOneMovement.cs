@@ -80,6 +80,9 @@ public class PlayerOneMovement : MonoBehaviour {
     private ParticleSystemRenderer slowAura;
     private ParticleSystemRenderer slowSwirl;
 
+    private ParticleSystemRenderer speedUpSwirl;
+    private ParticleSystemRenderer speedUpBeams;
+
     private bool sap = false;
 
 
@@ -127,6 +130,14 @@ public class PlayerOneMovement : MonoBehaviour {
             {
                 stun = p;
             }
+            if(p.name == "blue swirls")
+            {
+                speedUpSwirl = p;
+            }
+            if(p.name == "Beams")
+            {
+                speedUpBeams = p;
+            }
         }
     }
 
@@ -145,6 +156,8 @@ public class PlayerOneMovement : MonoBehaviour {
         sapBubbles.Stop();
         slowAura.enabled = false;
         slowSwirl.enabled = false;
+        speedUpSwirl.enabled = false;
+        speedUpBeams.enabled = false;
 
         crouching = false;
         animator.SetBool("Grounded", grounded);
@@ -327,11 +340,19 @@ public class PlayerOneMovement : MonoBehaviour {
 
         if(!pause.GameIsPaused) Move();
 
+        if(spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
+        {
+            speedUpBeams.enabled = true;
+            speedUpSwirl.enabled = true;
+        }
+
         // initiate speed up
-        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
+            if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
         {
             spedUp = true;
             audioSource.PlayOneShot(speedBoostSFX);
+            speedUpBeams.enabled = false;
+            speedUpSwirl.enabled = false;
             ghost.On = true;
             once = true;
             StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
