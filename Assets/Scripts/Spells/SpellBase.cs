@@ -118,41 +118,44 @@ public class SpellBase : MonoBehaviour {
     {
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
-        
-        if(anim != null)
-        {
-            anim.enabled = false;
-        }
-        float stunTimePassed = 0;
-        while (stunTimePassed <= stunDuration)
-        {            
-            stunTimePassed += Time.deltaTime;
-
-            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
-
-            if (mat != null)
-            {
-                foreach (Renderer r in child)
-                {
-                    if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
-                }
-            }
-
-            yield return null;
-        }
-
-        //  yield return new WaitForSeconds(stunDuration);
-        player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-        
-        while(player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == true)
-        {
-            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-            yield return null;
-        }
 
         if (anim != null)
         {
-            anim.enabled = true;
+            anim.enabled = false;
+        }
+
+        if (mat != null)
+        {
+            foreach (Renderer r in child)
+            {
+                if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
+            }
+        }
+
+        //For petrify's materials to stop flickering
+
+        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
+
+        float stunTime = 0;
+        bool noPetrify = false;
+
+        while (stunTime <= stunDuration)
+        {
+            noPetrify = player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify();
+            stunTime += Time.deltaTime;
+            yield return null;
+        }
+        //  yield return new WaitForSeconds(stunDuration);
+        if (noPetrify == true)
+        {
+            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
+
+            if (anim != null)
+            {
+                anim.enabled = true;
+            }
         }
     }
 

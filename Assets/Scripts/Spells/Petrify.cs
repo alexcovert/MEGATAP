@@ -62,6 +62,11 @@ public class Petrify : MonoBehaviour {
                 spellBase.Stun(player, stunDuration, turnStone, anim);
                 StartCoroutine(Wait(this.gameObject));
             }
+            if(player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
+            {
+                Revert();
+                anim.enabled = true;
+            }
         }
     }
 
@@ -118,9 +123,16 @@ public class Petrify : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(stunDuration - 0.1f);
-        Revert();
-        yield return new WaitForSeconds(1f);
+        float time = 0;
+        while (time <= stunDuration + 0.2f)
+        {
+            if (player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify() == true)
+            {
+                Revert();
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(2f);
         Destroy(obj);
     }
 

@@ -78,7 +78,11 @@ public class PlayerOneMovement : MonoBehaviour {
     private MeshRenderer[] mrs;
     private int slowEffectCount = 0;
 
-    private ParticleSystem dustParticles; 
+    private ParticleSystem dustParticles;
+
+    private float PetrifyTime = -1;
+    private float timeInital = 0;
+    private bool unPetrify = false;
 
     private void Awake()
     {
@@ -314,13 +318,11 @@ public class PlayerOneMovement : MonoBehaviour {
         //New Jump Function
         jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
-        if (move == false)
+        //Petrify stuff here.
+        timeInital += Time.deltaTime;
+        if (timeInital >= PetrifyTime)
         {
-            StunPenalty = 0;
-        }
-        else
-        {
-            StunPenalty = 1;
+            unPetrify = true;
         }
 
         //Turn on slow effect on PLAYER
@@ -389,6 +391,11 @@ public class PlayerOneMovement : MonoBehaviour {
         {
             movementVector = new Vector3(0, Physics.gravity.y * 0.255f, 0);
             stun.enabled = true;
+            StunPenalty = 0;
+        }
+        else
+        {
+            StunPenalty = 1;
         }
 
         if (!wallJumping) rb.velocity = movementVector;
@@ -546,6 +553,36 @@ public class PlayerOneMovement : MonoBehaviour {
     public bool IsStunned()
     {
         return !move;
+    }
+
+    public float GetPetrifyTime()
+    {
+        return PetrifyTime;
+    }
+
+    public void SetPetrifyTime(float f)
+    {
+        PetrifyTime = f;
+    }
+
+    public float GetTimeInitial()
+    {
+        return timeInital;
+    }
+    
+    public void SetTimeInitial(float f)
+    {
+        timeInital = f;
+    }
+
+    public bool GetUnPetrify()
+    {
+        return unPetrify;
+    }
+    
+    public void SetUnPetrify(bool b)
+    {
+        unPetrify = b;
     }
 
     //Speed Penalties and Bonuses
