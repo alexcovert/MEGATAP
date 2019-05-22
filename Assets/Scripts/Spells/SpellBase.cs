@@ -103,34 +103,21 @@ public class SpellBase : MonoBehaviour {
 
     // apply stun to inputted
     // goes to enumerator for its waitforseconds
-    public void Stun(GameObject player, float stunDuration, Material mat = null, Animator anim = null)
+    public void Stun(GameObject player, float stunDuration, Material mat = null)
     {
         Renderer[] child = player.GetComponentsInChildren<Renderer>();
         if (once == false)
         {
             once = true;
-            StartCoroutine(WaitStun(player, stunDuration, mat, child, anim));
+            StartCoroutine(WaitStun(player, stunDuration, mat, child));
         }
 
     }
 
-    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null, Animator anim = null)
+    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null)
     {
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
-
-        if (anim != null)
-        {
-            anim.enabled = false;
-        }
-
-        if (mat != null)
-        {
-            foreach (Renderer r in child)
-            {
-                if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
-            }
-        }
 
         float stunTime = 0;
 
@@ -138,6 +125,13 @@ public class SpellBase : MonoBehaviour {
         {
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
             stunTime += Time.deltaTime;
+            if (mat != null)
+            {
+                foreach (Renderer r in child)
+                {
+                    if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
+                }
+            }
             yield return null;
         }
         //  yield return new WaitForSeconds(stunDuration);
@@ -202,7 +196,7 @@ public class SpellBase : MonoBehaviour {
             player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
             player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
         }
-        else
+        else if(noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == true)
         {
             player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
             player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
