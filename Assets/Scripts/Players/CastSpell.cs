@@ -633,7 +633,7 @@ public class CastSpell : MonoBehaviour
                     //eventSystem.SetSelectedGameObject(queue[i]);
                     queue[i].GetComponent<Button>().Select();
                     queue[i].GetComponent<Button>().OnSelect(new BaseEventData(eventSystem));
-                    controllerCursor.transform.localPosition = new Vector3(0, -130);
+                    controllerCursor.transform.localPosition = new Vector3(0, -20, 0);
                     buttonSet = true;
                 }
             }

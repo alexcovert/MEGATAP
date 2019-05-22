@@ -97,7 +97,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
                 if (currentLastTrap != null && currentLastTrap.gameObject == this.gameObject && currentLastTrap.gameObject.GetComponent<Button>().interactable)
                 {
                     currentLastTrap = null;
-                    controllerCursor.transform.localPosition = new Vector3(0, 130);
+                    controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
                     cursorMove.MovingTraps = true;
 
                 }
@@ -112,7 +112,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
                 if (pt != null) pt.DestroyGhost();
                 if (currentFirstSpell != null && currentFirstSpell.gameObject == this.gameObject)
                 {
-                    controllerCursor.transform.localPosition = new Vector3(0, -130);
+                    controllerCursor.transform.localPosition = new Vector3(0, -20, 0);
                     cursorMove.MovingTraps = false;
                 }
             }
