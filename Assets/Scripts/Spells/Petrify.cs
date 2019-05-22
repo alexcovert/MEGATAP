@@ -59,10 +59,13 @@ public class Petrify : MonoBehaviour {
             if (hit)
             {
                 child = player.GetComponentsInChildren<Renderer>();
-                spellBase.Stun(player, stunDuration, turnStone, anim);
+                spellBase.Stun(player, stunDuration, turnStone);
+                anim.enabled = false;
+                StartCoroutine(CheckPetrifyStatus());
                 StartCoroutine(Wait(this.gameObject));
             }
-            if(player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
+
+            if (player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
             {
                 Revert();
                 anim.enabled = true;
@@ -129,6 +132,7 @@ public class Petrify : MonoBehaviour {
             if (player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify() == true)
             {
                 Revert();
+                anim.enabled = true;
             }
             yield return null;
         }
@@ -146,5 +150,15 @@ public class Petrify : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
         Destroy(this.gameObject);
+    }
+
+    private IEnumerator CheckPetrifyStatus()
+    {
+        //For petrify's materials to stop flickering
+        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
+
+        yield return null;
     }
 }

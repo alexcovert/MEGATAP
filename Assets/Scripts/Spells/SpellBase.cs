@@ -132,32 +132,16 @@ public class SpellBase : MonoBehaviour {
             }
         }
 
-        //For petrify's materials to stop flickering
-
-        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
-        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
-        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
-
         float stunTime = 0;
-        bool noPetrify = false;
 
         while (stunTime <= stunDuration)
         {
-            noPetrify = player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify();
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
             stunTime += Time.deltaTime;
             yield return null;
         }
         //  yield return new WaitForSeconds(stunDuration);
-        if (noPetrify == true)
-        {
-            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-
-            if (anim != null)
-            {
-                anim.enabled = true;
-            }
-        }
+        player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
     }
 
     // apply slow to inputted
