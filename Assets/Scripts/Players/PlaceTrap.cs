@@ -79,8 +79,11 @@ public class PlaceTrap : MonoBehaviour {
     private int numTimesRotated = 0;
     private bool atTop = false;
 
-    // tutorial
-    GameObject tutorialOverlay;
+    // tutorial tips
+    GameObject tutorialTopGoal;
+    GameObject tutorialTopPlaceTrap;
+    GameObject tutorialTopSelectTrap;
+    GameObject tutorialTopMoveTrap;
 
     private void Awake()
     {
@@ -109,17 +112,36 @@ public class PlaceTrap : MonoBehaviour {
             eventSystem.SetSelectedGameObject(queue[0].gameObject);
             queue[0].gameObject.GetComponent<Button>().Select();
         }
+
+        // define tutorial tips
+        tutorialTopGoal = GameObject.Find("ToolTipTopGoal");
+        tutorialTopPlaceTrap = GameObject.Find("ToolTipTopPlaceTrap");
+        tutorialTopMoveTrap = GameObject.Find("ToolTipTopMoveTrap");
+        tutorialTopSelectTrap = GameObject.Find("ToolTipTopSelectTrap");
+
+        if (tutorialTopGoal!= null) { tutorialTopGoal.SetActive(true); }
+        if (tutorialTopPlaceTrap != null) { tutorialTopPlaceTrap.SetActive(false); }
+        if (tutorialTopMoveTrap != null) { tutorialTopMoveTrap.SetActive(false); }
+        if (tutorialTopSelectTrap != null) { tutorialTopSelectTrap.SetActive(false); }
     }
 	
 
 	void Update () {
 
-        // tutorial stuff
-        tutorialOverlay = GameObject.Find("ToolTipTopGoal");
-        if (tutorialOverlay != null && tutorialOverlay.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
+        // tutorial tips
+        if (tutorialTopGoal != null && tutorialTopGoal.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
         {
-            tutorialOverlay.SetActive(false);
+            tutorialTopGoal.SetActive(false);
+            tutorialTopSelectTrap.SetActive(true);
+        } else if(tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
+        {
+                
+            tutorialTopSelectTrap.SetActive(false);
+            tutorialTopMoveTrap.SetActive(true);
+            tutorialTopPlaceTrap.SetActive(true);
         }
+
+
         //Move ghost with cursor
         MoveGhost();
         //Get controller select
