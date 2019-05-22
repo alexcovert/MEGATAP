@@ -65,7 +65,7 @@ public class PlaceTrap : MonoBehaviour {
     private TrapBase trap;
     public Direction CurrentDirection { get; private set; }
     private GameObject ghostTrap;
-    //private float gridXOffset, gridZOffset, gridYOffset = 0.35f; //changed when trap is rotated so that it still properly aligns with grid.
+    private float gridXOffset, gridZOffset, gridYOffset = 1f; //changed when trap is rotated so that it still properly aligns with grid.
     private SpriteRenderer[] placementSquares;
     
     
@@ -150,33 +150,151 @@ public class PlaceTrap : MonoBehaviour {
     }
 
     //Returns cursor position on tower as a grid location rather than free-floating
-    private Vector3 GetGridPosition()
+    private Vector3? GetGridPosition()
     {
-        Vector3 gridPos;
 
-        switch(cam.GetComponent<CameraTwoRotator>().GetState())
+        if(RaycastFromCam() != null && !checkControllers.topPlayersController)
         {
-            case 1:
-                gridPos = controllerCursor.transform.position + new Vector3(0, 0, -2f);
-                break;
-            case 2:
-                gridPos = controllerCursor.transform.position + new Vector3(2f, 0, 0);
-                break;
-            case 3:
-                gridPos = controllerCursor.transform.position + new Vector3(0, 0, 2f);
-                break;
-            case 4:
-                gridPos = controllerCursor.transform.position + new Vector3(-2f, 0, 0);
-                break;
-
-            default:
-                gridPos = Vector3.zero;
-                break;
-
+            RaycastHit hit = RaycastFromCam().Value;
+            float hitX = -1;
+            float hitZ = -1;
+            switch (cam.GetComponent<CameraTwoRotator>().GetState())
+            {
+                case 1:
+                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1 + gridXOffset;
+                    hitZ = Mathf.RoundToInt(hit.point.z + -2);
+                    break;
+                case 2:
+                    hitX = Mathf.RoundToInt(hit.point.x + 2);
+                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1 + gridZOffset;
+                    break;
+                case 3:
+                    hitX = Mathf.RoundToInt((hit.point.x - 1) / gridSize) * gridSize + 1 + gridXOffset;
+                    hitZ = Mathf.RoundToInt(hit.point.z + 2);
+                    break;
+                case 4:
+                    hitX = Mathf.RoundToInt(hit.point.x + -2);
+                    hitZ = Mathf.RoundToInt((hit.point.z - 1) / gridSize) * gridSize + 1 + gridZOffset;
+                    break;
+            }
+            float hitY = Mathf.RoundToInt((hit.point.y - 1) / gridSize) * gridSize + gridYOffset;
+            return new Vector3(hitX, hitY, hitZ);
         }
+        else
+        {
+            Vector3 gridPos;
 
-        return gridPos;
+            switch (cam.GetComponent<CameraTwoRotator>().GetState())
+            {
+                case 1:
+                    gridPos = controllerCursor.transform.position + new Vector3(0, 0, -2f);
+                    break;
+                case 2:
+                    gridPos = controllerCursor.transform.position + new Vector3(2f, 0, 0);
+                    break;
+                case 3:
+                    gridPos = controllerCursor.transform.position + new Vector3(0, 0, 2f);
+                    break;
+                case 4:
+                    gridPos = controllerCursor.transform.position + new Vector3(-2f, 0, 0);
+                    break;
+
+                default:
+                    gridPos = Vector3.zero;
+                    break;
+
+            }
+
+            return gridPos;
+        }
     }
+
+    private int trapRot = 0;
+    private void UpdateRotationInput()
+    {
+        if (RaycastFromCam() != null)
+        {
+            RaycastHit hit = RaycastFromCam().Value;
+
+            //Commented out while we are not doing trap rotation - KEEP for later
+            //if (Input.GetButtonDown("RotateLeft_Joy_2") && !pause.GameIsPaused)
+            //{
+            //    if (hit.normal.x == -1 || hit.normal.x == 1)
+            //    {
+            //        trapRot--;
+            //    }
+            //    else
+            //    {
+            //        trapRot++;
+            //    }
+            //}
+            //else if (Input.GetButtonDown("RotateRight_Joy_2") && !pause.GameIsPaused)
+            //{
+            //    if (hit.normal.x == -1 || hit.normal.x == 1)
+            //    {
+            //        trapRot++;
+            //    }
+            //    else
+            //    {
+            //        trapRot--;
+            //    }
+            //}
+
+            //Add Offsets so they still stick to grid
+            if (trapRot % 4 == 0)
+            {//Facing Up
+                CurrentDirection = Direction.Up;
+                gridYOffset = 0.35f;
+                gridXOffset = 0;
+                gridZOffset = 0;
+            }
+            else if ((trapRot - 1) % 4 == 0)
+            {//Facing Left
+                CurrentDirection = Direction.Left;
+                gridYOffset = 1;
+                switch (cam.GetComponent<CameraTwoRotator>().GetState())
+                {
+                    case 1:
+                    case 3:
+                        gridXOffset = 0.6f;
+                        gridZOffset = 0;
+                        break;
+                    case 2:
+                    case 4:
+                        gridXOffset = 0;
+                        gridZOffset = -0.6f;
+                        break;
+                }
+            }
+            else if ((trapRot - 2) % 4 == 0)
+            {//Facing Down
+                CurrentDirection = Direction.Down;
+                gridYOffset = 1.7f;
+                gridXOffset = 0;
+                gridZOffset = 0;
+            }
+            else if ((trapRot - 3) % 4 == 0)
+            {//Facing Right
+                CurrentDirection = Direction.Right;
+                gridYOffset = 1;
+                switch (cam.GetComponent<CameraTwoRotator>().GetState())
+                {
+                    case 1:
+                    case 3:
+                        gridXOffset = -0.6f;
+                        gridZOffset = 0;
+                        break;
+                    case 2:
+                    case 4:
+                        gridXOffset = 0;
+                        gridZOffset = 0.6f;
+                        break;
+                }
+            }
+        }
+    }
+
+
 
     //Raycast from the camera to tower
     private RaycastHit? RaycastFromCam()
@@ -246,7 +364,7 @@ public class PlaceTrap : MonoBehaviour {
             //CheckNearby() also checks the collider provided for the "safe zone" around the trap
             if (CheckNearby() && validLocation)
             {
-                Vector3 position = GetGridPosition();
+                Vector3 position = GetGridPosition().Value;
                 if (ghostTrap != null && CheckFloor(position.y))
                 {
                     audioSource.PlayOneShot(trapPlacementGood);
@@ -437,7 +555,7 @@ public class PlaceTrap : MonoBehaviour {
                         ghostTrap.transform.eulerAngles = new Vector3(ghostTrap.transform.eulerAngles.x, 90, ghostTrap.transform.eulerAngles.z);
                         break;
                 }
-                Vector3 position = GetGridPosition();
+                Vector3 position = GetGridPosition().Value;
                 ghostTrap.transform.position = position;
 
                 //Cancel the trap
