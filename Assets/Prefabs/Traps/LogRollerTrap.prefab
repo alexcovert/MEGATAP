@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 114832420465715662}
   m_Layer: 0
   m_Name: LogRollerTrap
-  m_TagString: Trap
+  m_TagString: TrapHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,7 +300,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 4}
-  m_Center: {x: -0.02, y: 0.62, z: 0}
+  m_Center: {x: -0.02, y: 0.1, z: 0}
 --- !u!65 &65115508649182200
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -323,8 +323,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02018228, y: 0.04000001, z: 0.05455992}
-  m_Center: {x: 0.00029235007, y: -4.3076072e-17, z: 0.021720046}
+  m_Size: {x: 0.019, y: 0.04000001, z: 0.05455992}
+  m_Center: {x: 0.0002, y: -4.3076072e-17, z: 0.021720046}
 --- !u!114 &114105927209140518
 MonoBehaviour:
   m_ObjectHideFlags: 1

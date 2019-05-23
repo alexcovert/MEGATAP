@@ -16,6 +16,8 @@ public class Banana : MonoBehaviour {
     private GameObject player = null;
     // Player's animator for animation
     private Animator anim = null;
+    //trap's collider
+    private BoxCollider box;
 
     // SFX
     private AudioSource audioSource;
@@ -27,6 +29,7 @@ public class Banana : MonoBehaviour {
         trapBase = GetComponent<TrapBase>();
         audioSource = GetComponent<AudioSource>();
         thisAnim = GetComponentInChildren<Animator>();
+        box = GetComponent<BoxCollider>();
     }
     // Stun has player object, stun time in seconds, trap itself
     // player has normal y velocity but is stopped in all other velocities and cannot move controls
@@ -51,6 +54,7 @@ public class Banana : MonoBehaviour {
             thisAnim.SetTrigger("Collide");
             anim.SetFloat("StunAnimSpeed", stunAnimSpeed);
             anim.Play("FaceplantStart", 0);
+            box.enabled = false;
             audioSource.PlayOneShot(clip);
         }
     }
