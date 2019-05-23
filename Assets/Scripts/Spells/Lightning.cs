@@ -38,6 +38,7 @@ public class Lightning : MonoBehaviour
                 break;
 
         }
+        StartCoroutine(WaitToDie(stunDuration * 1.5f));
     }
 
     void FixedUpdate()
@@ -56,7 +57,7 @@ public class Lightning : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !hit)
         {
             hit = true;
 
@@ -67,10 +68,11 @@ public class Lightning : MonoBehaviour
             {
                 anim.Play("Stunned", 0);
             }
+            StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
         if (hit == false && other.tag == "Boundary")
         {
-            StartCoroutine(WaitToDie(stunDuration * 2f));
+            StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
     }
 
