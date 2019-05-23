@@ -68,17 +68,23 @@ public class PlayerOneMovement : MonoBehaviour {
     private Animator animator;
     private CapsuleCollider col;
     private CapsuleCollider[] colArray;
-    private ParticleSystemRenderer stun;
+    
     private SphereCollider[] sphere;
     private GhostTrail ghost;
     private bool once = false;
 
-    //Slow Effect
-    private MeshRenderer[] slowEffect = new MeshRenderer[2];
-    private MeshRenderer[] mrs;
-    private int slowEffectCount = 0;
-
     private ParticleSystem dustParticles;
+    private ParticleSystemRenderer[] particleRenderer;
+    private ParticleSystemRenderer stun;
+    private ParticleSystem sapBubbles;
+    private ParticleSystemRenderer slowAura;
+    private ParticleSystemRenderer slowSwirl;
+
+    private ParticleSystemRenderer speedUpSwirl;
+    private ParticleSystemRenderer speedUpBeams;
+
+    private bool sap = false;
+
 
     //For Petrify flicker
     private float PetrifyTime = -1;
@@ -103,6 +109,35 @@ public class PlayerOneMovement : MonoBehaviour {
             {
                 dustParticles = p;
             }
+
+            if (p.name == "sap slow trail")
+            {
+                sapBubbles = p;
+            }
+        }
+        ParticleSystemRenderer[] particleRenderer = GetComponentsInChildren<ParticleSystemRenderer>();
+        foreach (ParticleSystemRenderer p in particleRenderer)
+        {
+            if (p.name == "green swirls 2")
+            {
+                slowAura = p;
+            }
+            if (p.name == "animated swirls")
+            {
+                slowSwirl = p;
+            }
+            if(p.name == "Stun Particles")
+            {
+                stun = p;
+            }
+            if(p.name == "blue swirls")
+            {
+                speedUpSwirl = p;
+            }
+            if(p.name == "Beams")
+            {
+                speedUpBeams = p;
+            }
         }
     }
 
@@ -116,7 +151,14 @@ public class PlayerOneMovement : MonoBehaviour {
         pause = gameManager.GetComponent<PauseMenu>();
         sphere = GetComponents<SphereCollider>();
         ghost = GetComponent<GhostTrail>();
+
         stun.enabled = false;
+        sapBubbles.Stop();
+        slowAura.enabled = false;
+        slowSwirl.enabled = false;
+        speedUpSwirl.enabled = false;
+        speedUpBeams.enabled = false;
+
         crouching = false;
         animator.SetBool("Grounded", grounded);
 
@@ -125,19 +167,6 @@ public class PlayerOneMovement : MonoBehaviour {
         jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
         move = true;
-
-        mrs = GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mr in mrs)
-        {
-            if (mr.name == "SlowEffect")
-            {
-                slowEffect[slowEffectCount] = mr;
-                if (slowEffectCount <= 1)
-                {
-                    slowEffectCount++;
-                }
-            }
-        }
     }
 
     private void Update()
@@ -311,11 +340,19 @@ public class PlayerOneMovement : MonoBehaviour {
 
         if(!pause.GameIsPaused) Move();
 
+        if(spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
+        {
+            speedUpBeams.enabled = true;
+            speedUpSwirl.enabled = true;
+        }
+
         // initiate speed up
-        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
+            if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
         {
             spedUp = true;
             audioSource.PlayOneShot(speedBoostSFX);
+            speedUpBeams.enabled = false;
+            speedUpSwirl.enabled = false;
             ghost.On = true;
             once = true;
             StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
@@ -343,27 +380,29 @@ public class PlayerOneMovement : MonoBehaviour {
             unSlow = true;
         }
 
-        //Turn on slow effect on PLAYER
-        if (SlowPenaltyTier1 != 1)
+        if(unSlow == false)
         {
-            foreach (MeshRenderer e in slowEffect)
-            {
-                if (e != null)
-                {
-                    e.enabled = true;
-                }
-            }
+            slowSwirl.enabled = true;
+            slowAura.enabled = true;
         }
-
         else
         {
-            foreach (MeshRenderer e in slowEffect)
+            slowSwirl.enabled = false;
+            slowAura.enabled = false;
+        }
+
+        if(slowed == true)
+        {
+            if (sap == false)
             {
-                if (e != null)
-                {
-                    e.enabled = false;
-                }
+                sapBubbles.Play();
+                sap = true;
             }
+        }
+        else
+        {
+            sap = false;
+            sapBubbles.Stop();
         }
 
         //WallJump Check at feet
