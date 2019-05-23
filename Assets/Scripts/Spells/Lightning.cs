@@ -44,7 +44,7 @@ public class Lightning : MonoBehaviour
 
         particleSystems = GetComponentsInChildren<ParticleSystem>();
 
-        StartCoroutine(WaitToDie(stunDuration));
+        StartCoroutine(WaitToDie(1));
     }
 
     void FixedUpdate()
