@@ -60,7 +60,6 @@ public class Petrify : MonoBehaviour {
             {
                 child = player.GetComponentsInChildren<Renderer>();
                 spellBase.Stun(player, stunDuration, turnStone);
-                anim.enabled = false;
                 StartCoroutine(CheckPetrifyStatus());
                 StartCoroutine(Wait(this.gameObject));
             }
@@ -81,6 +80,7 @@ public class Petrify : MonoBehaviour {
             hit = true;
             player = other.gameObject;
             anim = player.gameObject.GetComponent<PlayerOneMovement>().GetAnim();
+            anim.enabled = false;
 
             //Turn off renderer & particles
             this.GetComponent<Renderer>().enabled = false;
@@ -122,6 +122,7 @@ public class Petrify : MonoBehaviour {
                 r.material = normalPoncho;
             }
         }
+        anim.enabled = true;
     }
 
     private IEnumerator Wait(GameObject obj)
@@ -136,7 +137,7 @@ public class Petrify : MonoBehaviour {
             }
             yield return null;
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(8f);
         Destroy(obj);
     }
 
@@ -148,7 +149,7 @@ public class Petrify : MonoBehaviour {
 
     private IEnumerator Die(float time)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time * 4);
         Destroy(this.gameObject);
     }
 

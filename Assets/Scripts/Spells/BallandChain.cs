@@ -92,7 +92,6 @@ public class BallandChain : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(spellDuration);
         yield return new WaitForSeconds(spellDuration*4f);
         Destroy(obj);
     }
