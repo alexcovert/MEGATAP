@@ -656,15 +656,8 @@ public class PlaceTrap : MonoBehaviour {
         active = true;
         for(int i = 0; i < queueSize; i++)
         {
-            int TrapChance;
-            if (numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 2))
-            {
-                TrapChance = Random.Range(1, 100);
-            }
-            else
-            {
-                TrapChance = Random.Range(1, (100 - RareRarityChance - 1));
-            }
+            int TrapChance = Random.Range(1, 100);
+           
            int randomIndex;
            GameObject newTrap;
 
@@ -801,7 +794,6 @@ public class PlaceTrap : MonoBehaviour {
 
                 if(!buttonSet)
                 {
-                    Debug.Log("DOne");
                     DestroyGhost();
                     eventSystem.SetSelectedGameObject(null);
                 }
