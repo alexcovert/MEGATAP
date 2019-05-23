@@ -11,6 +11,12 @@ public class GameOverMenu : MonoBehaviour {
     [SerializeField] private GameObject charSelectButton;
     [SerializeField] private GameObject restartButton;
     [SerializeField] private TextMeshProUGUI text;
+
+    [SerializeField] private GameObject fadePrefab;
+
+    private PlayerOneMovement player1;
+    private PlaceTrap pt;
+    private CastSpell cs;
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
 
@@ -18,10 +24,23 @@ public class GameOverMenu : MonoBehaviour {
     {
         cc = GameObject.Find("InputManager").GetComponent<CheckControllers>();
         charSelectText = charSelectButton.GetComponentInChildren<TextMeshProUGUI>();
+
+        GameObject p1 = GameObject.Find("Player 1");
+        player1 = p1.GetComponent<PlayerOneMovement>();
+
+        GameObject p2 = GameObject.Find("Player 2");
+        pt = p2.GetComponent<PlaceTrap>();
+        cs = p2.GetComponent<CastSpell>();
     }
 
     public void Open(bool speccyWin)
     {
+        Instantiate(fadePrefab);
+        cs.InputEnabled = false;
+        pt.InputEnabled = false;
+        player1.InputEnabled = false;
+
+
         if(speccyWin)
         {
             text.text = "Bottom Player Wins!";
@@ -45,7 +64,10 @@ public class GameOverMenu : MonoBehaviour {
                 charSelectText.color = new Color(charSelectText.color.r, charSelectText.color.g, charSelectText.color.b, 1);
             }
         }
+    }
 
+    public void SetSelected()
+    {
         if (cc.GetBottomPlayerControllerState() || cc.topPlayersController)
         {
 
