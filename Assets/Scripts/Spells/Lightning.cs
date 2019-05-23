@@ -38,6 +38,7 @@ public class Lightning : MonoBehaviour
                 break;
 
         }
+        StartCoroutine(WaitToDie(stunDuration * 1.5f));
     }
 
     void FixedUpdate()
