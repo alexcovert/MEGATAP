@@ -15,6 +15,8 @@ public class Lightning : MonoBehaviour
     [SerializeField] private float stunDuration = 3;
 
     private Animator anim;
+    private CapsuleCollider col;
+    private ParticleSystem[] particleSystems;
 
 
     // Use this for initialization
@@ -23,6 +25,7 @@ public class Lightning : MonoBehaviour
         spellBase = this.GetComponent<SpellBase>();
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(startSFX);
+        col = this.GetComponent<CapsuleCollider>();
         switch (GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
@@ -38,6 +41,9 @@ public class Lightning : MonoBehaviour
                 break;
 
         }
+
+        particleSystems = GetComponentsInChildren<ParticleSystem>();
+
         StartCoroutine(WaitToDie(stunDuration * 1.5f));
     }
 
@@ -80,6 +86,13 @@ public class Lightning : MonoBehaviour
     {
         yield return new WaitForSeconds(stunDuration);
         anim.SetBool("Stunned", false);
+        col.enabled = false;
+
+        foreach(ParticleSystem ps in particleSystems)
+        {
+            Destroy(ps);
+        }
+
         yield return new WaitForSeconds(stunDuration);
         Destroy(obj);
     }
@@ -87,6 +100,12 @@ public class Lightning : MonoBehaviour
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
+        col.enabled = false;
+        foreach (ParticleSystem ps in particleSystems)
+        {
+            Destroy(ps);
+        }
+        yield return new WaitForSeconds(3);
         Destroy(this.gameObject);
     }
 
