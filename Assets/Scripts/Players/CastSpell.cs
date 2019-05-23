@@ -271,25 +271,26 @@ public class CastSpell : MonoBehaviour
                 }
                 if (spellDirection == SpellDirection.Ceiling)
                 {
+                    float verticalOffset = 5;
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - 5, -42);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, -42);
                             movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, spellTarget.transform.position.z);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
                             movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y, 42);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, 42);
                             movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, spellTarget.transform.position.z);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
                             movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
