@@ -70,16 +70,16 @@ public class LogRoller : MonoBehaviour
                     switch (face)
                     {
                         case 1:
-                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
+                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.4f, 0);
                             break;
                         case 2:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, -0.5f);
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, -0.5f);
                             break;
                         case 3:
-                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.5f, 0);
+                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.4f, 0);
                             break;
                         case 4:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, 0.5f);
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, 0.5f);
                             break;
                     }
                     logProjectile.transform.rotation = projectileRotation;
