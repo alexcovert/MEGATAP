@@ -36,8 +36,7 @@ public class WinTrigger : MonoBehaviour {
             CanvasUI3.SetActive(false);
             CanvasUI4.SetActive(false);
             CanvasUI6.SetActive(false);
-
-            menu.SetSelected();
+            
             StartCoroutine(fadeIn(speccyWinUI));
         }
     }
