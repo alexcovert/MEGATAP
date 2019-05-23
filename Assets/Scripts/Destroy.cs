@@ -30,7 +30,7 @@ public class Destroy : MonoBehaviour {
         {
             Component[] components = GetComponents<Component>();
             Component[] childComponents = GetComponentsInChildren<Component>();
-
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
             foreach(Component c in components)
             {
                 //Desetroy ALL components besides meshrenderers and transforms so it stays the same visually
@@ -51,6 +51,11 @@ public class Destroy : MonoBehaviour {
                 {
                     Destroy(c);
                 }
+            }
+
+            foreach(ParticleSystem ps in particles)
+            {
+                Destroy(ps);
             }
             
             Destroy(this);
