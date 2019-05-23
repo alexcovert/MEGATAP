@@ -274,23 +274,23 @@ public class CastSpell : MonoBehaviour
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, -42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - 5, -42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, 42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y, 42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                     }
