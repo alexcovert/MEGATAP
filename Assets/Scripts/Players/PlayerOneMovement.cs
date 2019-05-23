@@ -68,7 +68,7 @@ public class PlayerOneMovement : MonoBehaviour {
     private Animator animator;
     private CapsuleCollider col;
     private CapsuleCollider[] colArray;
-    
+
     private SphereCollider[] sphere;
     private GhostTrail ghost;
     private bool once = false;
@@ -126,15 +126,15 @@ public class PlayerOneMovement : MonoBehaviour {
             {
                 slowSwirl = p;
             }
-            if(p.name == "Stun Particles")
+            if (p.name == "Stun Particles")
             {
                 stun = p;
             }
-            if(p.name == "blue swirls")
+            if (p.name == "blue swirls")
             {
                 speedUpSwirl = p;
             }
-            if(p.name == "Beams")
+            if (p.name == "Beams")
             {
                 speedUpBeams = p;
             }
@@ -193,7 +193,7 @@ public class PlayerOneMovement : MonoBehaviour {
                 jumping = true;
             }
 
-            if(inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == true && cantStandUp == false)
+            if (inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == true && cantStandUp == false)
             {
                 jumping = true;
             }
@@ -215,7 +215,7 @@ public class PlayerOneMovement : MonoBehaviour {
                     crouching = false;
                     CrouchPenalty = 1;
                 }
-                
+
             }
             // Animation parameters update
             animator.SetBool("Jumping", jumping);
@@ -325,10 +325,10 @@ public class PlayerOneMovement : MonoBehaviour {
             col.center = new Vector3(0, 1.1f, 0);
             colArray[1].height = 2f;
             colArray[1].center = new Vector3(0, 1f, 0.21f);
-            sphere[0].center = new Vector3(0, 1f, 0); 
+            sphere[0].center = new Vector3(0, 1f, 0);
         }
 
-        if(crouching == false || grounded == false) {
+        if (crouching == false || grounded == false) {
             col.height = 4.5f;
             col.center = new Vector3(0, 2.2f, 0);
             colArray[1].height = 4f;
@@ -338,16 +338,16 @@ public class PlayerOneMovement : MonoBehaviour {
 
         cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
 
-        if(!pause.GameIsPaused) Move();
+        if (!pause.GameIsPaused) Move();
 
-        if(spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
+        if (spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
         {
             speedUpBeams.enabled = true;
             speedUpSwirl.enabled = true;
         }
 
         // initiate speed up
-            if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
+        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
         {
             spedUp = true;
             audioSource.PlayOneShot(speedBoostSFX);
@@ -380,7 +380,7 @@ public class PlayerOneMovement : MonoBehaviour {
             unSlow = true;
         }
 
-        if(unSlow == false)
+        if (unSlow == false)
         {
             slowSwirl.enabled = true;
             slowAura.enabled = true;
@@ -391,7 +391,7 @@ public class PlayerOneMovement : MonoBehaviour {
             slowAura.enabled = false;
         }
 
-        if(slowed == true)
+        if (slowed == true)
         {
             if (sap == false)
             {
@@ -435,7 +435,7 @@ public class PlayerOneMovement : MonoBehaviour {
                 animator.Play("Armature|JumpStart", 0);
             }
             jumping = false;
-           //landing = false;
+            //landing = false;
             speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
             //animator.SetBool("Landing", landing);
             //StartCoroutine(CheckLanding());
@@ -456,13 +456,13 @@ public class PlayerOneMovement : MonoBehaviour {
         }
 
         if (!wallJumping) rb.velocity = movementVector;
-        else rb.velocity = wallJumpVector;      
+        else rb.velocity = wallJumpVector;
     }
 
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Trap")
+        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Trap" || collision.gameObject.tag == "TrapHitbox")
         {
             //CHECK WALL JUMP
             RaycastHit hit;

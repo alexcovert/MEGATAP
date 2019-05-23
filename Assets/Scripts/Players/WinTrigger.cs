@@ -27,8 +27,7 @@ public class WinTrigger : MonoBehaviour {
             menu.Open(true);
             speccyWinUI.SetActive(true);
             speccyWinUI.transform.SetAsLastSibling();
-
-            StartCoroutine(fadeIn(speccyWinUI));
+            
             Win = true;
 
             WinGameCamera.SetActive(true);
@@ -37,8 +36,8 @@ public class WinTrigger : MonoBehaviour {
             CanvasUI3.SetActive(false);
             CanvasUI4.SetActive(false);
             CanvasUI6.SetActive(false);
-
-            menu.SetSelected();
+            
+            StartCoroutine(fadeIn(speccyWinUI));
         }
     }
 
@@ -63,5 +62,7 @@ public class WinTrigger : MonoBehaviour {
 
             yield return null;
         }
+
+        menu.SetSelected();
     }
 }

@@ -22,7 +22,7 @@ public class CharacterSelect : MonoBehaviour {
 
     [SerializeField] private AudioClip lockInSFX;
     [SerializeField] private AudioClip unlockSFX;
-    private AudioSource audioSource;
+    //private AudioSource audioSource;
 
     private bool stickMove = true;
 
@@ -45,7 +45,7 @@ public class CharacterSelect : MonoBehaviour {
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         checkControllers = GameObject.Find("InputManager").GetComponent<CheckControllers>();
         loader = GetComponent<SceneTransition>();
@@ -54,6 +54,8 @@ public class CharacterSelect : MonoBehaviour {
             stickDelay *= 2;
             inputManager.GetComponent<CheckControllers>().topPlayersController = false;
         }
+        
+
     }
 
     private void Update() {
@@ -193,7 +195,7 @@ public class CharacterSelect : MonoBehaviour {
                 if (!p2LockIn || selectorOneState == -selectorTwoState)
                 {
                     p1LockIn = true;
-                    audioSource.PlayOneShot(lockInSFX);
+                    //audioSource.PlayOneShot(lockInSFX);
 
                     //Spotlight
                     if (selectorOneState == 1)
@@ -210,7 +212,7 @@ public class CharacterSelect : MonoBehaviour {
             if (selectorOneState != 0 && p1LockIn && Input.GetButtonDown("Escape"))
             {
                 p1LockIn = false;
-                audioSource.PlayOneShot(unlockSFX);
+                //audioSource.PlayOneShot(unlockSFX);
 
                 //Spotlight
                 if (selectorOneState == 1)
@@ -229,7 +231,7 @@ public class CharacterSelect : MonoBehaviour {
                 if (!p1LockIn || selectorOneState == -selectorTwoState)
                 {
                     p2LockIn = true;
-                    audioSource.PlayOneShot(lockInSFX);
+                    //audioSource.PlayOneShot(lockInSFX);
 
                     //Spotlight
                     if (selectorTwoState == 1)
@@ -246,7 +248,7 @@ public class CharacterSelect : MonoBehaviour {
             if (selectorTwoState != 0 && p2LockIn && Input.GetButtonDown("Cancel_Joy_1"))
             {
                 p2LockIn = false;
-                audioSource.PlayOneShot(unlockSFX);
+                //audioSource.PlayOneShot(unlockSFX);
 
                 if (selectorTwoState == 1)
                 {
@@ -268,7 +270,7 @@ public class CharacterSelect : MonoBehaviour {
                 if (!p2LockIn || selectorOneState == -selectorTwoState)
                 {
                     p1LockIn = true;
-                    audioSource.PlayOneShot(lockInSFX);
+                    //audioSource.PlayOneShot(lockInSFX);
 
                     //Spotlight
                     if (selectorOneState == 1)
@@ -285,7 +287,7 @@ public class CharacterSelect : MonoBehaviour {
             if (selectorOneState != 0 && p1LockIn && Input.GetButtonDown("Cancel_Joy_1"))
             {
                 p1LockIn = false;
-                audioSource.PlayOneShot(unlockSFX);
+                //audioSource.PlayOneShot(unlockSFX);
 
                 //Spotlight
                 if (selectorOneState == 1)
@@ -304,7 +306,7 @@ public class CharacterSelect : MonoBehaviour {
                 if (!p1LockIn || selectorOneState == -selectorTwoState)
                 {
                     p2LockIn = true;
-                    audioSource.PlayOneShot(lockInSFX);
+                    //audioSource.PlayOneShot(lockInSFX);
 
                     //Spotlight
                     if (selectorTwoState == 1)
@@ -321,7 +323,7 @@ public class CharacterSelect : MonoBehaviour {
             if (selectorTwoState != 0 && p2LockIn && Input.GetButtonDown("Cancel_Joy_2"))
             {
                 p2LockIn = false;
-                audioSource.PlayOneShot(unlockSFX);
+                //audioSource.PlayOneShot(unlockSFX);
 
                 if (selectorTwoState == 1)
                 {

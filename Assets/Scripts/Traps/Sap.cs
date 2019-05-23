@@ -81,9 +81,9 @@ public class Sap : MonoBehaviour {
             hit = true;
             player = other.gameObject;
             //Player animation goes to idle properly in sap.
+            anim = player.GetComponent<Animator>();
             if (player.GetComponent<PlayerOneMovement>().GetInputAxis() != 0)
             {
-                anim = player.GetComponent<PlayerOneMovement>().GetAnim();
                 if (player.GetComponent<PlayerOneMovement>().IsCrouched() == false && player.GetComponent<PlayerOneMovement>().IsStunned() == false && player.GetComponentInChildren<PlayerGrounded>().IsGrounded() == true)
                 {
                     anim.Play("Trudging", 0);
