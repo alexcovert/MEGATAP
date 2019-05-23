@@ -467,7 +467,6 @@ public class PlayerOneMovement : MonoBehaviour {
             //CHECK WALL JUMP
             RaycastHit hit;
             RaycastHit downHit;
-            Debug.Log(collision);
             bool raycastDown = Physics.Raycast(transform.position, -transform.up, out downHit, 1);
             if ((Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.forward, out hit, 2f) || Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, out hit, 2f) || 
                     Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, out hit, 2f) 
