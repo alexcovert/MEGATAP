@@ -44,7 +44,7 @@ public class Lightning : MonoBehaviour
 
         particleSystems = GetComponentsInChildren<ParticleSystem>();
 
-        StartCoroutine(WaitToDie(stunDuration * 1.5f));
+        StartCoroutine(WaitToDie(stunDuration));
     }
 
     void FixedUpdate()
@@ -99,13 +99,13 @@ public class Lightning : MonoBehaviour
 
     private IEnumerator WaitToDie(float time)
     {
-        yield return new WaitForSeconds(time);
         col.enabled = false;
         foreach (ParticleSystem ps in particleSystems)
         {
             Destroy(ps);
         }
-        yield return new WaitForSeconds(3);
+
+        yield return new WaitForSeconds(time + 3);
         Destroy(this.gameObject);
     }
 
