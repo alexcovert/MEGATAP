@@ -39,6 +39,7 @@ public class GameOverMenu : MonoBehaviour {
         cs.InputEnabled = false;
         pt.InputEnabled = false;
         player1.InputEnabled = false;
+        player1.SetMove(false);
 
 
         if(speccyWin)
