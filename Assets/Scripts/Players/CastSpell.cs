@@ -415,6 +415,7 @@ public class CastSpell : MonoBehaviour
                     {
                         case 1:
                             spellTarget.transform.position = new Vector3(position.x, cam2.ScreenToWorldPoint(center).y + 2.5f, -45);
+                            spellTarget.transform.rotation = Quaternion.identity;
                             break;
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(0, 180, 0);
