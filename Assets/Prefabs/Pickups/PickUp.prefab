@@ -444,7 +444,8 @@ AudioSource:
   m_GameObject: {fileID: 1862569287545682}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243219866034379084, guid: 8906dfadacdf5064080101660d028db8,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -562,6 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedUpDuration: 7
   speedUpMultiplier: 2
+  speedUpJumpMultipler: 1.5
   pickUpSFX1: {fileID: 8300000, guid: 8cda1e7d64293904a83ba31a3109326d, type: 3}
   pickUpSFX2: {fileID: 8300000, guid: 7460042bde733a545a3ae7563cbfb9ad, type: 3}
   pickUpSFX3: {fileID: 8300000, guid: 93f2f340eb8b5544e8f49f67bb4f04dd, type: 3}
