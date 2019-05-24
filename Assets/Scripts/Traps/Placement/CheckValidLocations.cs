@@ -13,7 +13,7 @@ public class CheckValidLocations : MonoBehaviour {
         Valid = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         SetValidBool(true, other.tag);
     }

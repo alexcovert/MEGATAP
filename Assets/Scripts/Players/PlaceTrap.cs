@@ -368,7 +368,17 @@ public class PlaceTrap : MonoBehaviour {
                 if (ghostTrap != null && CheckFloor(position.y))
                 {
                     audioSource.PlayOneShot(trapPlacementGood);
-                    trap.InstantiateTrap(position, ghostTrap.transform.rotation);
+                    GameObject finalTrap = trap.InstantiateTrap(position, ghostTrap.transform.rotation);
+
+                    //Destroy scripts that use OnTriggerStay to reduce lagz
+                    TrapOverlap trapOverlap = finalTrap.GetComponentInChildren<TrapOverlap>();
+                    CheckMultipleBases multipleBases = finalTrap.GetComponentInChildren<CheckMultipleBases>();
+                    if(trapOverlap != null)
+                        Destroy(trapOverlap);
+                    if(multipleBases != null)
+                        Destroy(multipleBases);
+
+
                     if (check != null) check.Placed = true;
                     previouslySelectedIndex = queueIndex;
 
