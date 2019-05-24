@@ -113,7 +113,7 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
         {
-            col = projectile.GetComponent<BoxCollider>();
+            if (projectile != null) col = projectile.GetComponent<BoxCollider>();
             if (col != null) col.enabled = true;
             if (rb != null) rb.velocity = velocity;
         }
