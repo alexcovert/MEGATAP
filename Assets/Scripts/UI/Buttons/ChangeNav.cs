@@ -103,7 +103,7 @@ public class ChangeNav : MonoBehaviour {
                 if(currentLastButton == null)
                 {
                     currentLastButton = cs.queue[s];
-                    Debug.Log(currentLastButton);
+
                     if(s > 0 && cs.queue[s - 1] != null)
                     {
                         currentSecondLastButton = cs.queue[s - 1];
