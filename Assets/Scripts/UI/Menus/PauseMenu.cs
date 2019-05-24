@@ -41,9 +41,13 @@ public class PauseMenu : MonoBehaviour {
 
     CursorLockMode currentLockMode;
     bool cursorVisible;
-
+	
     private int controllerThatPaused = -1; //0 = keyboard, 1 = controller 1, 2 = controller 2; -1 = not paused
-
+    
+    public AudioSource audioSource;
+    [SerializeField] private AudioClip clip;
+	[SerializeField] private AudioClip resumeClip;
+	
     private void Start()
     {
         pt = playerTwo.GetComponent<PlaceTrap>();
@@ -58,7 +62,7 @@ public class PauseMenu : MonoBehaviour {
 
         GameObject gameManager = GameObject.Find("GameManager");
         countdown = gameManager.GetComponent<BeginGo>();
-
+		
         speccyLose = playerOne.GetComponent<PlayerOneLose>();
         speccyWin = GameObject.Find("WinTrigger").GetComponent<WinTrigger>();
     }
@@ -69,6 +73,7 @@ public class PauseMenu : MonoBehaviour {
         {
             if (Input.GetButtonDown("Escape") && countdown.CountdownFinished && !speccyLose.Lose && !speccyWin.Win && (!cc.topPlayersController || !cc.GetBottomPlayerControllerState()))
             {
+                
                 controllerThatPaused = 0;
                 Pause();
                 es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu_Click";
@@ -157,8 +162,9 @@ public class PauseMenu : MonoBehaviour {
     }
 	
 	public void Resume(){
-		pauseMenuUI.SetActive(false);
-
+		StartCoroutine(WaitForSound());
+        
+        
         //Set correct spell buttons interactable again
         for (int i = 0; i < cs.queue.Length; i++)
         {
@@ -182,6 +188,7 @@ public class PauseMenu : MonoBehaviour {
 
         Cursor.lockState = currentLockMode;
         //Resume Inputs
+        
         StartCoroutine(pt.ResumeInput());
         StartCoroutine(cs.ResumeInput());
         StartCoroutine(playerMov.ResumeInput());
@@ -190,6 +197,7 @@ public class PauseMenu : MonoBehaviour {
     }
 	
 	public void Pause(){
+        
         //Set buttons not interactable
         selectedButton = es.currentSelectedGameObject;
 
@@ -231,6 +239,8 @@ public class PauseMenu : MonoBehaviour {
 
         //Bring up Pause menu
         pauseMenuUI.SetActive(true);
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(clip);
         pauseMenuUI.transform.SetAsLastSibling();
 
         if (controllerThatPaused == 1 || controllerThatPaused == 2)
@@ -259,6 +269,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void Restart()
     {
+    	StartCoroutine(WaitForSound());
         Resume();
         SceneManager.LoadScene("Tower1");
     }
@@ -308,9 +319,14 @@ public class PauseMenu : MonoBehaviour {
             pauseButtons[i].interactable = false;
         }
 	}
-
-
-
+	
+	IEnumerator WaitForSound()
+    {
+        //GameObject.Find("Pause Menu").transform.localScale = new Vector3(0, 0, 0);
+        yield return new WaitForSeconds(1.045f);
+        //GameObject.Find("Pause Menu").transform.localScale = new Vector3(1, 1, 1);
+        pauseMenuUI.SetActive(false);
+    }
 
 
     public void QuitGame()

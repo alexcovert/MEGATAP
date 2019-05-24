@@ -16,6 +16,7 @@ public class buttonSFX : MonoBehaviour {
 
 	public void ClickSound(){
 		myFx.PlayOneShot(clickFx);
+		
 	}
 
 }

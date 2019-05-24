@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.7524489, g: 0.7763308, b: 0.5577417, a: 1}
+  m_IndirectSpecularColor: {r: 0.75256175, g: 0.7760851, b: 0.5577871, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -836,7 +836,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.57439
+      value: -80.59089
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5140,6 +5140,9 @@ MonoBehaviour:
   playerTwo: {fileID: 1027381073}
   playerOne: {fileID: 1338709831}
   es: {fileID: 1160000097}
+  audioSource: {fileID: 1888857410}
+  clip: {fileID: 8300000, guid: 4eb4ad40362d54b499c11f208d3a91de, type: 3}
+  resumeClip: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
 --- !u!1 &1023043582 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1756817750854940, guid: c130ae0761b27334089036b39347c937,
@@ -7637,17 +7640,17 @@ Prefab:
     - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
         type: 2}
       propertyPath: m_Delegates.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
         type: 2}
       propertyPath: m_Delegates.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
         type: 2}
       propertyPath: m_Delegates.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114750004870101450, guid: c130ae0761b27334089036b39347c937,
         type: 2}
@@ -7735,6 +7738,36 @@ Prefab:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114518233054957986, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
         type: 2}
       propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -7896,6 +7929,312 @@ Prefab:
       value: 
       objectReference: {fileID: 243714267952395700, guid: 8906dfadacdf5064080101660d028db8,
         type: 2}
+    - target: {fileID: 114128406695603938, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114128406695603938, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].eventID
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128197}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].eventID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128197}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114457924785009408, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114750004870101450, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoverSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114429752632936306, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114429752632936306, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114313411723353788, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114313411723353788, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114329236042075336, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].eventID
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128199}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].eventID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128199}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114354668164926570, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].eventID
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128198}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].eventID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1485128198}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114288039579541958, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[3].callback.m_TypeName
+      value: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI, Version=1.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624170559984128, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114624170559984128, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114329236042075336, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114301829150665458, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114301829150665458, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114737260551118388, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114737260551118388, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 114045764208598956, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: clickFx
+      value: 
+      objectReference: {fileID: 8300000, guid: 7ed941244518d9a46ad4fe68b746beba, type: 3}
+    - target: {fileID: 114045764208598956, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: hoverFx
+      value: 
+      objectReference: {fileID: 8300000, guid: f1669da3b6a04e24a954dc2b004f3151, type: 3}
+    - target: {fileID: 82999333671785792, guid: c130ae0761b27334089036b39347c937,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c130ae0761b27334089036b39347c937, type: 2}
   m_IsPrefabAsset: 0
@@ -7911,6 +8250,24 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1485128194}
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1485128197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114128406695603938, guid: c130ae0761b27334089036b39347c937,
+    type: 2}
+  m_PrefabInternal: {fileID: 1485128194}
+  m_Script: {fileID: 11500000, guid: db222b8d200834c62a72cc1872333ade, type: 3}
+--- !u!114 &1485128198 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114624170559984128, guid: c130ae0761b27334089036b39347c937,
+    type: 2}
+  m_PrefabInternal: {fileID: 1485128194}
+  m_Script: {fileID: 11500000, guid: db222b8d200834c62a72cc1872333ade, type: 3}
+--- !u!114 &1485128199 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114329236042075336, guid: c130ae0761b27334089036b39347c937,
+    type: 2}
+  m_PrefabInternal: {fileID: 1485128194}
+  m_Script: {fileID: 11500000, guid: db222b8d200834c62a72cc1872333ade, type: 3}
 --- !u!4 &1499000591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4063479449427360, guid: c95eca2a304e62c4abe3cc7a52590fd5,
@@ -9911,11 +10268,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d5ce3ddc1fb044b4bbc27caf3fbebaed, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.01
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -11092,7 +11449,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.57439
+      value: -80.59089
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalRotation.x
