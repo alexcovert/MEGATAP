@@ -17,12 +17,13 @@ public class ProjectileShooter : MonoBehaviour {
 
     private Vector3 velocity;
     private Quaternion projectileRotation;
+    private GameOverMenu gameOver;
 	//private bool ghost = true;
 	// Use this for initialization
 	void Awake () {
 		prefab = Resources.Load("projectile") as GameObject;
         cam2 = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
-
+        gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         if (!transform.parent.GetComponentInChildren<CheckMultipleBases>().Placed)
         {
             switch (cam2.GetState())
@@ -89,25 +90,30 @@ public class ProjectileShooter : MonoBehaviour {
                     break;
             }
         }
-
-        //Debug.Log(FloorNumber + ", " + FaceNumber, this);
+        
     }
 
     private void LoadArrow()
     {
-        projectile = Instantiate(prefab);
+        if (!gameOver.GameOver)
+        {
+            projectile = Instantiate(prefab);
 
-        projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
-        projectile.transform.rotation = projectileRotation;
+            projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
+            projectile.transform.rotation = projectileRotation;
 
-        rb = projectile.GetComponent<Rigidbody>();
+            rb = projectile.GetComponent<Rigidbody>();
+        }
         
     }
 
     private void Projectile()
     {
-        col = projectile.GetComponent<BoxCollider>();
-        col.enabled = true;
-        if(rb != null) rb.velocity = velocity;
+        if (!gameOver.GameOver)
+        {
+            col = projectile.GetComponent<BoxCollider>();
+            col.enabled = true;
+            if (rb != null) rb.velocity = velocity;
+        }
     }
 }

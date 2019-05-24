@@ -85,6 +85,7 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private bool sap = false;
 
+    private GameOverMenu gameOver;
 
     //For Petrify flicker
     private float PetrifyTime = -1;
@@ -149,6 +150,7 @@ public class PlayerOneMovement : MonoBehaviour {
         colArray = GetComponents<CapsuleCollider>();
         stun = GetComponentInChildren<ParticleSystemRenderer>();
         pause = gameManager.GetComponent<PauseMenu>();
+        gameOver = gameManager.GetComponent<GameOverMenu>();
         sphere = GetComponents<SphereCollider>();
         ghost = GetComponent<GhostTrail>();
 
@@ -171,255 +173,260 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private void Update()
     {
-        camOneState = cam.GetState();
-        grounded = GetComponentInChildren<PlayerGrounded>().IsGrounded();
-        if (move == true && !pause.GameIsPaused && InputEnabled)
+        if (!gameOver.GameOver)
         {
-            if (Mathf.Abs(inputManager.GetAxis(InputCommand.BottomPlayerMoveStick)) > 0.4)
+            camOneState = cam.GetState();
+            grounded = GetComponentInChildren<PlayerGrounded>().IsGrounded();
+            if (move == true && !pause.GameIsPaused && InputEnabled && !gameOver.GameOver)
             {
-                inputAxis = inputManager.GetAxis(InputCommand.BottomPlayerMoveStick);
+                if (Mathf.Abs(inputManager.GetAxis(InputCommand.BottomPlayerMoveStick)) > 0.4)
+                {
+                    inputAxis = inputManager.GetAxis(InputCommand.BottomPlayerMoveStick);
+                }
+                else if (Mathf.Abs(inputManager.GetAxis(InputCommand.BottomPlayerMoveKeyboard)) > 0)
+                {
+                    inputAxis = inputManager.GetAxis(InputCommand.BottomPlayerMoveKeyboard);
+                }
+                else
+                {
+                    inputAxis = 0;
+                }
+                //jumping
+                if (inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == false)
+                {
+                    jumping = true;
+                }
+
+                if (inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == true && cantStandUp == false)
+                {
+                    jumping = true;
+                }
+
+                //crouch
+                if (inputManager.GetButtonDown(InputCommand.BottomPlayerCrouch) && grounded)
+                {
+                    crouching = true;
+                }
+                if (inputManager.GetButtonUp(InputCommand.BottomPlayerCrouch) || (!inputManager.GetButton(InputCommand.BottomPlayerCrouch) && cantStandUp == false))
+                {
+                    if (cantStandUp == true)
+                    {
+                        crouching = true;
+                        CrouchPenalty = crouchSlow;
+                    }
+                    if (cantStandUp == false)
+                    {
+                        crouching = false;
+                        CrouchPenalty = 1;
+                    }
+
+                }
+                // Animation parameters update
+                animator.SetBool("Jumping", jumping);
+                if (jumping)
+                {
+                    animator.SetBool("Running", false);
+                }
+                //animator.SetBool("Running", move);
+                animator.SetBool("Stunned", false);
+                stun.enabled = false;
             }
-            else if (Mathf.Abs(inputManager.GetAxis(InputCommand.BottomPlayerMoveKeyboard)) > 0)
+
+            switch (camOneState)
             {
-                inputAxis = inputManager.GetAxis(InputCommand.BottomPlayerMoveKeyboard);
+                case 1:
+                    movementVector = new Vector3(inputAxis * speed, rb.velocity.y, 0);
+                    if (inputAxis > 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 90, 0);
+                        animator.SetFloat("Velocity", speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else if (inputAxis < 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 270, 0);
+                        animator.SetFloat("Velocity", -speed);
+
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        animator.SetFloat("Velocity", 0);
+
+                        if (grounded) animator.SetBool("Running", false);
+                    }
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+                    break;
+                case 2:
+                    movementVector = new Vector3(0, rb.velocity.y, inputAxis * speed);
+                    if (inputAxis > 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 0, 0);
+                        animator.SetFloat("Velocity", speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else if (inputAxis < 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 180, 0);
+                        animator.SetFloat("Velocity", -speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        animator.SetFloat("Velocity", 0);
+                        if (grounded) animator.SetBool("Running", false);
+                    }
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
+                    break;
+                case 3:
+                    movementVector = new Vector3(-inputAxis * speed, rb.velocity.y, 0);
+                    if (inputAxis > 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 270, 0);
+                        animator.SetFloat("Velocity", -speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else if (inputAxis < 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 90, 0);
+                        animator.SetFloat("Velocity", speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        animator.SetFloat("Velocity", -rb.velocity.x);
+                        if (grounded) animator.SetBool("Running", false);
+                    }
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+                    break;
+                case 4:
+                    movementVector = new Vector3(0, rb.velocity.y, -inputAxis * speed);
+                    if (inputAxis > 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 180, 0);
+                        animator.SetFloat("Velocity", -speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else if (inputAxis < 0)
+                    {
+                        transform.eulerAngles = new Vector3(0, 0, 0);
+                        animator.SetFloat("Velocity", speed);
+                        if (grounded) animator.SetBool("Running", true);
+                    }
+                    else
+                    {
+                        animator.SetFloat("Velocity", 0);
+                        if (grounded) animator.SetBool("Running", false);
+                    }
+                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
+                    break;
+            }
+
+            if (crouching == true)
+            {
+                CrouchPenalty = crouchSlow;
+                col.height = 2.25f;
+                col.center = new Vector3(0, 1.1f, 0);
+                colArray[1].height = 2f;
+                colArray[1].center = new Vector3(0, 1f, 0.21f);
+                sphere[0].center = new Vector3(0, 1f, 0);
+            }
+
+            if (crouching == false || grounded == false)
+            {
+                col.height = 4.5f;
+                col.center = new Vector3(0, 2.2f, 0);
+                colArray[1].height = 4f;
+                colArray[1].center = new Vector3(0, 2.2f, 0.21f);
+                sphere[0].center = new Vector3(0, 3f, 0);
+            }
+
+            cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
+
+            if (!pause.GameIsPaused && !gameOver.GameOver) Move();
+
+            if (spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
+            {
+                speedUpBeams.enabled = true;
+                speedUpSwirl.enabled = true;
+            }
+
+            // initiate speed up
+            if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
+            {
+                spedUp = true;
+                audioSource.PlayOneShot(speedBoostSFX);
+                speedUpBeams.enabled = false;
+                speedUpSwirl.enabled = false;
+                ghost.On = true;
+                once = true;
+                StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
+            }
+            //New Speed Function
+            speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
+            //New Jump Function
+            jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
+
+            //Petrify flicker fix
+            StunTimeInitial += Time.deltaTime;
+            if (StunTimeInitial >= PetrifyTime)
+            {
+                unPetrify = true;
             }
             else
             {
-                inputAxis = 0;
+                unPetrify = false;
             }
-            //jumping
-            if (inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == false)
+
+            //Slow flicker fix
+            SlowTimeInitial += Time.deltaTime;
+            if (SlowTimeInitial >= SlowSpellTime)
             {
-                jumping = true;
+                unSlow = true;
             }
 
-            if (inputManager.GetButtonDown(InputCommand.BottomPlayerJump) && grounded && crouching == true && cantStandUp == false)
+            if (unSlow == false)
             {
-                jumping = true;
+                slowSwirl.enabled = true;
+                slowAura.enabled = true;
             }
-
-            //crouch
-            if (inputManager.GetButtonDown(InputCommand.BottomPlayerCrouch) && grounded)
+            else
             {
-                crouching = true;
+                slowSwirl.enabled = false;
+                slowAura.enabled = false;
             }
-            if (inputManager.GetButtonUp(InputCommand.BottomPlayerCrouch) || (!inputManager.GetButton(InputCommand.BottomPlayerCrouch) && cantStandUp == false))
+
+            if (slowed == true)
             {
-                if (cantStandUp == true)
+                if (sap == false)
                 {
-                    crouching = true;
-                    CrouchPenalty = crouchSlow;
+                    sapBubbles.Play();
+                    sap = true;
                 }
-                if (cantStandUp == false)
-                {
-                    crouching = false;
-                    CrouchPenalty = 1;
-                }
-
             }
-            // Animation parameters update
-            animator.SetBool("Jumping", jumping);
-            if (jumping)
+            else
             {
-                animator.SetBool("Running", false);
+                sap = false;
+                sapBubbles.Stop();
             }
-            //animator.SetBool("Running", move);
-            animator.SetBool("Stunned", false);
-            stun.enabled = false;
+
+            //WallJump Check at feet
+            //Debug.DrawRay(transform.position, transform.forward, Color.green);
+            //WallJump Check at knee
+            //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
+            //WallJump Check at chest
+            //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
+            //WallJump Check at nose/head
+            //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
+
+            //Distance from feet to platform
+            //Debug.DrawRay(transform.position, -transform.up, Color.yellow, distanceFromGround);
+
+            animator.SetBool("Grounded", grounded);
+            animator.SetBool("Crouched", crouching);
+            animator.SetFloat("YVelocity", rb.velocity.y);
         }
-
-        switch (camOneState)
-        {
-            case 1:
-                movementVector = new Vector3(inputAxis * speed, rb.velocity.y, 0);
-                if (inputAxis > 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 90, 0);
-                    animator.SetFloat("Velocity", speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else if (inputAxis < 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 270, 0);
-                    animator.SetFloat("Velocity", -speed);
-
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else
-                {
-                    animator.SetFloat("Velocity", 0);
-
-                    if (grounded) animator.SetBool("Running", false);
-                }
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-                break;
-            case 2:
-                movementVector = new Vector3(0, rb.velocity.y, inputAxis * speed);
-                if (inputAxis > 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                    animator.SetFloat("Velocity", speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else if (inputAxis < 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 180, 0);
-                    animator.SetFloat("Velocity", -speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else
-                {
-                    animator.SetFloat("Velocity", 0);
-                    if (grounded) animator.SetBool("Running", false);
-                }
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
-                break;
-            case 3:
-                movementVector = new Vector3(-inputAxis * speed, rb.velocity.y, 0);
-                if (inputAxis > 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 270, 0);
-                    animator.SetFloat("Velocity", -speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else if (inputAxis < 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 90, 0);
-                    animator.SetFloat("Velocity", speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else
-                {
-                    animator.SetFloat("Velocity", -rb.velocity.x);
-                    if (grounded) animator.SetBool("Running", false);
-                }
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-                break;
-            case 4:
-                movementVector = new Vector3(0, rb.velocity.y, -inputAxis * speed);
-                if (inputAxis > 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 180, 0);
-                    animator.SetFloat("Velocity", -speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else if (inputAxis < 0)
-                {
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                    animator.SetFloat("Velocity", speed);
-                    if (grounded) animator.SetBool("Running", true);
-                }
-                else
-                {
-                    animator.SetFloat("Velocity", 0);
-                    if (grounded) animator.SetBool("Running", false);
-                }
-                rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX;
-                break;
-        }
-
-        if (crouching == true)
-        {
-            CrouchPenalty = crouchSlow;
-            col.height = 2.25f;
-            col.center = new Vector3(0, 1.1f, 0);
-            colArray[1].height = 2f;
-            colArray[1].center = new Vector3(0, 1f, 0.21f);
-            sphere[0].center = new Vector3(0, 1f, 0);
-        }
-
-        if (crouching == false || grounded == false) {
-            col.height = 4.5f;
-            col.center = new Vector3(0, 2.2f, 0);
-            colArray[1].height = 4f;
-            colArray[1].center = new Vector3(0, 2.2f, 0.21f);
-            sphere[0].center = new Vector3(0, 3f, 0);
-        }
-
-        cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
-
-        if (!pause.GameIsPaused) Move();
-
-        if (spedUp == false && GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3)
-        {
-            speedUpBeams.enabled = true;
-            speedUpSwirl.enabled = true;
-        }
-
-        // initiate speed up
-        if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
-        {
-            spedUp = true;
-            audioSource.PlayOneShot(speedBoostSFX);
-            speedUpBeams.enabled = false;
-            speedUpSwirl.enabled = false;
-            ghost.On = true;
-            once = true;
-            StartCoroutine(SpeedBoost(GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpMultiplier, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpDuration, GameObject.FindWithTag("PickUp").GetComponent<PickUp>().speedUpJumpMultipler));
-        }
-        //New Speed Function
-        speed = (moveSpeed * SlowPenaltyTier1 * StunPenalty * CrouchPenalty) * SuperSpeed;
-        //New Jump Function
-        jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
-
-        //Petrify flicker fix
-        StunTimeInitial += Time.deltaTime;
-        if (StunTimeInitial >= PetrifyTime)
-        {
-            unPetrify = true;
-        }
-        else
-        {
-            unPetrify = false;
-        }
-
-        //Slow flicker fix
-        SlowTimeInitial += Time.deltaTime;
-        if (SlowTimeInitial >= SlowSpellTime)
-        {
-            unSlow = true;
-        }
-
-        if (unSlow == false)
-        {
-            slowSwirl.enabled = true;
-            slowAura.enabled = true;
-        }
-        else
-        {
-            slowSwirl.enabled = false;
-            slowAura.enabled = false;
-        }
-
-        if (slowed == true)
-        {
-            if (sap == false)
-            {
-                sapBubbles.Play();
-                sap = true;
-            }
-        }
-        else
-        {
-            sap = false;
-            sapBubbles.Stop();
-        }
-
-        //WallJump Check at feet
-        //Debug.DrawRay(transform.position, transform.forward, Color.green);
-        //WallJump Check at knee
-        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.forward, Color.blue);
-        //WallJump Check at chest
-        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.forward, Color.red);
-        //WallJump Check at nose/head
-        //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 3, transform.position.z), transform.forward, Color.yellow);
-
-        //Distance from feet to platform
-        //Debug.DrawRay(transform.position, -transform.up, Color.yellow, distanceFromGround);
-
-        animator.SetBool("Grounded", grounded);
-        animator.SetBool("Crouched", crouching);
-        animator.SetFloat("YVelocity", rb.velocity.y);
+        
     }
 
 
