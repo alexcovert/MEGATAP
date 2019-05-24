@@ -101,25 +101,28 @@ public class LogRoller : MonoBehaviour
                         once = false;
                     }
                 }
-                if (timer > timeToShoot && rb != null)
+                if (timer > timeToShoot)
                 {
-                    switch (face)
+                    if (rb != null)
                     {
-                        case 1:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-                            break;
-                        case 2:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
-                            break;
-                        case 3:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-                            break;
-                        case 4:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
-                            break;
+                        switch (face)
+                        {
+                            case 1:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                                break;
+                            case 2:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                                break;
+                            case 3:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                                break;
+                            case 4:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                                break;
+                        }
+                        rb.useGravity = true;
+                        rb.AddForce(-transform.right * speed);
                     }
-                    rb.useGravity = true;
-                    rb.AddForce(-transform.right * speed);
                     timer = timer - timeToShoot;
                     once = true;
                 }
