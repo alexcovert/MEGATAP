@@ -12,7 +12,7 @@ public class Colliding : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "Platform")
+        if(other.tag == "Platform" || other.tag == "TrapHitbox")
         {
             collided = true;
         }
@@ -20,7 +20,7 @@ public class Colliding : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Platform")
+        if (other.tag == "Platform" || other.tag == "TrapHitbox")
         {
             collided = false;
         }

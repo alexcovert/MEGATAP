@@ -57,7 +57,7 @@ public class PlacePickups : MonoBehaviour
                                 int num = Random.Range(1, 10);
                                 if (num <= 3)
                                 {
-                                    GameObject pickup = Instantiate(item, new Vector3(r.position.x, r.position.y, r.position.z), Quaternion.identity);
+                                    GameObject pickup = Instantiate(item, new Vector3(r.position.x, r.position.y, r.position.z), Quaternion.Euler(0,0,90f));
                                     pickup.transform.parent = r.transform;
                                     index++;
                                     NumPickUpsTotal++;

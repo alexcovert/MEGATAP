@@ -7,10 +7,23 @@ using UnityEngine.UI;
 using TMPro;
 
 public class GameOverMenu : MonoBehaviour {
+    public bool GameOver = false;
+
     [SerializeField] private EventSystem es;
     [SerializeField] private GameObject charSelectButton;
     [SerializeField] private GameObject restartButton;
     [SerializeField] private TextMeshProUGUI text;
+
+    [SerializeField] private GameObject fadePrefab;
+    [SerializeField] private MoveVines vines;
+
+    [SerializeField] private AudioSource musicPlayer;
+    [SerializeField] private AudioClip speccyWinMusic;
+    [SerializeField] private AudioClip speccyLoseMusic;
+
+    private PlayerOneMovement player1;
+    private PlaceTrap pt;
+    private CastSpell cs;
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
 
@@ -18,11 +31,25 @@ public class GameOverMenu : MonoBehaviour {
     {
         cc = GameObject.Find("InputManager").GetComponent<CheckControllers>();
         charSelectText = charSelectButton.GetComponentInChildren<TextMeshProUGUI>();
+        GameObject p1 = GameObject.Find("Player 1");
+        player1 = p1.GetComponent<PlayerOneMovement>();
+
+        GameObject p2 = GameObject.Find("Player 2");
+        pt = p2.GetComponent<PlaceTrap>();
+        cs = p2.GetComponent<CastSpell>();
     }
 
     public void Open(bool speccyWin)
     {
-        if(speccyWin)
+        Instantiate(fadePrefab);
+        cs.InputEnabled = false;
+        pt.InputEnabled = false;
+        player1.InputEnabled = false;
+        player1.SetMove(false);
+        vines.Started = false;
+        GameOver = true;
+
+        if (speccyWin)
         {
             text.text = "Bottom Player Wins!";
         }
@@ -30,6 +57,8 @@ public class GameOverMenu : MonoBehaviour {
         {
             text.text = "Top Player Wins!";
         }
+
+        StartCoroutine(FadeMusic(speccyWin));
 
         es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu";
         if (cc != null && charSelectText != null)
@@ -45,12 +74,16 @@ public class GameOverMenu : MonoBehaviour {
                 charSelectText.color = new Color(charSelectText.color.r, charSelectText.color.g, charSelectText.color.b, 1);
             }
         }
+    }
 
+    public void SetSelected()
+    {
         if (cc.GetBottomPlayerControllerState() || cc.topPlayersController)
         {
 
             es.SetSelectedGameObject(restartButton);
         }
+        
     }
 
     public void onClickRetry()
@@ -79,6 +112,34 @@ public class GameOverMenu : MonoBehaviour {
     {
         Debug.Log("Quiting Game");
         Application.Quit();
+    }
+
+    private IEnumerator FadeMusic(bool speccyWin)
+    {
+        float fadeTime = 2;
+
+        for(float t = 0; t < fadeTime; t += Time.deltaTime)
+        {
+            musicPlayer.volume = Mathf.Lerp(1, 0, t / fadeTime);
+            yield return null;
+        }
+
+        if(speccyWin)
+        {
+            musicPlayer.clip = speccyWinMusic;
+        }
+        else
+        {
+            musicPlayer.clip = speccyLoseMusic;
+        }
+        musicPlayer.Play();
+
+        for (float t = 0; t < fadeTime; t += Time.deltaTime)
+        {
+            musicPlayer.volume = Mathf.Lerp(0, 1, t / fadeTime);
+            yield return null;
+        }
+        Debug.Log(musicPlayer.volume);
     }
 }
 

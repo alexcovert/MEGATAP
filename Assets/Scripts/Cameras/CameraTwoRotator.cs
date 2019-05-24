@@ -72,17 +72,6 @@ public class CameraTwoRotator : MonoBehaviour {
     //Rotate camera around tower when arrow keys are pressed
     private void Update()
     {
-        //Allow toggling grid on/off for playtesting
-        //if(gridToggle.isOn && !gridUI.gameObject.activeInHierarchy)
-        //{
-        //    gridUI.gameObject.SetActive(true);
-        //}
-        //else if(!gridToggle.isOn && gridUI.gameObject.activeInHierarchy)
-        //{
-        //    gridUI.gameObject.SetActive(false);
-        //}
-
-
         if (moveEnabled)
         {
             if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused)
@@ -231,7 +220,7 @@ public class CameraTwoRotator : MonoBehaviour {
     //Rotate and move worldspace grid UI with camera
     private void MoveGrid()
     {
-        gridUI.transform.Rotate(0, 90, 0);
+        gridUI.transform.Rotate(0, -90, 0);
         switch (currentPos)
         {
             case 1:

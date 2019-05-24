@@ -10,7 +10,7 @@ public class LogProjectile : MonoBehaviour {
     [SerializeField] private int knockUpValue = 25;
     [SerializeField] private float stunDuration = 0.75f;
     //Time before log disappears
-    [SerializeField] private float lifeTime = 2f;
+    [SerializeField] private float lifeTime = 8f;
 
     [SerializeField] private float animationSpeed;
 
@@ -35,8 +35,8 @@ public class LogProjectile : MonoBehaviour {
     //Figure out which face this is on
     private CameraOneRotator playerOne;
 
-    //So this doesn't die prematurely
-    private bool canDie = false;
+    private bool canHit = true;
+
 
     void Awake()
     {
@@ -49,6 +49,7 @@ public class LogProjectile : MonoBehaviour {
         child = transform.parent.gameObject.transform.GetChild(1).gameObject;
         rb = child.GetComponent<Rigidbody>();
         box = GetComponent<BoxCollider>();
+        StartCoroutine(Death());
     }
 
     // Update is called once per frame
@@ -56,90 +57,84 @@ public class LogProjectile : MonoBehaviour {
     {
         this.transform.position = child.transform.position;
 
-        //So cannot die prematurely
-        if(rb.velocity.y != 0)
-        {
-            canDie = true;
-        }
-
         //only needs to have 0 velocity once.
         if ((rb.velocity.x <= 0.00001 && rb.velocity.x >= -0.00001) && (rb.velocity.z <= 0.00001 && rb.velocity.z >= -0.00001))
         {
             box.enabled = false;
-            if (canDie == true)
-            {
-                StartCoroutine(Death());
-            }
         }
-        switch (playerOne.GetState())
+        if (canHit == true)
         {
-            case 1:
-                if (rb.velocity.x > speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                //left
-                else if (rb.velocity.x < -speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback) {
-                    box.enabled = false;
-                }
-                break;
-            case 2:
-                if(rb.velocity.z > speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                //left
-                else if(rb.velocity.z < -speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
-            case 3:
-                //left
-                if(rb.velocity.x > speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if(rb.velocity.x < -speedForKnockback)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
-            case 4:
-                //left
-                if (rb.velocity.z > speedForKnockback)
-                {
-                    box.center = new Vector3(-0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z < 0)
-                {
-                    box.center = new Vector3(0.0065f, 0, -0.0003f);
-                    box.enabled = true;
-                }
-                else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
-                {
-                    box.enabled = false;
-                }
-                break;
+            switch (playerOne.GetState())
+            {
+                case 1:
+                    if (rb.velocity.x > speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    //left
+                    else if (rb.velocity.x < -speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 2:
+                    if (rb.velocity.z > speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    //left
+                    else if (rb.velocity.z < -speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 3:
+                    //left
+                    if (rb.velocity.x > speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x < -speedForKnockback)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.x > -speedForKnockback && rb.velocity.x < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+                case 4:
+                    //left
+                    if (rb.velocity.z > speedForKnockback)
+                    {
+                        box.center = new Vector3(-0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z < 0)
+                    {
+                        box.center = new Vector3(0.0065f, 0, -0.0003f);
+                        box.enabled = true;
+                    }
+                    else if (rb.velocity.z > -speedForKnockback && rb.velocity.z < speedForKnockback)
+                    {
+                        box.enabled = false;
+                    }
+                    break;
+            }
         }
     }
     void FixedUpdate () {
@@ -186,6 +181,9 @@ public class LogProjectile : MonoBehaviour {
     private IEnumerator Death()
     {
         yield return new WaitForSeconds(lifeTime);
+        canHit = false;
+        box.enabled = false;
+        yield return new WaitForSeconds(2f);
         Destroy(this.transform.parent.gameObject);
     }
     

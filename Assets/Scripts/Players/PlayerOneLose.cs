@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerOneLose : MonoBehaviour {
     public bool Lose { get; private set; }
@@ -14,7 +15,6 @@ public class PlayerOneLose : MonoBehaviour {
 	public GameObject CanvasUI2;
 	public GameObject CanvasUI3;
 	public GameObject CanvasUI4;
-	public GameObject CanvasUI5;
 	public GameObject CanvasUI6;
     [SerializeField] private GameOverMenu menu;
 
@@ -27,22 +27,53 @@ public class PlayerOneLose : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         //check collision with Rising walls that are tagged with "rise"
-        if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started)
+        if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started && !Lose)
         {
+            menu.Open(false);
+
             Lose = true;
             // Initiate.Fade("GameOver", Color.black, 1);
             speccyLosesUI.SetActive(true);
             speccyLosesUI.transform.SetAsLastSibling();
+
+            
             LoseGameCamera.SetActive(true);
             CanvasUI.SetActive(false);
             CanvasUI2.SetActive(false);
             CanvasUI3.SetActive(false);
             CanvasUI4.SetActive(false);
-            CanvasUI5.SetActive(false);
             CanvasUI6.SetActive(false);
-            menu.Open(false);
+            StartCoroutine(fadeIn(speccyLosesUI));
+
+            
         }
     }
-    
-    
+
+
+    private IEnumerator fadeIn(GameObject ui)
+    {
+        Image[] images = ui.GetComponentsInChildren<Image>();
+        TextMeshProUGUI[] text = ui.GetComponentsInChildren<TextMeshProUGUI>();
+
+        for (float i = 0; i < 2; i += Time.deltaTime)
+        {
+            foreach (Image im in images)
+            {
+                if(im.name != "GameOver")
+                    im.color = new Color(im.color.r, im.color.g, im.color.b, Mathf.Lerp(0, 1, i / 2));
+            }
+            foreach (TextMeshProUGUI t in text)
+            {
+                t.color = new Color(t.color.r, t.color.g, t.color.b, Mathf.Lerp(0, 1, i / 2));
+            }
+
+
+            yield return null;
+        }
+
+
+        menu.SetSelected();
+    }
+
+
 }

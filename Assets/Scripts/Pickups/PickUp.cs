@@ -7,6 +7,7 @@ public class PickUp : MonoBehaviour {
 
     [SerializeField] public float speedUpDuration = 7f;
     [SerializeField] public float speedUpMultiplier = 2f;
+    [SerializeField] public float speedUpJumpMultipler = 1.5f;
     [SerializeField] private AudioClip pickUpSFX1;
     [SerializeField] private AudioClip pickUpSFX2;
     [SerializeField] private AudioClip pickUpSFX3;
@@ -47,7 +48,7 @@ public class PickUp : MonoBehaviour {
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = currColor;
         }
 
-        transform.Rotate(new Vector3(0f, RotationAmount, 0f) * Time.deltaTime);
+        transform.Rotate(new Vector3(RotationAmount, 0f, 0f) * Time.deltaTime);
 
         time += Time.deltaTime;
         if (up == false)

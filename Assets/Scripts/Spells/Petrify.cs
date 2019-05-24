@@ -59,8 +59,15 @@ public class Petrify : MonoBehaviour {
             if (hit)
             {
                 child = player.GetComponentsInChildren<Renderer>();
-                spellBase.Stun(player, stunDuration, turnStone, anim);
+                spellBase.Stun(player, stunDuration, turnStone);
+                StartCoroutine(CheckPetrifyStatus());
                 StartCoroutine(Wait(this.gameObject));
+            }
+
+            if (player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
+            {
+                Revert();
+                anim.enabled = true;
             }
         }
     }
@@ -73,6 +80,7 @@ public class Petrify : MonoBehaviour {
             hit = true;
             player = other.gameObject;
             anim = player.gameObject.GetComponent<PlayerOneMovement>().GetAnim();
+            anim.enabled = false;
 
             //Turn off renderer & particles
             this.GetComponent<Renderer>().enabled = false;
@@ -88,7 +96,7 @@ public class Petrify : MonoBehaviour {
         }
         if(hit == false && other.tag == "Boundary" && once == true)
         {
-            Destroy(this.gameObject);
+            StartCoroutine(Die(3f));
         }
          
     }
@@ -114,13 +122,22 @@ public class Petrify : MonoBehaviour {
                 r.material = normalPoncho;
             }
         }
+        anim.enabled = true;
     }
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(stunDuration - 0.1f);
-        Revert();
-        yield return new WaitForSeconds(0.1f);
+        float time = 0;
+        while (time <= stunDuration + 0.2f)
+        {
+            if (player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify() == true)
+            {
+                Revert();
+                anim.enabled = true;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(8f);
         Destroy(obj);
     }
 
@@ -128,5 +145,21 @@ public class Petrify : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
         once = true;
+    }
+
+    private IEnumerator Die(float time)
+    {
+        yield return new WaitForSeconds(time * 4);
+        Destroy(this.gameObject);
+    }
+
+    private IEnumerator CheckPetrifyStatus()
+    {
+        //For petrify's materials to stop flickering
+        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
+
+        yield return null;
     }
 }

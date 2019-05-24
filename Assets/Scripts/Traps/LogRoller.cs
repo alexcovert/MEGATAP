@@ -19,9 +19,14 @@ public class LogRoller : MonoBehaviour
     //private Vector3 velocity;
     private Quaternion projectileRotation;
     // Use this for initialization
+
+    private GameOverMenu gameOver;
+
+
     void Start()
     {
         trapBase = GetComponent<TrapBase>();
+        gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         cam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
         logPrefab = Resources.Load("LogProjectile") as GameObject;
         face = cam.GetState();
@@ -55,7 +60,7 @@ public class LogRoller : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (trapBase.enabled == true)
+        if (trapBase.enabled == true && !gameOver.GameOver)
         {
             CapsuleCollider col;
             if (timer > timeToShoot - 1)
@@ -70,16 +75,16 @@ public class LogRoller : MonoBehaviour
                     switch (face)
                     {
                         case 1:
-                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.5f, 0);
+                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.4f, 0);
                             break;
                         case 2:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, -0.5f);
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, -0.5f);
                             break;
                         case 3:
-                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.5f, 0);
+                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.4f, 0);
                             break;
                         case 4:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.5f, 0.5f);
+                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, 0.5f);
                             break;
                     }
                     logProjectile.transform.rotation = projectileRotation;

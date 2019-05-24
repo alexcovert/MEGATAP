@@ -230,25 +230,34 @@ public class CastSpell : MonoBehaviour
                 //Spell comes from right side
                 if (spellDirection == SpellDirection.Right)
                 {
+                    float pos;
+                    if(spell.ToString() == "Wind (SpellBase)")
+                    {
+                        pos = 45;
+                    }                
+                    else
+                    {
+                        pos = 50;
+                    }
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(50, spellTarget.transform.position.y, -42);
+                            castedSpell = spell.InstantiateSpell(pos, spellTarget.transform.position.y, -42);
                             movementVector = new Vector3(-spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, 50);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, pos);
                             movementVector = new Vector3(0, 0, -spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(-50, spellTarget.transform.position.y, 42);
+                            castedSpell = spell.InstantiateSpell(-pos, spellTarget.transform.position.y, 42);
                             movementVector = new Vector3(spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -50);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -pos);
                             movementVector = new Vector3(0, 0, spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
@@ -262,26 +271,27 @@ public class CastSpell : MonoBehaviour
                 }
                 if (spellDirection == SpellDirection.Ceiling)
                 {
+                    float verticalOffset = 5;
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, -42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, -42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, 42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, 42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                     }
@@ -387,12 +397,12 @@ public class CastSpell : MonoBehaviour
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(180, 0, 90);
                             //spellTarget.transform.position = new Vector3(transform.position.x, position.y, 45);
-                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x + 5, position.y, 45);
+                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x - 5, position.y, 45);
                             break;
                         case 4:
                             spellTarget.transform.eulerAngles = new Vector3(0, 90, -90);
                             //spellTarget.transform.position = new Vector3(-45, position.y, transform.position.z);
-                            spellTarget.transform.position = new Vector3(-45, position.y, cam2.ScreenToWorldPoint(center).z + 5);
+                            spellTarget.transform.position = new Vector3(-45, position.y, cam2.ScreenToWorldPoint(center).z - 5);
                             break;
                     }
                 }
@@ -405,6 +415,7 @@ public class CastSpell : MonoBehaviour
                     {
                         case 1:
                             spellTarget.transform.position = new Vector3(position.x, cam2.ScreenToWorldPoint(center).y + 2.5f, -45);
+                            spellTarget.transform.rotation = Quaternion.identity;
                             break;
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(0, 180, 0);
@@ -487,7 +498,6 @@ public class CastSpell : MonoBehaviour
         DestroyTarget();
         GetComponent<PlaceTrap>().DestroyGhost();
         SetTarget();
-        Debug.Log(spell);
         spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
     }
 

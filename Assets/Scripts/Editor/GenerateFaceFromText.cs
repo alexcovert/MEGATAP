@@ -106,10 +106,11 @@ public class GenerateFaceFromText
                             }
                             if (line[i].Equals('S'))
                             {
+                                //60.54, -10.26
                                 // load designated prefab, must be from proper folder
                                 Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Platforms/" + stairsPlatform + ".prefab", typeof(GameObject));
                                 GameObject spawnedPlatform = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-                                spawnedPlatform.transform.position = new Vector3(i * 2, lineNumber * -2, 0);
+                                spawnedPlatform.transform.position = new Vector3(i * 2.015f, lineNumber * -2.05f, 0);
                                 spawnedPlatform.transform.eulerAngles = new Vector3(-90, 180, 0);
 
                                 //store transform

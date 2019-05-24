@@ -6,6 +6,7 @@ public class MoveControllerCursor : MonoBehaviour {
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Image controllerCursor;
+    [SerializeField] private Image spellCursor;
     private CheckControllers checkControllers;
     private PauseMenu pause;
 
@@ -13,19 +14,16 @@ public class MoveControllerCursor : MonoBehaviour {
     [SerializeField] private float cursorDelayHorizontal; //How long the script waits before moving cursor to next grid pos while stick is held down.
     [SerializeField] private float cursorDelayVertical;
     [SerializeField] private float freeRoamSpellSpeed;
-    [SerializeField][Range(0, 1)] private float spellBarSpeedMultiplier;
+    [SerializeField][Range(0, 3)] private float spellBarSpeedMultiplier;
     [SerializeField] private float cursorGrid;  //Size of the cursor grid - DIFFERENT from the size of the worldspace/trap grid. Should be fine at 23 but might need to be tweaked if we change UI.
     [Tooltip("Higher # = Lower Sensitivity")] [SerializeField] private float stickSensitivity; //Between 0-1 ; how far the player needs to push the stick for it to move the cursor
                                                                                                //Needed to set it higher because some controller sticks naturally move left/right a little.
-
-    [Header("Audio-------------")]
-    [SerializeField] private AudioClip spaceSelectionSFX;
-    //private AudioSource audioSource;
 
     private bool p2Controller;
     private bool cursorHorizontalMove = true;
     private bool cursorVerticalMove = true;
     private InputManager inputManager;
+    private GameOverMenu gameOver;
 
     [HideInInspector]
     public bool MovingTraps = true;
@@ -42,9 +40,8 @@ public class MoveControllerCursor : MonoBehaviour {
     void Start () {
         pause = gameManager.GetComponent<PauseMenu>();
         checkControllers = inputManager.GetComponent<CheckControllers>();
-        //audioSource = GetComponent<AudioSource>();
         p2Controller = checkControllers.GetControllerTwoState();
-
+        gameOver = gameManager.GetComponent<GameOverMenu>();
 
         //Screen size
         CanvasScaler scaler = controllerCursor.GetComponentInParent<CanvasScaler>();
@@ -58,116 +55,115 @@ public class MoveControllerCursor : MonoBehaviour {
 	void Update () {
         p2Controller = checkControllers.GetControllerTwoState();
 
-        if (p2Controller && !pause.GameIsPaused && MovingTraps)
+        if (!gameOver.GameOver)
         {
-            float horizontalInput, verticalInput;
-            horizontalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal1) + inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal2);
-            verticalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveVertical1) + inputManager.GetAxis(InputCommand.TopPlayerMoveVertical2);
+            //Moving TRAPS
+            if (p2Controller && !pause.GameIsPaused && MovingTraps)
+            {
+                float horizontalInput, verticalInput;
+                horizontalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal1) + inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal2);
+                verticalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveVertical1) + inputManager.GetAxis(InputCommand.TopPlayerMoveVertical2);
 
-            Vector3 cursorPos = controllerCursor.GetComponent<RectTransform>().localPosition;
-
-            if (horizontalInput > stickSensitivity && cursorHorizontalMove && cursorPos.x < screenWidth)
-            {
-                controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(cursorGrid, 0, 0);
-                cursorHorizontalMove = false;
-                StartCoroutine(EnableHorizontalCursorMove());
-
-                //audioSource.PlayOneShot(spaceSelectionSFX);
-            }
-            else if (horizontalInput < -stickSensitivity && cursorHorizontalMove && cursorPos.x > -screenWidth)
-            {
-                controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(cursorGrid, 0, 0);
-                cursorHorizontalMove = false;
-                StartCoroutine(EnableHorizontalCursorMove());
-                //audioSource.PlayOneShot(spaceSelectionSFX);
-            }
-            else if (verticalInput > stickSensitivity && cursorVerticalMove && cursorPos.y < screenHeight)
-            {
-                controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(0, cursorGrid, 0);
-                cursorVerticalMove = false;
-                StartCoroutine(EnableVerticalCursorMove());
-               // audioSource.PlayOneShot(spaceSelectionSFX);
-            }
-            else if (verticalInput < -stickSensitivity && cursorVerticalMove && cursorPos.y > 0)
-            {
-                controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(0, cursorGrid, 0);
-                cursorVerticalMove = false;
-                StartCoroutine(EnableVerticalCursorMove());
-                //audioSource.PlayOneShot(spaceSelectionSFX);
-            }
-        }
-        else if (p2Controller && !pause.GameIsPaused && !MovingTraps)
-        {
-            float horizontalInput, verticalInput;
-            horizontalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal1) + inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal2);
-            verticalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveVertical1) + inputManager.GetAxis(InputCommand.TopPlayerMoveVertical2);
-
-            if (SpellCastDirection == SpellDirection.Instant)
-            {
                 Vector3 cursorPos = controllerCursor.GetComponent<RectTransform>().localPosition;
 
-                if (verticalInput > stickSensitivity && cursorPos.y < -55)
+                if (horizontalInput > stickSensitivity && cursorHorizontalMove && cursorPos.x < 37)
                 {
-                    Vector3 pos = controllerCursor.transform.localPosition;
-                    pos.z = 35;
-                    
-                    controllerCursor.transform.Translate(new Vector3(0f, verticalInput * freeRoamSpellSpeed, 0f));
-                    
+                    controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(cursorGrid, 0, 0);
+                    cursorHorizontalMove = false;
+                    StartCoroutine(EnableHorizontalCursorMove());
                 }
-                if (verticalInput < -stickSensitivity && cursorPos.y > -screenHeight)
+                else if (horizontalInput < -stickSensitivity && cursorHorizontalMove && cursorPos.x > -37)
                 {
-                    Vector3 pos = controllerCursor.transform.localPosition;
-                    pos.z = 35;
-
-                    controllerCursor.transform.Translate(new Vector3(0f, verticalInput * freeRoamSpellSpeed, 0f));
-
+                    controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(cursorGrid, 0, 0);
+                    cursorHorizontalMove = false;
+                    StartCoroutine(EnableHorizontalCursorMove());
                 }
-                if (horizontalInput < -stickSensitivity)
+                else if (verticalInput > stickSensitivity && cursorVerticalMove && cursorPos.y < 8)
                 {
-                    Vector3 pos = controllerCursor.transform.localPosition;
-                    pos.z = 35;
-                    if(controllerCursor.transform.localPosition.x > -screenWidth)
+                    controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(0, cursorGrid, 0);
+                    cursorVerticalMove = false;
+                    StartCoroutine(EnableVerticalCursorMove());
+                }
+                else if (verticalInput < -stickSensitivity && cursorVerticalMove && cursorPos.y > -7)
+                {
+                    controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(0, cursorGrid, 0);
+                    cursorVerticalMove = false;
+                    StartCoroutine(EnableVerticalCursorMove());
+                }
+            }
+            //Moving SPELLS
+            else if (p2Controller && !pause.GameIsPaused && !MovingTraps)
+            {
+                float horizontalInput, verticalInput;
+                horizontalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal1) + inputManager.GetAxis(InputCommand.TopPlayerMoveHorizontal2);
+                verticalInput = inputManager.GetAxis(InputCommand.TopPlayerMoveVertical1) + inputManager.GetAxis(InputCommand.TopPlayerMoveVertical2);
+
+                if (SpellCastDirection == SpellDirection.Instant)
+                {
+                    Vector3 cursorPos = spellCursor.GetComponent<RectTransform>().localPosition;
+
+                    if (verticalInput > stickSensitivity && cursorPos.y < -55)
                     {
-                        controllerCursor.transform.Translate(new Vector3(horizontalInput * freeRoamSpellSpeed, 0f, 0f));
+                        Vector3 pos = spellCursor.transform.localPosition;
+                        pos.z = 35;
+
+                        spellCursor.transform.Translate(new Vector3(0f, verticalInput * freeRoamSpellSpeed, 0f));
+
+                    }
+                    if (verticalInput < -stickSensitivity && cursorPos.y > -screenHeight)
+                    {
+                        Vector3 pos = spellCursor.transform.localPosition;
+                        pos.z = 35;
+
+                        spellCursor.transform.Translate(new Vector3(0f, verticalInput * freeRoamSpellSpeed, 0f));
+
+                    }
+                    if (horizontalInput < -stickSensitivity)
+                    {
+                        Vector3 pos = spellCursor.transform.localPosition;
+                        pos.z = 35;
+                        if (spellCursor.transform.localPosition.x > -screenWidth)
+                        {
+                            spellCursor.transform.Translate(new Vector3(horizontalInput * freeRoamSpellSpeed, 0f, 0f));
+                        }
+                    }
+                    if (horizontalInput > stickSensitivity)
+                    {
+                        Vector3 pos = spellCursor.transform.localPosition;
+                        pos.z = 35;
+                        if (spellCursor.transform.localPosition.x < screenWidth)
+                        {
+                            spellCursor.transform.Translate(new Vector3(horizontalInput * freeRoamSpellSpeed, 0f, 0f));
+                        }
                     }
                 }
-                if(horizontalInput > stickSensitivity)
+                else if (SpellCastDirection == SpellDirection.Right)
                 {
-                    Vector3 pos = controllerCursor.transform.localPosition;
-                    pos.z = 35;
-                    if (controllerCursor.transform.localPosition.x < screenWidth)
+
+                    Vector3 cursorPos = spellCursor.GetComponent<RectTransform>().localPosition;
+                    if (verticalInput > stickSensitivity && cursorVerticalMove && cursorPos.y < -55)
                     {
-                        controllerCursor.transform.Translate(new Vector3(horizontalInput * freeRoamSpellSpeed, 0f, 0f));
+                        spellCursor.GetComponent<RectTransform>().localPosition += new Vector3(0, cursorGrid * spellBarSpeedMultiplier, 0);
+                    }
+                    else if (verticalInput < -stickSensitivity && cursorVerticalMove && cursorPos.y > -screenHeight)
+                    {
+                        spellCursor.GetComponent<RectTransform>().localPosition -= new Vector3(0, cursorGrid * spellBarSpeedMultiplier, 0);
+                    }
+                }
+                else if (SpellCastDirection == SpellDirection.Ceiling)
+                {
+                    Vector3 cursorPos = spellCursor.GetComponent<RectTransform>().localPosition;
+                    if (horizontalInput > stickSensitivity && cursorHorizontalMove && cursorPos.x < screenWidth)
+                    {
+                        spellCursor.GetComponent<RectTransform>().localPosition += new Vector3(cursorGrid * spellBarSpeedMultiplier, 0, 0);
+                    }
+                    else if (horizontalInput < -stickSensitivity && cursorHorizontalMove && cursorPos.x > -screenWidth)
+                    {
+                        spellCursor.GetComponent<RectTransform>().localPosition -= new Vector3(cursorGrid * spellBarSpeedMultiplier, 0, 0);
                     }
                 }
             }
-            else if(SpellCastDirection == SpellDirection.Right)
-            {
-
-                Vector3 cursorPos = controllerCursor.GetComponent<RectTransform>().localPosition;
-                if (verticalInput > stickSensitivity && cursorVerticalMove && cursorPos.y < -55)
-                {
-                    controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(0, cursorGrid * spellBarSpeedMultiplier, 0);
-                }
-                else if (verticalInput < -stickSensitivity && cursorVerticalMove && cursorPos.y > -screenHeight)
-                {
-                    controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(0, cursorGrid * spellBarSpeedMultiplier, 0);
-                }
-            }
-            else if(SpellCastDirection == SpellDirection.Ceiling)
-            {
-                Vector3 cursorPos = controllerCursor.GetComponent<RectTransform>().localPosition;
-                if (horizontalInput > stickSensitivity && cursorHorizontalMove && cursorPos.x < screenWidth)
-                {
-                    controllerCursor.GetComponent<RectTransform>().localPosition += new Vector3(cursorGrid * spellBarSpeedMultiplier, 0, 0);
-                }
-                else if (horizontalInput < -stickSensitivity && cursorHorizontalMove && cursorPos.x > -screenWidth)
-                {
-                    controllerCursor.GetComponent<RectTransform>().localPosition -= new Vector3(cursorGrid * spellBarSpeedMultiplier, 0, 0);
-                }
-            }
         }
-
 
     }
 
