@@ -455,6 +455,16 @@ public class PlayerOneMovement : MonoBehaviour {
             StunPenalty = 1;
         }
 
+        if(slowed == false && unSlow == true)
+        {
+            SlowPenaltyTier1 = 1;
+            SlowJumpPenalty = 1;
+            sap = false;
+            sapBubbles.Stop();
+            slowSwirl.enabled = false;
+            slowAura.enabled = false;
+        }
+
         if (!wallJumping) rb.velocity = movementVector;
         else rb.velocity = wallJumpVector;
     }
