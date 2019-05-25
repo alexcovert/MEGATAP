@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerOneLose : MonoBehaviour {
     public bool Lose { get; private set; }
@@ -18,16 +19,18 @@ public class PlayerOneLose : MonoBehaviour {
 	public GameObject CanvasUI6;
     [SerializeField] private GameOverMenu menu;
 
+    private bool tutorial;
     private void Start () {
         Lose = false;
         cam = GetComponent<CameraOneRotator>();
+        if (SceneManager.GetActiveScene().name == "Tutorial") tutorial = true;
 	}
 
 
     void OnTriggerEnter(Collider other)
     {
         //check collision with Rising walls that are tagged with "rise"
-        if (other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started && !Lose)
+        if (!tutorial && other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started && !Lose)
         {
             menu.Open(false);
 
