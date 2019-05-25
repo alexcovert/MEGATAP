@@ -9,6 +9,7 @@ public class MoveVines : MonoBehaviour {
     [SerializeField] private float speedIncreasePerFace;
     [SerializeField] private float vineMoveUpSpeed;
     [SerializeField] private float curvinessUpperLimit;
+    [SerializeField] private float tutorialSpeed;
 
     //Positions of each individual vine in children
     private List<GameObject> vines;
@@ -47,8 +48,8 @@ public class MoveVines : MonoBehaviour {
             Rotate();
             Rotate();
             face = 3;
-            speed += speedIncreasePerFace * 3;
             movedUpThisFloor = false;
+            speed = tutorialSpeed;
         }
         //Initialize variables
         speed = vineStartSpeed;
@@ -121,7 +122,7 @@ public class MoveVines : MonoBehaviour {
             speed += speedIncreasePerFace;
             Rotate();
             face = 4;
-            if (tutorial) movedUpThisFloor = false;
+            if (tutorial) Started = false;
         }
         //Fourth to First face -- Rotating
         if (p.transform.position.x <= -40 && p.transform.position.z <= -43 && face == 4 && floor < 5)
