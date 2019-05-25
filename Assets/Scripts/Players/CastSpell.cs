@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class CastSpell : MonoBehaviour
 {
@@ -22,10 +23,21 @@ public class CastSpell : MonoBehaviour
 
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
+    [SerializeField] private GameObject spellQueue;
+    [SerializeField] private Image controllerCursor;
+    [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private GameObject gameManager;
+    [SerializeField] private Camera cam;
+    [SerializeField] private Camera cam2;
+    [SerializeField] private GameObject playerOne;
+    [SerializeField] private GameObject[] targeting;
 
-    //[SerializeField] private GameObject[] spellButtons;
-    //[SerializeField] private SpellBase[] spellPrefabs;
+    private PlaceTrap pt;
+    private PauseMenu pause;
+    private List<Camera> allCameras = new List<Camera>();
 
+
+    [Header("Spell Buttons & Prefabs")]
     [SerializeField] private GameObject[] CommonSpellButtons;
     [SerializeField] private GameObject[] UncommonSpellButtons;
     [SerializeField] private GameObject[] RareSpellButtons;
@@ -34,21 +46,8 @@ public class CastSpell : MonoBehaviour
     [SerializeField] private SpellBase[] UncommonSpellPrefabs;
     [SerializeField] private SpellBase[] RareSpellPrefabs;
 
-    [SerializeField] private GameObject spellQueue;
-
-    [SerializeField] private Image controllerCursor;
-
-    [SerializeField] private EventSystem eventSystem;
-    [SerializeField] private GameObject gameManager;
-    [SerializeField] private Camera cam;
-    [SerializeField] private Camera cam2;
-
-    [SerializeField] private GameObject playerOne;
-    [SerializeField] private GameObject[] targeting;
-
-    private PlaceTrap pt;
-    private PauseMenu pause;
-    private List<Camera> allCameras = new List<Camera>();
+    private bool tutorial;
+    private int tutorialCounter = 0;
 
     //Queue Stuff
     public GameObject[] queue { get; private set; }
@@ -95,9 +94,14 @@ public class CastSpell : MonoBehaviour
         allCameras.Add(cam);
         allCameras.Add(cam2);
 
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            tutorial = true;
+        }
+
         //Queue Initialization
         queue = new GameObject[queueSize];
-        CreateSpellQueue();
+        if(!tutorial) CreateSpellQueue();
         spellQueue.transform.SetAsLastSibling();
 
         //Handle cursor or set buttons if controller connected
@@ -109,8 +113,19 @@ public class CastSpell : MonoBehaviour
 
     void Update()
     {
+        //Tutorial checks
+        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && tutorial && tutorialCounter < 2)
+        {
+            tutorialCounter++;
+            if(tutorialCounter == 2)
+            {
+                CreateSpellQueue();
+            }
+        }
 
         p2Controller = cc.GetTopPlayerControllerState();
+
+
         //Move target with cursor
         MoveTarget();
 
@@ -453,13 +468,6 @@ public class CastSpell : MonoBehaviour
 
                 }
                 
-                //Cancel the spell
-                //if (Input.GetMouseButton(1) || Input.GetButton("Cancel_Joy_2"))
-                //{
-                //    DestroyTarget();
-
-                //    SetSelectedButton();
-                //}
             }
         }
     }

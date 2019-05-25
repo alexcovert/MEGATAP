@@ -203,11 +203,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 29.999996
+      value: 29.999998
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.578
+      value: -80.57439
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3274,6 +3274,16 @@ Prefab:
       propertyPath: spellPrefabs.Array.size
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapButtons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4994873547233482, guid: 7c17f18a57460024ba6258242e429410, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3433,6 +3443,42 @@ Prefab:
       propertyPath: spellCursor
       value: 
       objectReference: {fileID: 232712928}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 114893840394271494, guid: 890757bba411d2a49a09d335cf309d28,
+        type: 2}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 114374902745233234, guid: 978902421daf7ca4eb1ed6dc15ac1645,
+        type: 2}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 114173747208991380, guid: b34de131824cbe447931d0a2d1e0696b,
+        type: 2}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1724981058369430, guid: bcd2e4d2a1cf197439a28a522e490486,
+        type: 2}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1148860999998904, guid: ad3241910d1b2f54db2ac80af833dd05,
+        type: 2}
+    - target: {fileID: 114220156261559540, guid: 7c17f18a57460024ba6258242e429410,
+        type: 2}
+      propertyPath: tutorialTrapButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 1342018372598374, guid: 208c22d5edce409439fa7b3eb12a8ab6,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c17f18a57460024ba6258242e429410, type: 2}
   m_IsPrefabAsset: 0
@@ -7265,11 +7311,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 29.999996
+      value: 29.999998
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.578
+      value: -80.57439
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalRotation.x

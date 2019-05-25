@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
 public enum Direction
 {
     Left,
@@ -23,10 +25,17 @@ public class PlaceTrap : MonoBehaviour {
 
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
+    [SerializeField] private GameObject trapQueue;
+    [SerializeField] private Image controllerCursor;
+    [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private GameObject gameManager;
+    [SerializeField] private Camera cam;
 
-    // [SerializeField] private GameObject[] trapButtons;
-     //[SerializeField] private TrapBase[] trapPrefabs;
+    private CastSpell cs;
+    private PauseMenu pause;
+    private CheckControllers checkControllers;
 
+    [Header("Trap Buttons & Prefabs")]
     [SerializeField] private GameObject[] CommonTrapButtons;
     [SerializeField] private GameObject[] UncommonTrapButtons;
     [SerializeField] private GameObject[] RareTrapButtons;
@@ -35,17 +44,10 @@ public class PlaceTrap : MonoBehaviour {
     [SerializeField] private TrapBase[] UncommonTrapPrefabs;
     [SerializeField] private TrapBase[] RareTrapPrefabs;
 
-    [SerializeField] private GameObject trapQueue;
-
-    [SerializeField] private Image controllerCursor;
-
-    [SerializeField] private EventSystem eventSystem;
-    [SerializeField] private GameObject gameManager;
-    [SerializeField] private Camera cam;
-
-    private CastSpell cs;
-    private PauseMenu pause;
-    private CheckControllers checkControllers;
+    [Header("Tutorial Traps")]
+    [SerializeField] private GameObject[] tutorialTrapButtons;
+    [SerializeField] private TrapBase[] tutorialTrapPrefabs;
+    private bool tutorial;
 
     [Header("Audio-----------------------------")]
     [SerializeField] private AudioClip trapPlacementGood;
@@ -55,7 +57,7 @@ public class PlaceTrap : MonoBehaviour {
     [Header("Queue Size -----")]
     [SerializeField] private int queueSize = 7;
     private MoveControllerCursor cursorMove;
-    
+
     //Andy's Queue Stuff
     public List<GameObject> queue { get; private set; }
     private int queueIndex;
@@ -67,8 +69,8 @@ public class PlaceTrap : MonoBehaviour {
     private GameObject ghostTrap;
     private float gridXOffset, gridZOffset, gridYOffset = 1f; //changed when trap is rotated so that it still properly aligns with grid.
     private SpriteRenderer[] placementSquares;
-    
-    
+
+
     //Controller Stuff
     private bool p2Controller;
     public bool InputEnabled = true;
@@ -90,7 +92,7 @@ public class PlaceTrap : MonoBehaviour {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
     }
 
-    void Start () {
+    void Start() {
         //Get references
         pause = gameManager.GetComponent<PauseMenu>();
         cs = GetComponent<CastSpell>();
@@ -100,7 +102,16 @@ public class PlaceTrap : MonoBehaviour {
         queue = new List<GameObject>();
         cursorMove = GetComponent<MoveControllerCursor>();
         active = true;
-        CreateTrapQueue();
+
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            tutorial = true;
+            CreateTutorialQueue(true);
+        }
+        else
+        {
+            CreateTrapQueue();
+        }
         trapQueue.transform.SetAsLastSibling();
 
         //Handle cursor or set buttons if controller connected
@@ -119,23 +130,23 @@ public class PlaceTrap : MonoBehaviour {
         tutorialTopMoveTrap = GameObject.Find("ToolTipTopMoveTrap");
         tutorialTopSelectTrap = GameObject.Find("ToolTipTopSelectTrap");
 
-        if (tutorialTopGoal!= null) { tutorialTopGoal.SetActive(true); }
+        if (tutorialTopGoal != null) { tutorialTopGoal.SetActive(true); }
         if (tutorialTopPlaceTrap != null) { tutorialTopPlaceTrap.SetActive(false); }
         if (tutorialTopMoveTrap != null) { tutorialTopMoveTrap.SetActive(false); }
         if (tutorialTopSelectTrap != null) { tutorialTopSelectTrap.SetActive(false); }
     }
-	
 
-	void Update () {
+
+    void Update() {
 
         // tutorial tips
         if (tutorialTopGoal != null && tutorialTopGoal.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
         {
             tutorialTopGoal.SetActive(false);
             tutorialTopSelectTrap.SetActive(true);
-        } else if(tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
+        } else if (tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
         {
-                
+
             tutorialTopSelectTrap.SetActive(false);
             tutorialTopMoveTrap.SetActive(true);
             tutorialTopPlaceTrap.SetActive(true);
@@ -157,18 +168,22 @@ public class PlaceTrap : MonoBehaviour {
         //Reset queue's when tower rotates
         if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && resetEnabled && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
-            //if(cam.GetComponent<CameraTwoRotator>().GetFloor() == tower.GetComponent<NumberOfFloors>().NumFloors && cam.GetComponent<CameraTwoRotator>().GetState() == 4)
-            //{
-            //    lastFace = true;
-            //}
+
             numTimesRotated++;
             resetEnabled = false;
             StartCoroutine(EnableInput());
 
             DestroyGhost();
             ClearTrapQueue();
-            CreateTrapQueue();
-            if(p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
+            if (tutorial)
+            {
+                CreateTutorialQueue(false);
+            }
+            else
+            {
+                CreateTrapQueue();
+            }
+            if (p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
         }
@@ -185,7 +200,7 @@ public class PlaceTrap : MonoBehaviour {
     private Vector3? GetGridPosition()
     {
 
-        if(RaycastFromCam() != null && !checkControllers.topPlayersController)
+        if (RaycastFromCam() != null && !checkControllers.topPlayersController)
         {
             RaycastHit hit = RaycastFromCam().Value;
             float hitX = -1;
@@ -247,31 +262,6 @@ public class PlaceTrap : MonoBehaviour {
         if (RaycastFromCam() != null)
         {
             RaycastHit hit = RaycastFromCam().Value;
-
-            //Commented out while we are not doing trap rotation - KEEP for later
-            //if (Input.GetButtonDown("RotateLeft_Joy_2") && !pause.GameIsPaused)
-            //{
-            //    if (hit.normal.x == -1 || hit.normal.x == 1)
-            //    {
-            //        trapRot--;
-            //    }
-            //    else
-            //    {
-            //        trapRot++;
-            //    }
-            //}
-            //else if (Input.GetButtonDown("RotateRight_Joy_2") && !pause.GameIsPaused)
-            //{
-            //    if (hit.normal.x == -1 || hit.normal.x == 1)
-            //    {
-            //        trapRot++;
-            //    }
-            //    else
-            //    {
-            //        trapRot--;
-            //    }
-            //}
-
             //Add Offsets so they still stick to grid
             if (trapRot % 4 == 0)
             {//Facing Up
@@ -344,7 +334,7 @@ public class PlaceTrap : MonoBehaviour {
             else return null;
         }
         //Ray to mouse cursor
-        else if(Input.mousePosition.y > Screen.height / 2)
+        else if (Input.mousePosition.y > Screen.height / 2)
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("Tower")))
@@ -363,7 +353,7 @@ public class PlaceTrap : MonoBehaviour {
     //ONLY computer mouse - controller cursor is handled in Update
     public void OnClickTower()
     {
-        if(!Input.GetMouseButtonUp(1) && !pause.GameIsPaused && !p2Controller)
+        if (!Input.GetMouseButtonUp(1) && !pause.GameIsPaused && !p2Controller)
         {
             SetTrap();
         }
@@ -371,13 +361,13 @@ public class PlaceTrap : MonoBehaviour {
 
     private void SetTrap()
     {
-        if(ghostTrap != null)
+        if (ghostTrap != null)
         {
             //Check if trap is on correct surface
             bool validLocation;
             CheckMultipleBases bases = ghostTrap.GetComponentInChildren<CheckMultipleBases>();
             CheckValidLocations check = ghostTrap.GetComponentInChildren<CheckValidLocations>();
-         
+
 
             if (bases != null)
             {
@@ -405,9 +395,9 @@ public class PlaceTrap : MonoBehaviour {
                     //Destroy scripts that use OnTriggerStay to reduce lagz
                     TrapOverlap trapOverlap = finalTrap.GetComponentInChildren<TrapOverlap>();
                     CheckMultipleBases multipleBases = finalTrap.GetComponentInChildren<CheckMultipleBases>();
-                    if(trapOverlap != null)
+                    if (trapOverlap != null)
                         Destroy(trapOverlap);
-                    if(multipleBases != null)
+                    if (multipleBases != null)
                         Destroy(multipleBases);
 
 
@@ -569,9 +559,9 @@ public class PlaceTrap : MonoBehaviour {
                 Debug.Log("Warning: Trap not set up correctly; valid location is always true.");
             }
 
-            if(validLocation && CheckNearby() && placementSquares.Length == 2)
+            if (validLocation && CheckNearby() && placementSquares.Length == 2)
             {
-                if(placementSquares[0] != null) placementSquares[0].enabled = false;
+                if (placementSquares[0] != null) placementSquares[0].enabled = false;
                 if (placementSquares[1] != null) placementSquares[1].enabled = true;
             }
             else if (placementSquares.Length == 2)
@@ -599,14 +589,6 @@ public class PlaceTrap : MonoBehaviour {
                 }
                 Vector3 position = GetGridPosition().Value;
                 ghostTrap.transform.position = position;
-
-                //Cancel the trap
-                //if ((Input.GetMouseButton(1) || Input.GetButton("Cancel_Joy_2")) && !pause.GameIsPaused)
-                //{
-                //    DestroyGhost();
-                //    placementSquares = null;
-                //    SetSelectedButton();
-                //}
             }
         }
     }
@@ -631,7 +613,7 @@ public class PlaceTrap : MonoBehaviour {
 
     public void DestroyGhost()
     {
-        if(ghostTrap != null)
+        if (ghostTrap != null)
         {
             Destroy(ghostTrap);
             ghostTrap = null;
@@ -662,13 +644,22 @@ public class PlaceTrap : MonoBehaviour {
     public void OnClickTrapRare(int trapNum)
     {
         trap = RareTrapPrefabs[trapNum];
-        
+
         StartCoroutine(EnableInput());
         DestroyGhost();
         GetComponent<CastSpell>().DestroyTarget();
         SetGhost();
     }
 
+    public void OnClickTrapTutorial(int trapNum)
+    {
+        trap = tutorialTrapPrefabs[trapNum];
+
+        StartCoroutine(EnableInput());
+        DestroyGhost();
+        GetComponent<CastSpell>().DestroyTarget();
+        SetGhost();
+    }
 
     //Mostly for controller - wait between inputs to prevent spamming and some button selection bugs
     private IEnumerator EnableInput()
@@ -696,12 +687,12 @@ public class PlaceTrap : MonoBehaviour {
     private void CreateTrapQueue()
     {
         active = true;
-        for(int i = 0; i < queueSize; i++)
+        for (int i = 0; i < queueSize; i++)
         {
             int TrapChance = Random.Range(1, 100);
-           
-           int randomIndex;
-           GameObject newTrap;
+
+            int randomIndex;
+            GameObject newTrap;
 
             if (TrapChance <= CommonRarityChance)
             {
@@ -756,6 +747,157 @@ public class PlaceTrap : MonoBehaviour {
             }
         }
 
+    }
+
+    //Called in start, from tutorial
+    //Creates # of traps specified
+    private void CreateTutorialQueue(bool first)
+    {
+        if (first)
+        {
+            for (int i = 0; i < tutorialTrapButtons.Length; i++)
+            {
+                GameObject newTrap = Instantiate(tutorialTrapButtons[i], new Vector3(-230f + 40f * i, -30, 0), Quaternion.identity) as GameObject;
+                newTrap.transform.SetParent(trapQueue.transform, false);
+                int counter = i;
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapTutorial(counter));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+                
+                queue.Add(newTrap);
+            }
+        }
+        else
+        {
+            active = true;
+            int trapCounter = 0; 
+
+            GenerateCommon(ref trapCounter);
+            GenerateUncommon(ref trapCounter);
+            GenerateRare(ref trapCounter);
+           
+
+            while(trapCounter < queueSize)
+            {
+                int TrapChance = Random.Range(1, 100);
+                int randomIndex;
+                GameObject newTrap;
+
+                if (TrapChance <= CommonRarityChance)
+                {
+                    randomIndex = Random.Range(0, CommonTrapButtons.Length);
+                    newTrap = Instantiate(CommonTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                    newTrap.transform.SetParent(trapQueue.transform, false);
+
+                    //Add click listeners for all trap buttons
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapCommon(randomIndex));
+                    newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                    queue.Add(newTrap);
+                }
+                else if (TrapChance > CommonRarityChance && TrapChance < (100 - RareRarityChance))
+                {
+                    randomIndex = Random.Range(0, UncommonTrapButtons.Length);
+                    newTrap = Instantiate(UncommonTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                    newTrap.transform.SetParent(trapQueue.transform, false);
+
+                    //Add click listeners for all trap buttons
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapUncommon(randomIndex));
+                    newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                    queue.Add(newTrap);
+                }
+                else if (TrapChance >= (CommonRarityChance + UncommonRarityChance))
+                {
+                    randomIndex = Random.Range(0, RareTrapButtons.Length);
+                    newTrap = Instantiate(RareTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                    newTrap.transform.SetParent(trapQueue.transform, false);
+
+                    //Add click listeners for all trap buttons
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapRare(randomIndex));
+                    newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                    newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                    queue.Add(newTrap);
+                }
+
+                trapCounter++;
+            }
+        }
+    }
+
+    private void GenerateCommon(ref int trapCounter)
+    {
+        for (int i = 0; i < CommonTrapButtons.Length; i++)
+        {
+            if (trapCounter < queueSize)
+            {
+                int randomIndex = Random.Range(0, CommonTrapButtons.Length);
+                GameObject newTrap = Instantiate(CommonTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapCommon(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+                trapCounter++;
+            }
+        }
+    }
+
+    private void GenerateUncommon(ref int trapCounter)
+    {
+        //One of each uncommon
+        for (int i = 0; i < UncommonTrapButtons.Length; i++)
+        {
+            if (trapCounter < queueSize)
+            {
+                int randomIndex = Random.Range(0, UncommonTrapButtons.Length);
+                GameObject newTrap = Instantiate(UncommonTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapUncommon(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+                trapCounter++;
+            }
+        }
+    }
+
+    private void GenerateRare(ref int trapCounter)
+    {
+        //One of each rare
+        for (int i = 0; i < RareTrapButtons.Length; i++)
+        {
+            if (trapCounter < queueSize)
+            {
+                int randomIndex = Random.Range(0, RareTrapButtons.Length);
+                GameObject newTrap = Instantiate(RareTrapButtons[randomIndex], new Vector3(-230f + 40f * trapCounter, -30, 0), Quaternion.identity) as GameObject;
+
+                newTrap.transform.SetParent(trapQueue.transform, false);
+
+                //Add click listeners for all trap buttons
+                newTrap.GetComponent<Button>().onClick.AddListener(() => OnClickTrapRare(randomIndex));
+                newTrap.GetComponent<ButtonIndex>().ButtonIndexing(trapCounter);
+                newTrap.GetComponent<Button>().onClick.AddListener(() => GetIndex(newTrap));
+
+                queue.Add(newTrap);
+                trapCounter++;
+            }
+        }
     }
 
     private void ClearTrapQueue()
