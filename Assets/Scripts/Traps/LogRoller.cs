@@ -8,12 +8,15 @@ public class LogRoller : MonoBehaviour
 
     private TrapBase trapBase;
     private CameraTwoRotator cam;
+    private CameraOneRotator cam1;
     private GameObject logPrefab;
     private float timer = 0.0f;
     private GameObject logProjectile;
     private Rigidbody rb;
     private bool once = true;
     private int face;
+
+    private int floor;
 
     [SerializeField] private float speed = 40;
     //private Vector3 velocity;
@@ -28,8 +31,10 @@ public class LogRoller : MonoBehaviour
         trapBase = GetComponent<TrapBase>();
         gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         cam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
+        cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
         logPrefab = Resources.Load("LogProjectile") as GameObject;
         face = cam.GetState();
+        floor = cam.GetFloor();
 
         switch (cam.GetState())
         {
@@ -65,53 +70,59 @@ public class LogRoller : MonoBehaviour
             CapsuleCollider col;
             if (timer > timeToShoot - 1)
             {
-                if (once == true)
+                if((floor == cam.GetFloor() && face == cam.GetState()) || (floor == cam1.GetFloor() && face == cam1.GetState()))
                 {
-                    logProjectile = Instantiate(logPrefab);
-                    col = logProjectile.GetComponentInChildren<CapsuleCollider>();
-
-                    Physics.IgnoreCollision(col, this.GetComponent<Collider>());
-
-                    switch (face)
+                    if (once == true)
                     {
-                        case 1:
-                            logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.4f, 0);
-                            break;
-                        case 2:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, -0.5f);
-                            break;
-                        case 3:
-                            logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.4f, 0);
-                            break;
-                        case 4:
-                            logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, 0.5f);
-                            break;
+                        logProjectile = Instantiate(logPrefab);
+                        col = logProjectile.GetComponentInChildren<CapsuleCollider>();
+
+                        Physics.IgnoreCollision(col, this.GetComponent<Collider>());
+
+                        switch (face)
+                        {
+                            case 1:
+                                logProjectile.transform.position = transform.position + new Vector3(-0.5f, 0.4f, 0);
+                                break;
+                            case 2:
+                                logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, -0.5f);
+                                break;
+                            case 3:
+                                logProjectile.transform.position = transform.position + new Vector3(0.5f, 0.4f, 0);
+                                break;
+                            case 4:
+                                logProjectile.transform.position = transform.position + new Vector3(0, 0.4f, 0.5f);
+                                break;
+                        }
+                        logProjectile.transform.rotation = projectileRotation;
+                        rb = logProjectile.GetComponentInChildren<Rigidbody>();
+                        rb.useGravity = false;
+                        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
+                        once = false;
                     }
-                    logProjectile.transform.rotation = projectileRotation;
-                    rb = logProjectile.GetComponentInChildren<Rigidbody>();
-                    rb.useGravity = false;
-                    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-                    once = false;
                 }
                 if (timer > timeToShoot)
                 {
-                    switch (face)
+                    if (rb != null)
                     {
-                        case 1:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-                            break;
-                        case 2:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
-                            break;
-                        case 3:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
-                            break;
-                        case 4:
-                            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
-                            break;
+                        switch (face)
+                        {
+                            case 1:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                                break;
+                            case 2:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                                break;
+                            case 3:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+                                break;
+                            case 4:
+                                rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezePositionX;
+                                break;
+                        }
+                        rb.useGravity = true;
+                        rb.AddForce(-transform.right * speed);
                     }
-                    rb.useGravity = true;
-                    rb.AddForce(-transform.right * speed);
                     timer = timer - timeToShoot;
                     once = true;
                 }

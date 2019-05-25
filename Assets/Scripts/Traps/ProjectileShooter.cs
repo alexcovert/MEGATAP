@@ -9,20 +9,22 @@ public class ProjectileShooter : MonoBehaviour {
 
 
     public CameraTwoRotator cam2;
+    private CameraOneRotator cam1;
 
-	GameObject prefab;
-  	GameObject projectile;
+    GameObject prefab;
+    GameObject projectile;
     private Rigidbody rb;
     private BoxCollider col;
 
     private Vector3 velocity;
     private Quaternion projectileRotation;
     private GameOverMenu gameOver;
-	//private bool ghost = true;
-	// Use this for initialization
-	void Awake () {
-		prefab = Resources.Load("projectile") as GameObject;
+    //private bool ghost = true;
+    // Use this for initialization
+    void Awake() {
+        prefab = Resources.Load("projectile") as GameObject;
         cam2 = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
+        cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
         gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         if (!transform.parent.GetComponentInChildren<CheckMultipleBases>().Placed)
         {
@@ -90,12 +92,12 @@ public class ProjectileShooter : MonoBehaviour {
                     break;
             }
         }
-        
+
     }
 
     private void LoadArrow()
     {
-        if (!gameOver.GameOver)
+        if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
         {
             projectile = Instantiate(prefab);
 
@@ -109,10 +111,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     private void Projectile()
     {
-        if (!gameOver.GameOver)
+        if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
         {
             col = projectile.GetComponent<BoxCollider>();
-            col.enabled = true;
+            if (col != null) col.enabled = true;
             if (rb != null) rb.velocity = velocity;
         }
     }
