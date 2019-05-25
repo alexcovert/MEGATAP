@@ -5,9 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(AudioSource))]
 public class PauseMenu : MonoBehaviour {
 	[HideInInspector] public bool GameIsPaused = false;
-	
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip popupSFX;
+    private AudioSource audioSource;
+
 	[SerializeField] GameObject pauseMenuUI;
     [SerializeField] Button[] pauseButtons;
     [SerializeField] GameObject controlsCanvas;
@@ -46,21 +51,21 @@ public class PauseMenu : MonoBehaviour {
 
     private void Start()
     {
+        //player refs
         pt = playerTwo.GetComponent<PlaceTrap>();
         cs = playerTwo.GetComponent<CastSpell>();
         playerMov = playerOne.GetComponent<PlayerOneMovement>();
-        loader = GetComponent<SceneTransition>();
-
-        //Get input refs
-        GameObject inputManager = GameObject.Find("InputManager");
-        //input = inputManager.GetComponent<InputManager>();
-        cc = inputManager.GetComponent<CheckControllers>();
-
-        GameObject gameManager = GameObject.Find("GameManager");
-        countdown = gameManager.GetComponent<BeginGo>();
-
         speccyLose = playerOne.GetComponent<PlayerOneLose>();
         speccyWin = GameObject.Find("WinTrigger").GetComponent<WinTrigger>();
+
+        //game manager refs
+        loader = GetComponent<SceneTransition>();
+        countdown = GetComponent<BeginGo>();
+        audioSource = GetComponent<AudioSource>();
+
+        //input refs
+        GameObject inputManager = GameObject.Find("InputManager");
+        cc = inputManager.GetComponent<CheckControllers>();
     }
 
     // Update is called once per frame
@@ -232,6 +237,7 @@ public class PauseMenu : MonoBehaviour {
         //Bring up Pause menu
         pauseMenuUI.SetActive(true);
         pauseMenuUI.transform.SetAsLastSibling();
+        audioSource.PlayOneShot(popupSFX);
 
         if (controllerThatPaused == 1 || controllerThatPaused == 2)
             es.SetSelectedGameObject(resumeButton.gameObject);
@@ -260,7 +266,7 @@ public class PauseMenu : MonoBehaviour {
     public void Restart()
     {
         Resume();
-        SceneManager.LoadScene("Tower1");
+        StartCoroutine(loader.LoadScene("Tower1"));
     }
     
     public void CharacterSelect()

@@ -26,6 +26,7 @@ public class GameOverMenu : MonoBehaviour {
     private CastSpell cs;
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
+    private SceneTransition loader;
 
     private void Start()
     {
@@ -37,6 +38,9 @@ public class GameOverMenu : MonoBehaviour {
         GameObject p2 = GameObject.Find("Player 2");
         pt = p2.GetComponent<PlaceTrap>();
         cs = p2.GetComponent<CastSpell>();
+
+
+        loader = GetComponent<SceneTransition>();
     }
 
     public void Open(bool speccyWin)
@@ -88,24 +92,24 @@ public class GameOverMenu : MonoBehaviour {
 
     public void onClickRetry()
     {
-        SceneManager.LoadScene("Tower1");
+        StartCoroutine(loader.LoadScene("Tower1"));
     }
     
     public void onClickTutorial()
     {
-        SceneManager.LoadScene("Tutorial");
+        StartCoroutine(loader.LoadScene("Tutorial"));
     }
     
     public void onClickCharacterSelect()
     {
-    	SceneManager.LoadScene("CharacterSelect");
+        StartCoroutine(loader.LoadScene("CharacterSelect"));
     }
 
     public void onClickMenu()
     {
         GameObject musicPlayer = GameObject.Find("MusicPlayer");
         if (musicPlayer != null) Destroy(musicPlayer);
-        SceneManager.LoadScene("Menu");
+        StartCoroutine(loader.LoadScene("Menu"));
     }
     
     public void QuitGame()
@@ -139,7 +143,6 @@ public class GameOverMenu : MonoBehaviour {
             musicPlayer.volume = Mathf.Lerp(0, 1, t / fadeTime);
             yield return null;
         }
-        Debug.Log(musicPlayer.volume);
     }
 }
 
