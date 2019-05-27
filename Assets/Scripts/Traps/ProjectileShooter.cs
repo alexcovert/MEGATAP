@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class ProjectileShooter : MonoBehaviour {
     public int FaceNumberIfPrePlaced;
-    public int FaceNumber;
-    public int FloorNumber;
+    [HideInInspector] public int FaceNumber;
+    [HideInInspector] public int FloorNumber;
 
 
     public CameraTwoRotator cam2;
+    private CameraOneRotator cam1;
 
-	GameObject prefab;
-  	GameObject projectile;
+    GameObject prefab;
+    GameObject projectile;
     private Rigidbody rb;
     private BoxCollider col;
 
     private Vector3 velocity;
     private Quaternion projectileRotation;
-	//private bool ghost = true;
-	// Use this for initialization
-	void Awake () {
-		prefab = Resources.Load("projectile") as GameObject;
+    private GameOverMenu gameOver;
+    //private bool ghost = true;
+    // Use this for initialization
+    void Awake() {
+        prefab = Resources.Load("projectile") as GameObject;
         cam2 = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
-
+        cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
+        gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         if (!transform.parent.GetComponentInChildren<CheckMultipleBases>().Placed)
         {
             switch (cam2.GetState())
@@ -90,24 +93,29 @@ public class ProjectileShooter : MonoBehaviour {
             }
         }
 
-        //Debug.Log(FloorNumber + ", " + FaceNumber, this);
     }
 
     private void LoadArrow()
     {
-        projectile = Instantiate(prefab);
+        if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
+        {
+            projectile = Instantiate(prefab);
 
-        projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
-        projectile.transform.rotation = projectileRotation;
+            projectile.transform.position = transform.parent.position + new Vector3(0, 0.75f, 0) + transform.forward * 0.5f;
+            projectile.transform.rotation = projectileRotation;
 
-        rb = projectile.GetComponent<Rigidbody>();
+            rb = projectile.GetComponent<Rigidbody>();
+        }
         
     }
 
     private void Projectile()
     {
-        col = projectile.GetComponent<BoxCollider>();
-        col.enabled = true;
-        if(rb != null) rb.velocity = velocity;
+        if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
+        {
+            if (projectile != null) col = projectile.GetComponent<BoxCollider>();
+            if (col != null) col.enabled = true;
+            if (rb != null) rb.velocity = velocity;
+        }
     }
 }

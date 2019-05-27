@@ -5,9 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(AudioSource))]
 public class PauseMenu : MonoBehaviour {
 	[HideInInspector] public bool GameIsPaused = false;
-	
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip popupSFX;
+    private AudioSource audioSource;
+
 	[SerializeField] GameObject pauseMenuUI;
     [SerializeField] Button[] pauseButtons;
     [SerializeField] GameObject controlsCanvas;
@@ -26,8 +31,6 @@ public class PauseMenu : MonoBehaviour {
     private PlayerOneMovement playerMov;
     private PlayerOneLose speccyLose;
     private WinTrigger speccyWin;
-    //For changing controls images
-    private CheckControllers cc;
     private BeginGo countdown;
     private SceneTransition loader;
 
@@ -36,31 +39,38 @@ public class PauseMenu : MonoBehaviour {
     private bool[] onCooldown;
     private bool[] usedTraps;
 
-    private bool controlsUp;
-    private GameObject selectedButton;
 
+    private bool controlsUp;
+
+
+    //Input
+    private int controllerThatPaused = -1; //0 = keyboard, 1 = controller 1, 2 = controller 2; -1 = not paused
+    private StandaloneInputModule inputModule;
+    private float repeatDelay;
+    private GameObject selectedButton;
     CursorLockMode currentLockMode;
     bool cursorVisible;
-
-    private int controllerThatPaused = -1; //0 = keyboard, 1 = controller 1, 2 = controller 2; -1 = not paused
+    private CheckControllers cc;
 
     private void Start()
     {
+        //player refs
         pt = playerTwo.GetComponent<PlaceTrap>();
         cs = playerTwo.GetComponent<CastSpell>();
         playerMov = playerOne.GetComponent<PlayerOneMovement>();
-        loader = GetComponent<SceneTransition>();
-
-        //Get input refs
-        GameObject inputManager = GameObject.Find("InputManager");
-        //input = inputManager.GetComponent<InputManager>();
-        cc = inputManager.GetComponent<CheckControllers>();
-
-        GameObject gameManager = GameObject.Find("GameManager");
-        countdown = gameManager.GetComponent<BeginGo>();
-
         speccyLose = playerOne.GetComponent<PlayerOneLose>();
         speccyWin = GameObject.Find("WinTrigger").GetComponent<WinTrigger>();
+
+        //game manager refs
+        loader = GetComponent<SceneTransition>();
+        countdown = GetComponent<BeginGo>();
+        audioSource = GetComponent<AudioSource>();
+
+        //input refs
+        GameObject inputManager = GameObject.Find("InputManager");
+        cc = inputManager.GetComponent<CheckControllers>();
+        inputModule = es.GetComponent<StandaloneInputModule>();
+        repeatDelay = inputModule.repeatDelay;
     }
 
     // Update is called once per frame
@@ -71,8 +81,8 @@ public class PauseMenu : MonoBehaviour {
             {
                 controllerThatPaused = 0;
                 Pause();
-                es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu_Click";
-                es.GetComponent<StandaloneInputModule>().verticalAxis = "Nothing";
+                inputModule.submitButton = "Submit_Menu_Click";
+                inputModule.verticalAxis = "Nothing";
 
                 currentLockMode = Cursor.lockState;
                 Cursor.lockState = CursorLockMode.None;
@@ -86,8 +96,8 @@ public class PauseMenu : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.Locked;
 
                 Pause();
-                es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu_Joy_1";
-                es.GetComponent<StandaloneInputModule>().verticalAxis = "Vertical_Menu_Stick_Joy_1";
+                inputModule.submitButton = "Submit_Menu_Joy_1";
+                inputModule.verticalAxis = "Vertical_Menu_Stick_Joy_1";
             }
             if (Input.GetButtonDown("Start_Joy_2") && countdown.CountdownFinished && !speccyLose.Lose && !speccyWin.Win)
             {
@@ -97,8 +107,8 @@ public class PauseMenu : MonoBehaviour {
                 Cursor.lockState = CursorLockMode.Locked;
 
                 Pause();
-                es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu_Joy_2";
-                es.GetComponent<StandaloneInputModule>().verticalAxis = "Vertical_Menu_Stick_Joy_2";
+                inputModule.submitButton = "Submit_Menu_Joy_2";
+                inputModule.verticalAxis = "Vertical_Menu_Stick_Joy_2";
             }
         }
         else
@@ -177,7 +187,9 @@ public class PauseMenu : MonoBehaviour {
         }
         es.SetSelectedGameObject(selectedButton);
 
-        es.GetComponent<StandaloneInputModule>().submitButton = "Nothing";
+        inputModule.submitButton = "Nothing";
+        inputModule.repeatDelay = repeatDelay;
+
         Time.timeScale = 1f;
 
         Cursor.lockState = currentLockMode;
@@ -192,6 +204,7 @@ public class PauseMenu : MonoBehaviour {
 	public void Pause(){
         //Set buttons not interactable
         selectedButton = es.currentSelectedGameObject;
+        inputModule.repeatDelay = 0.5f;
 
         //Keep track of which spells are on cooldown / uninteractable so we don't set them interactable when we resume.
         //& set the button uninteractable
@@ -232,6 +245,7 @@ public class PauseMenu : MonoBehaviour {
         //Bring up Pause menu
         pauseMenuUI.SetActive(true);
         pauseMenuUI.transform.SetAsLastSibling();
+        audioSource.PlayOneShot(popupSFX);
 
         if (controllerThatPaused == 1 || controllerThatPaused == 2)
             es.SetSelectedGameObject(resumeButton.gameObject);
@@ -260,7 +274,7 @@ public class PauseMenu : MonoBehaviour {
     public void Restart()
     {
         Resume();
-        SceneManager.LoadScene("Tower1");
+        StartCoroutine(loader.LoadScene("Tower1"));
     }
     
     public void CharacterSelect()

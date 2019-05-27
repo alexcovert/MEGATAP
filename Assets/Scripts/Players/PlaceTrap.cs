@@ -107,13 +107,13 @@ public class PlaceTrap : MonoBehaviour {
             queue[0].gameObject.GetComponent<Button>().Select();
         }
     }
-	
+    
 
 	void Update () {
         //Move ghost with cursor
         MoveGhost();
         //Get controller select
-        p2Controller = checkControllers.GetTopPlayerControllerState();
+        if(checkControllers != null) p2Controller = checkControllers.GetTopPlayerControllerState();
         if (p2Controller && !pause.GameIsPaused)
         {
             if (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) && InputEnabled)
@@ -137,6 +137,8 @@ public class PlaceTrap : MonoBehaviour {
             ClearTrapQueue();
             CreateTrapQueue();
             if(p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
+
+            GetComponent<ChangeNav>().ResetNav();
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
         }
@@ -368,11 +370,24 @@ public class PlaceTrap : MonoBehaviour {
                 if (ghostTrap != null && CheckFloor(position.y))
                 {
                     audioSource.PlayOneShot(trapPlacementGood);
-                    trap.InstantiateTrap(position, ghostTrap.transform.rotation);
+                    GameObject finalTrap = trap.InstantiateTrap(position, ghostTrap.transform.rotation);
+
+                    //Destroy scripts that use OnTriggerStay to reduce lagz
+                    TrapOverlap trapOverlap = finalTrap.GetComponentInChildren<TrapOverlap>();
+                    CheckMultipleBases multipleBases = finalTrap.GetComponentInChildren<CheckMultipleBases>();
+                    if(trapOverlap != null)
+                        Destroy(trapOverlap);
+                    if(multipleBases != null)
+                        Destroy(multipleBases);
+
+
                     if (check != null) check.Placed = true;
                     previouslySelectedIndex = queueIndex;
 
+                    
                     ClearButton();
+                    GetComponent<ChangeNav>().ResetNav();
+
                     trap = null;
                     foreach (SpriteRenderer sr in placementSquares)
                     {
@@ -656,15 +671,8 @@ public class PlaceTrap : MonoBehaviour {
         active = true;
         for(int i = 0; i < queueSize; i++)
         {
-            int TrapChance;
-            if (numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 2))
-            {
-                TrapChance = Random.Range(1, 100);
-            }
-            else
-            {
-                TrapChance = Random.Range(1, (100 - RareRarityChance - 1));
-            }
+            int TrapChance = Random.Range(1, 100);
+           
            int randomIndex;
            GameObject newTrap;
 
@@ -720,6 +728,8 @@ public class PlaceTrap : MonoBehaviour {
                 queue[i].GetComponent<Button>().interactable = false;
             }
         }
+
+        //GetComponent<ChangeNav>().ResetNav();
 
     }
 
@@ -801,7 +811,6 @@ public class PlaceTrap : MonoBehaviour {
 
                 if(!buttonSet)
                 {
-                    Debug.Log("DOne");
                     DestroyGhost();
                     eventSystem.SetSelectedGameObject(null);
                 }

@@ -271,7 +271,7 @@ InputManager:
     altPositiveButton: 
     gravity: 10
     dead: 0.1
-    sensitivity: 4
+    sensitivity: 10
     snap: 0
     invert: 0
     type: 0
@@ -287,7 +287,7 @@ InputManager:
     altPositiveButton: 
     gravity: 10
     dead: 0.1
-    sensitivity: 4
+    sensitivity: 10
     snap: 0
     invert: 0
     type: 0
@@ -539,6 +539,22 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: escape
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Enter
+    descriptiveName: Menu Button
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: return
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

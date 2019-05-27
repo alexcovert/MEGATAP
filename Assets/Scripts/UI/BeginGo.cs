@@ -34,10 +34,9 @@ public class BeginGo : MonoBehaviour {
         cs = playerTwo.GetComponent<CastSpell>();
         playerMov = playerOne.GetComponent<PlayerOneMovement>(); 
 
-        TargetPosition = new Vector3(camTop.transform.position.x, 21, camTop.transform.position.z + 5);
-
         canvas.SetActive(false);
-        
+        TargetPosition = new Vector3(camTop.transform.position.x, 21, -75);
+
         camBot.enabled = false;
         camTop.enabled = false;
 
@@ -53,7 +52,7 @@ public class BeginGo : MonoBehaviour {
     private void Update()
     {
         ZoomCam.transform.position = Vector3.Lerp(ZoomCam.transform.position, TargetPosition , moveInSpeed);
-        if (ZoomCam.transform.position.x <= camTop.transform.position.x && ZoomCam.transform.position.y <= 21 + 10 && ZoomCam.transform.position.z <= camTop.transform.position.z + 10 && once == false)
+        if (ZoomCam.transform.position.x <= camTop.transform.position.x && ZoomCam.transform.position.y <= 21 + 10 && ZoomCam.transform.position.z <= -70 && once == false)
         {
 
             StartCoroutine(StartDelay());
@@ -101,5 +100,6 @@ public class BeginGo : MonoBehaviour {
 
         //Show
         ZoomCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+        GameObject.Find("Player 2").GetComponent<ChangeNav>().ResetNav();
     }
 }

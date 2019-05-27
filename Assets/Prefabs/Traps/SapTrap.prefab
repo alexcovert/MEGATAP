@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114603356562152718}
   - component: {fileID: 114833543942367270}
   - component: {fileID: 114453944344841684}
+  - component: {fileID: 114091553341782474}
   m_Layer: 0
   m_Name: SapTrap
   m_TagString: Trap
@@ -154,7 +155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1644194935971480
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +475,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3007248, y: 0.84204376, z: 0.39555025}
   m_Center: {x: -0.0009895324, y: -0.38098264, z: -0.009426355}
+--- !u!114 &114091553341782474
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1030923523706756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!114 &114453944344841684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -560,8 +574,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd10d1039727f8418d30a3fa6e1f2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowSeverity: 0.25
-  jumpReduceSeverity: 0.5
+  slowSeverity: 0.6
+  jumpReduceSeverity: 0.8
   slowDuration: 60
 --- !u!114 &114908656911990212
 MonoBehaviour:

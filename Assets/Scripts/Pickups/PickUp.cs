@@ -48,7 +48,7 @@ public class PickUp : MonoBehaviour {
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = currColor;
         }
 
-        transform.Rotate(new Vector3(0f, RotationAmount, 0f) * Time.deltaTime);
+        transform.Rotate(new Vector3(RotationAmount, 0f, 0f) * Time.deltaTime);
 
         time += Time.deltaTime;
         if (up == false)
@@ -75,8 +75,8 @@ public class PickUp : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         GameObject pickupParent = GameObject.Find("PickupsUI");
-        pickupImages = pickupParent.GetComponentsInChildren<Image>();
-        if (other.tag == "Player" && other.GetComponent<PlayerOneStats>().pickupCount < 3 && active == true)
+        if(pickupParent != null) pickupImages = pickupParent.GetComponentsInChildren<Image>();
+        if (other.tag == "Player" && other.GetComponent<PlayerOneStats>().pickupCount < 3 && active == true && pickupImages != null)
         {
             active = false;
             other.GetComponent<PlayerOneStats>().pickupCount++;

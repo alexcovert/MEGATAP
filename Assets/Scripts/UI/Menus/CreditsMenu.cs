@@ -9,11 +9,14 @@ public class CreditsMenu : MonoBehaviour {
     [SerializeField] EventSystem es;
     
     private CheckControllers checkControllers;
+    private SceneTransition loader;
 
     private void Awake()
     {
         GameObject inputObj = GameObject.Find("InputManager");
         checkControllers = inputObj.GetComponent<CheckControllers>();
+
+        loader = GetComponent<SceneTransition>();
     }
 
     void Start ()
@@ -34,6 +37,6 @@ public class CreditsMenu : MonoBehaviour {
 
     public void OnClickMenu()
     {
-        SceneManager.LoadScene("Menu");
+        StartCoroutine(loader.LoadScene("Menu"));
     }
 }

@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 65457368768333654}
   - component: {fileID: 114173747208991380}
   - component: {fileID: 114003431253313008}
+  - component: {fileID: 114473459054956974}
   m_Layer: 0
   m_Name: ArrowTrap
   m_TagString: TrapHitbox
@@ -572,7 +573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1864857716888302
 GameObject:
   m_ObjectHideFlags: 1
@@ -1438,7 +1439,8 @@ AudioSource:
   m_GameObject: {fileID: 1116339000333340}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243073020565902902, guid: 8906dfadacdf5064080101660d028db8,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1613,6 +1615,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nearbyTrap: 0
+--- !u!114 &114473459054956974
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1174657169313092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!114 &114623097984117454
 MonoBehaviour:
   m_ObjectHideFlags: 1

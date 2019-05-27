@@ -31,6 +31,9 @@ public class SceneTransition : MonoBehaviour
         loadImg.enabled = true;
         fadeAnim.SetBool("end", true);
 
+        fadeAnim.transform.SetAsLastSibling();
+
+        loadImg.transform.SetAsLastSibling();
         //Uncomment this line to see loading screen better; our game loads TOO FAST
         yield return new WaitForSeconds(loadTime);
 

@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 136305195678973362}
   - component: {fileID: 82143525159479354}
   - component: {fileID: 114587062917528148}
+  - component: {fileID: 114917912283046884}
   m_Layer: 0
   m_Name: SpikeTrap
   m_TagString: Trap
@@ -219,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4039958647661976
 Transform:
   m_ObjectHideFlags: 1
@@ -560,7 +561,8 @@ AudioSource:
   m_GameObject: {fileID: 1781992477154930}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243234389314733920, guid: 8906dfadacdf5064080101660d028db8,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -778,6 +780,19 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114917912283046884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1781992477154930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!136 &136305195678973362
 CapsuleCollider:
   m_ObjectHideFlags: 1

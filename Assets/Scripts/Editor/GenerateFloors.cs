@@ -46,7 +46,7 @@ public class GenerateFloors {
 
                     for(int i = 0; i < boundaries.Count; i++)
                     {
-                        boundaries[i].transform.localScale = new Vector3(boundaries[i].transform.localScale.x, 100, boundaries[i].transform.localScale.z);
+                        boundaries[i].transform.localScale = new Vector3(boundaries[i].transform.localScale.x, 150, boundaries[i].transform.localScale.z);
                         boundaries[i].transform.localPosition = boundaries[i].transform.localPosition + new Vector3(0, 50, 0);
 
                     }

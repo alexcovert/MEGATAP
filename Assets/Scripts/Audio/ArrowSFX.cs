@@ -15,11 +15,11 @@ public class ArrowSFX : MonoBehaviour
     private CameraOneRotator cam1;
 
     private int floor, face;
-
+    private GameOverMenu gameOver;
     private void Start()
     {
         cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
-
+        gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         audioSource = GetComponent<AudioSource>();
         shooter = GetComponent<ProjectileShooter>();
 
@@ -35,13 +35,13 @@ public class ArrowSFX : MonoBehaviour
     //Only play if Speccy is on same face
     private void StringDraw()
     {
-        if(floor == cam1.GetFloor() && face == cam1.GetState())
+        if(floor == cam1.GetFloor() && face == cam1.GetState() && !gameOver.GameOver)
            audioSource.PlayOneShot(stringDrawSFX);
     }
 
     private void StringRelease()
     {
-        if (floor == cam1.GetFloor() && face == cam1.GetState())
+        if (floor == cam1.GetFloor() && face == cam1.GetState() && !gameOver.GameOver)
         {
             audioSource.PlayOneShot(stringReleaseSFX);
             audioSource.PlayOneShot(arrowWhoosh);

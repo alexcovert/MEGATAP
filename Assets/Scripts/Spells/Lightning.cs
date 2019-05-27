@@ -15,6 +15,8 @@ public class Lightning : MonoBehaviour
     [SerializeField] private float stunDuration = 3;
 
     private Animator anim;
+    private CapsuleCollider col;
+    private ParticleSystem[] particleSystems;
 
 
     // Use this for initialization
@@ -23,6 +25,7 @@ public class Lightning : MonoBehaviour
         spellBase = this.GetComponent<SpellBase>();
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(startSFX);
+        col = this.GetComponent<CapsuleCollider>();
         switch (GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
@@ -38,6 +41,10 @@ public class Lightning : MonoBehaviour
                 break;
 
         }
+
+        particleSystems = GetComponentsInChildren<ParticleSystem>();
+
+        StartCoroutine(WaitToDie(1));
     }
 
     void FixedUpdate()
@@ -56,7 +63,7 @@ public class Lightning : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !hit)
         {
             hit = true;
 
@@ -67,10 +74,11 @@ public class Lightning : MonoBehaviour
             {
                 anim.Play("Stunned", 0);
             }
+            StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
         if (hit == false && other.tag == "Boundary")
         {
-            StartCoroutine(WaitToDie(stunDuration * 2f));
+            StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
     }
 
@@ -78,6 +86,13 @@ public class Lightning : MonoBehaviour
     {
         yield return new WaitForSeconds(stunDuration);
         anim.SetBool("Stunned", false);
+        col.enabled = false;
+
+        foreach(ParticleSystem ps in particleSystems)
+        {
+            Destroy(ps);
+        }
+
         yield return new WaitForSeconds(stunDuration);
         Destroy(obj);
     }
@@ -85,6 +100,13 @@ public class Lightning : MonoBehaviour
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
+        col.enabled = false;
+        foreach (ParticleSystem ps in particleSystems)
+        {
+            Destroy(ps);
+        }
+
+        yield return new WaitForSeconds(3);
         Destroy(this.gameObject);
     }
 

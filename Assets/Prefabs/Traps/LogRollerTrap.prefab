@@ -92,10 +92,11 @@ GameObject:
   - component: {fileID: 114893840394271494}
   - component: {fileID: 65076818654562268}
   - component: {fileID: 114105927209140518}
+  - component: {fileID: 114639867110281282}
   - component: {fileID: 114832420465715662}
   m_Layer: 0
   m_Name: LogRollerTrap
-  m_TagString: Trap
+  m_TagString: TrapHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1823269474374748
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +301,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 4}
-  m_Center: {x: -0.02, y: 0.62, z: 0}
+  m_Center: {x: -0.02, y: 0.1, z: 0}
 --- !u!65 &65115508649182200
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -323,8 +324,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02018228, y: 0.04000001, z: 0.05455992}
-  m_Center: {x: 0.00029235007, y: -4.3076072e-17, z: 0.021720046}
+  m_Size: {x: 0.019, y: 0.04000001, z: 0.05455992}
+  m_Center: {x: 0.0002, y: -4.3076072e-17, z: 0.021720046}
 --- !u!114 &114105927209140518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,6 +382,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nearbyTrap: 0
+--- !u!114 &114639867110281282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1558432758084030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!114 &114741705916860678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -421,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c919212d88d784b9324f9aadcbf615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValidLocations: 2
+  ValidLocations: 4
 --- !u!198 &198549295181990284
 ParticleSystem:
   m_ObjectHideFlags: 1
