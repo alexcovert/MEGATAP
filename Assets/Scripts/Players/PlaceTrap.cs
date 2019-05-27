@@ -149,38 +149,47 @@ public class PlaceTrap : MonoBehaviour {
 
     void Update() {
 
-        // tutorial tips
-        if (tutorialTopGoal != null && tutorialTopGoal.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
+        if(SceneManager.GetActiveScene().name == "Tutorial")
         {
-            tutorialTopGoal.SetActive(false);
-            tutorialTopSelectTrap.SetActive(true);
-        } else if (tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
-        {
-            tutorialTopSelectTrap.SetActive(false);
-            tutorialTopMoveTrap.SetActive(true);
-            tutorialTopPlaceTrap.SetActive(true);
-        } else if (trapQueueIsEmpty() && tutorialTopPlaceTrap.activeSelf == true)
-        {
-            tutorialTopPlaceTrap.SetActive(false);
-            tutorialTopMoveTrap.SetActive(false);
-            tutorialTopRotate.SetActive(true);
-        } else if (tutorialTopRotate.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
-        {
-            tutorialTopRotate.SetActive(false);
-            tutorialTopY.SetActive(true);
-        } else if (tutorialTopY.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButton(0)))
-        {
-            tutorialTopY.SetActive(false);
-            tmpIndicator = true;
-        } else if (tmpIndicator == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
-        {
-            tutorialTopSpells.SetActive(true);
-            tmpIndicator = false;
-        } else if (tutorialTopSpells.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
-        {
-            tutorialTopSpells.SetActive(false);
+            // tutorial tips
+            if (tutorialTopGoal != null && tutorialTopGoal.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
+            {
+                tutorialTopGoal.SetActive(false);
+                tutorialTopSelectTrap.SetActive(true);
+            }
+            else if (tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
+            {
+                tutorialTopSelectTrap.SetActive(false);
+                tutorialTopMoveTrap.SetActive(true);
+                tutorialTopPlaceTrap.SetActive(true);
+            }
+            else if (trapQueueIsEmpty() && tutorialTopPlaceTrap.activeSelf == true)
+            {
+                tutorialTopPlaceTrap.SetActive(false);
+                tutorialTopMoveTrap.SetActive(false);
+                tutorialTopRotate.SetActive(true);
+            }
+            else if (tutorialTopRotate.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+            {
+                tutorialTopRotate.SetActive(false);
+                tutorialTopY.SetActive(true);
+            }
+            else if (tutorialTopY.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButton(0)))
+            {
+                tutorialTopY.SetActive(false);
+                tmpIndicator = true;
+            }
+            else if (tmpIndicator == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+            {
+                tutorialTopSpells.SetActive(true);
+                tmpIndicator = false;
+            }
+            else if (tutorialTopSpells.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+            {
+                tutorialTopSpells.SetActive(false);
+            }
         }
-
+        
 
         //Move ghost with cursor
         MoveGhost();
