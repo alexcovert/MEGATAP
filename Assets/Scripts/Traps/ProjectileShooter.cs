@@ -8,7 +8,7 @@ public class ProjectileShooter : MonoBehaviour {
     [HideInInspector] public int FloorNumber;
 
 
-    public CameraTwoRotator cam2;
+    [HideInInspector] public CameraTwoRotator cam2;
     private CameraOneRotator cam1;
 
     GameObject prefab;
@@ -19,6 +19,9 @@ public class ProjectileShooter : MonoBehaviour {
     private Vector3 velocity;
     private Quaternion projectileRotation;
     private GameOverMenu gameOver;
+
+    private ParticleSystem[] chargeParticles;
+
     //private bool ghost = true;
     // Use this for initialization
     void Awake() {
@@ -95,6 +98,16 @@ public class ProjectileShooter : MonoBehaviour {
 
     }
 
+    private void Start()
+    {
+        chargeParticles = transform.parent.GetComponentsInChildren<ParticleSystem>();
+    }
+
+    private void Charge()
+    {
+        chargeParticles[0].Play();
+    }
+
     private void LoadArrow()
     {
         if (!gameOver.GameOver && ((FaceNumber == cam1.GetState() && FloorNumber == cam1.GetFloor()) || (FaceNumber == cam2.GetState() && FloorNumber == cam2.GetFloor())))
@@ -116,6 +129,7 @@ public class ProjectileShooter : MonoBehaviour {
             if (projectile != null) col = projectile.GetComponent<BoxCollider>();
             if (col != null) col.enabled = true;
             if (rb != null) rb.velocity = velocity;
+            chargeParticles[1].Play();
         }
     }
 }
