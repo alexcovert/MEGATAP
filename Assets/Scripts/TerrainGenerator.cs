@@ -5,9 +5,9 @@ using System.Linq;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour {
-	[Range(1.0f, 50.0f)]
+	[Range(1.0f, 100.0f)]
 	public int heightScale = 1;
-	public int edgeSize = 256;
+	public int edgeSize = 512;
 	[Range(1,6)]
 	public int octaves = 1;
 	[Range(0f, 100f)]
@@ -15,14 +15,14 @@ public class TerrainGenerator : MonoBehaviour {
 	private float[,] heightField;
 
 	[Range(0.0f, 256.0f)]
-	public float noiseXstart = 0f;
+	public float noiseXstart = 5f;
 	[Range(0.0f, 256.0f)]
-	public float noiseXspan = 0f;
+	public float noiseXspan = 5f;
 
 	[Range(0.0f, 256.0f)]
-	public float noiseYstart = 0f;
+	public float noiseYstart = 1f;
 	[Range(0.0f, 256.0f)]
-	public float noiseYspan = 0f;
+	public float noiseYspan = 1f;
 
 	[Range(0, 100)]
 	public int numTrees = 12;
@@ -110,70 +110,69 @@ public class TerrainGenerator : MonoBehaviour {
 		return noiseVal/maxValue;
 	}
 
-	public void PlaceTreeAcrossTerrains(TerrainData terrainData, int numTrees)
-	{
-		float treeX = 0;
-		float treeZ = 0;
-
-		for(int i = 0; i < numTrees; i++)
-		{
-			treeX = Random.Range(0f, 1f);
-			treeZ = Random.Range(0f, 1f);
-			PlaceTree(treeX, treeZ);
-		}
-
-	}
-
-	public void PlaceTree(float treeX, float treeZ)
-	{
-		TreeInstance myTreeInstance = new TreeInstance();
-		Vector3 position = new Vector3(treeX, 0, treeZ);
-		int numPrototypes = terrain.terrainData.treePrototypes.Length;
-		int selectedPrototype = AssignTree(terrain.terrainData, position);
-
-		if( numPrototypes == 0) return; // if no tree presets, doesn't place anything
-		if( selectedPrototype == -1) return;
-
-		myTreeInstance.position = position;
-		myTreeInstance.color = Color.white * Random.Range(1f, 1f - treeColorAdjustment); //GetTreeColor not working
-		myTreeInstance.lightmapColor = Color.white;
-		myTreeInstance.prototypeIndex = selectedPrototype;
-		myTreeInstance.heightScale = 1.0f;
-		myTreeInstance.widthScale = 1.0f;
-		myTreeInstance.rotation = Random.Range(0.0f, 6.283185f);
-		terrain.AddTreeInstance(myTreeInstance);
-	}
-
-	public int AssignTree(TerrainData terrainData, Vector3 position)
-	{
-		int prototype = -1; // no tree by default, if on a slope
-		//Debug.Log(position.x);
-		float height = terrainData.GetInterpolatedHeight(position.x, position.z);
-		Vector3 normal = terrainData.GetInterpolatedNormal(position.x, position.z);
-		float angle = terrainData.GetSteepness(position.x, position.z);
-		float frac = angle / 90.0f;
-
-
-
-
-		if(height <= (heightScale/2.0f) && (height != 0)) // at lower elevations, place tree 9
-		{
-			prototype = 1;
-		}
-
-		if((height >= heightScale * 0.6f) && normal.y > 0.8 ) // at higher elevations, place tree 0
-		{
-			prototype = 0;
-		}
-
-		if(frac > 0.3f)
-		{
-			prototype = -1;
-		}
-
-
-		return prototype;
-	}
+	// public void PlaceTreeAcrossTerrains(TerrainData terrainData, int numTrees)
+	// {
+	// 	float treeX = 0;
+	// 	float treeZ = 0;
+	//
+	// 	for(int i = 0; i < numTrees; i++)
+	// 	{
+	// 		treeX = Random.Range(0f, 1f);
+	// 		treeZ = Random.Range(0f, 1f);
+	// 		PlaceTree(treeX, treeZ);
+	// 	}
+	//
+	// }
+	//
+	// public void PlaceTree(float treeX, float treeZ)
+	// {
+	// 	TreeInstance myTreeInstance = new TreeInstance();
+	// 	Vector3 position = new Vector3(treeX, 0, treeZ);
+	// 	int numPrototypes = terrain.terrainData.treePrototypes.Length;
+	// 	int selectedPrototype = AssignTree(terrain.terrainData, position);
+	//
+	// 	if( numPrototypes == 0) return; // if no tree presets, doesn't place anything
+	// 	if( selectedPrototype == -1) return;
+	//
+	// 	myTreeInstance.position = position;
+	// 	myTreeInstance.color = Color.white * Random.Range(1f, 1f - treeColorAdjustment); //GetTreeColor not working
+	// 	myTreeInstance.lightmapColor = Color.white;
+	// 	myTreeInstance.prototypeIndex = selectedPrototype;
+	// 	myTreeInstance.heightScale = 1.0f;
+	// 	myTreeInstance.widthScale = 1.0f;
+	// 	myTreeInstance.rotation = Random.Range(0.0f, 6.283185f);
+	// 	terrain.AddTreeInstance(myTreeInstance);
+	// }
+	//
+	// public int AssignTree(TerrainData terrainData, Vector3 position)
+	// {
+	// 	int prototype = -1; // no tree by default, if on a slope
+	// 	//Debug.Log(position.x);
+	// 	float height = terrainData.GetInterpolatedHeight(position.x, position.z);
+	// 	Vector3 normal = terrainData.GetInterpolatedNormal(position.x, position.z);
+	// 	float angle = terrainData.GetSteepness(position.x, position.z);
+	// 	float frac = angle / 90.0f;
+	//
+	//
+	//
+	//
+	// 	if(height <= (heightScale/2.0f) && (height != 0)) // at lower elevations, place tree 9
+	// 	{
+	// 		prototype = 1;
+	// 	}
+	//
+	// 	if((height >= heightScale * 0.6f) && normal.y > 0.8 ) // at higher elevations, place tree 0
+	// 	{
+	// 		prototype = 0;
+	// 	}
+	//
+	// 	if(frac > 0.3f)
+	// 	{
+	// 		prototype = -1;
+	// 	}
+	//
+	// 	return prototype;
+	// }
 
 	void AssignSplatMap(TerrainData terrainData)
 	{
@@ -193,7 +192,7 @@ public class TerrainGenerator : MonoBehaviour {
 
 				float frac = angle / 90.0f;
 
-				if(height <= (heightScale/2.0f)){ // at lower elevations, more grass texture
+				if(height <= (heightScale/2.0f)){ // at lower elevations, more of texture 3
 					splatWeights[2] = (float)(1 - frac);
 				}
 				// At steep angles, more texture 2 (dirt)

@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1752284783842312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -134.4, y: -12.6, z: -125}
+  m_LocalPosition: {x: -249, y: -17.9, z: -219.4}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
@@ -53,17 +53,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ac82ba2cac4d047801aa902733a2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightScale: 9
-  edgeSize: 256
-  octaves: 1
-  persistence: 0.25
-  noiseXstart: 0
-  noiseXspan: 0
-  noiseYstart: 0
-  noiseYspan: 0
+  heightScale: 80
+  edgeSize: 512
+  octaves: 2
+  persistence: 3.6
+  noiseXstart: 9
+  noiseXspan: 6
+  noiseYstart: 34
+  noiseYspan: 5
   numTrees: 12
   treeColorAdjustment: 0.4
-  goalTexture: {fileID: 2800000, guid: 33b1b9bb1192d554497270e1f56a7758, type: 3}
+  goalTexture: {fileID: 2800000, guid: e1c7538f013837241908a1b4b2638e27, type: 3}
   mixFraction: 0.7
 --- !u!154 &154978763741137680
 TerrainCollider:
@@ -72,9 +72,9 @@ TerrainCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1752284783842312}
   m_Material: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_TerrainData: {fileID: 15600000, guid: f88fbf7af4089aa4fbe8bff1e274b02c, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &218896863700908392
 Terrain:
   m_ObjectHideFlags: 1
