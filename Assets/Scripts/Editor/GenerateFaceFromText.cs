@@ -80,6 +80,7 @@ public class GenerateFaceFromText
                                 GameObject spawnedPlatform = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                                 spawnedPlatform.transform.position = new Vector3(i * 2, lineNumber * -2, 0);
                                 spawnedPlatform.transform.eulerAngles = new Vector3(-90, 180, 0); // fix incorrect rotation on prefabs
+                                spawnedPlatform.isStatic = true;
 
                                 //store transform
                                 transformList.Add(spawnedPlatform.transform);
@@ -92,6 +93,7 @@ public class GenerateFaceFromText
                                 GameObject spawnedPlatform = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                                 spawnedPlatform.transform.position = new Vector3(i * 2, lineNumber * -2, 0);
                                 spawnedPlatform.transform.eulerAngles = new Vector3(-90, 180, 0);
+                                spawnedPlatform.isStatic = true;
 
                                 //store transform
                                 transformList.Add(spawnedPlatform.transform);

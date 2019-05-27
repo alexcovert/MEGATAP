@@ -26,22 +26,37 @@ public class GameOverMenu : MonoBehaviour {
     private CastSpell cs;
     private CheckControllers cc;
     private TextMeshProUGUI charSelectText;
+    private SceneTransition loader;
+    private StandaloneInputModule inputModule;
 
     private void Start()
     {
+        //inputs
         cc = GameObject.Find("InputManager").GetComponent<CheckControllers>();
+        inputModule = es.GetComponent<StandaloneInputModule>();
+
+        //char select stuff - we disable the button if they're only playing with mouse and keyboard
         charSelectText = charSelectButton.GetComponentInChildren<TextMeshProUGUI>();
+
+        //players
         GameObject p1 = GameObject.Find("Player 1");
         player1 = p1.GetComponent<PlayerOneMovement>();
 
         GameObject p2 = GameObject.Find("Player 2");
         pt = p2.GetComponent<PlaceTrap>();
         cs = p2.GetComponent<CastSpell>();
+
+
+        loader = GetComponent<SceneTransition>();
     }
 
     public void Open(bool speccyWin)
     {
+        //Start fade
         Instantiate(fadePrefab);
+        StartCoroutine(FadeMusic(speccyWin));
+
+        //Disable inputs for players
         cs.InputEnabled = false;
         pt.InputEnabled = false;
         player1.InputEnabled = false;
@@ -49,6 +64,7 @@ public class GameOverMenu : MonoBehaviour {
         vines.Started = false;
         GameOver = true;
 
+        //Change game over text
         if (speccyWin)
         {
             text.text = "Bottom Player Wins!";
@@ -57,10 +73,12 @@ public class GameOverMenu : MonoBehaviour {
         {
             text.text = "Top Player Wins!";
         }
+        
+        //set input module
+        inputModule.submitButton = "Submit_Menu";
+        inputModule.repeatDelay = 0.5f;
 
-        StartCoroutine(FadeMusic(speccyWin));
-
-        es.GetComponent<StandaloneInputModule>().submitButton = "Submit_Menu";
+        //set character select button interactable or uninteractable based on whether they're using controllers
         if (cc != null && charSelectText != null)
         {
             if (!(cc.GetControllerOneState() || cc.GetControllerTwoState()))
@@ -80,32 +98,31 @@ public class GameOverMenu : MonoBehaviour {
     {
         if (cc.GetBottomPlayerControllerState() || cc.topPlayersController)
         {
-
             es.SetSelectedGameObject(restartButton);
-        }
-        
+        }    
     }
 
+    //Buttons
     public void onClickRetry()
     {
-        SceneManager.LoadScene("Tower1");
+        StartCoroutine(loader.LoadScene("Tower1"));
     }
     
     public void onClickTutorial()
     {
-        SceneManager.LoadScene("Tutorial");
+        StartCoroutine(loader.LoadScene("Tutorial"));
     }
     
     public void onClickCharacterSelect()
     {
-    	SceneManager.LoadScene("CharacterSelect");
+        StartCoroutine(loader.LoadScene("CharacterSelect"));
     }
 
     public void onClickMenu()
     {
         GameObject musicPlayer = GameObject.Find("MusicPlayer");
         if (musicPlayer != null) Destroy(musicPlayer);
-        SceneManager.LoadScene("Menu");
+        StartCoroutine(loader.LoadScene("Menu"));
     }
     
     public void QuitGame()
@@ -114,16 +131,21 @@ public class GameOverMenu : MonoBehaviour {
         Application.Quit();
     }
 
+
+
+    //Music fade
     private IEnumerator FadeMusic(bool speccyWin)
     {
         float fadeTime = 2;
 
+        //fade out
         for(float t = 0; t < fadeTime; t += Time.deltaTime)
         {
             musicPlayer.volume = Mathf.Lerp(1, 0, t / fadeTime);
             yield return null;
         }
 
+        //set new clip
         if(speccyWin)
         {
             musicPlayer.clip = speccyWinMusic;
@@ -134,12 +156,12 @@ public class GameOverMenu : MonoBehaviour {
         }
         musicPlayer.Play();
 
+        //fade back in
         for (float t = 0; t < fadeTime; t += Time.deltaTime)
         {
             musicPlayer.volume = Mathf.Lerp(0, 1, t / fadeTime);
             yield return null;
         }
-        Debug.Log(musicPlayer.volume);
     }
 }
 

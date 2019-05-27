@@ -426,6 +426,14 @@ public class PlayerOneMovement : MonoBehaviour {
             animator.SetBool("Crouched", crouching);
             animator.SetFloat("YVelocity", rb.velocity.y);
         }
+        else if(gameOver.GameOver)
+        {
+            movementVector = Vector3.zero;
+            move = false;
+            jumping = false;
+            crouching = false;
+
+        }
         
     }
 

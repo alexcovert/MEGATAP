@@ -311,7 +311,7 @@ public class CastSpell : MonoBehaviour
                 spell = null;
 
                 ClearButton();
-
+                GetComponent<ChangeNav>().ResetNav();
                 DestroyTarget();
 
                 if (p2Controller)
@@ -729,6 +729,7 @@ public class CastSpell : MonoBehaviour
             if(cooldownTimePassed >= cooldownTime)
             {
                 button.interactable = true;
+                GetComponent<ChangeNav>().ResetNav();
 
                 if (eventSystem.currentSelectedGameObject == null && p2Controller)
                 {

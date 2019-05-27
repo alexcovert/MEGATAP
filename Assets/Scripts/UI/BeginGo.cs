@@ -100,5 +100,6 @@ public class BeginGo : MonoBehaviour {
 
         //Show
         ZoomCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+        GameObject.Find("Player 2").GetComponent<ChangeNav>().ResetNav();
     }
 }
