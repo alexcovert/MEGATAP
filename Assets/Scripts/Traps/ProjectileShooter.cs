@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ProjectileShooter : MonoBehaviour {
     public int FaceNumberIfPrePlaced;
-    public int FaceNumber;
-    public int FloorNumber;
+    [HideInInspector] public int FaceNumber;
+    [HideInInspector] public int FloorNumber;
 
 
     public CameraTwoRotator cam2;

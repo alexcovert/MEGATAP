@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 114426541480001402}
   - component: {fileID: 82968214060517958}
   - component: {fileID: 114553591053491990}
+  - component: {fileID: 114261852955086564}
   m_Layer: 0
   m_Name: BananaTrap
   m_TagString: Trap
@@ -1205,6 +1206,19 @@ MonoBehaviour:
   stunDuration: 2
   stunAnimSpeed: 1.1
   clip: {fileID: 8300000, guid: b499b720768ccc546b4a4062fa6200a7, type: 3}
+--- !u!114 &114261852955086564
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1156793421700370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!114 &114426541480001402
 MonoBehaviour:
   m_ObjectHideFlags: 1

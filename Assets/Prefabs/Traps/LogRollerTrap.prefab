@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 114893840394271494}
   - component: {fileID: 65076818654562268}
   - component: {fileID: 114105927209140518}
+  - component: {fileID: 114639867110281282}
   - component: {fileID: 114832420465715662}
   m_Layer: 0
   m_Name: LogRollerTrap
@@ -381,6 +382,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nearbyTrap: 0
+--- !u!114 &114639867110281282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1558432758084030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0
 --- !u!114 &114741705916860678
 MonoBehaviour:
   m_ObjectHideFlags: 1
