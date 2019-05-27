@@ -11,6 +11,7 @@ public class ChangeNav : MonoBehaviour {
     private GameObject currentSecondButton;
     private GameObject currentLastButton;
     private GameObject currentSecondLastButton;
+    private int numButtons;
 
 	void Start ()
     {
@@ -23,6 +24,7 @@ public class ChangeNav : MonoBehaviour {
     {
         GetCurrentFirstButtons();
         GetCurrentLastButtons();
+        GetNumButtons();
 
         //Debug.Log("\n" + currentFirstButton);
         //Debug.Log("\n" + currentSecondButton);
@@ -30,67 +32,158 @@ public class ChangeNav : MonoBehaviour {
         //Debug.Log("\n" + currentLastButton);
 
         //Change navigation of first and last buttons to wrap around
-
-        if (currentFirstButton != null)
+        if (numButtons >= 4)
         {
-            Navigation navFirst = currentFirstButton.GetComponent<Button>().navigation;
-            navFirst.mode = Navigation.Mode.Explicit;
-            if (currentLastButton != null) navFirst.selectOnLeft = currentLastButton.GetComponent<Button>();
-            if (currentSecondButton != null) navFirst.selectOnRight = currentSecondButton.GetComponent<Button>();
-            currentFirstButton.GetComponent<Button>().navigation = navFirst;
+            if (currentFirstButton != null)
+            {
+                Navigation navFirst = currentFirstButton.GetComponent<Button>().navigation;
+                navFirst.mode = Navigation.Mode.Explicit;
+                if (currentLastButton != null) navFirst.selectOnLeft = currentLastButton.GetComponent<Button>();
+                if (currentSecondButton != null) navFirst.selectOnRight = currentSecondButton.GetComponent<Button>();
+                currentFirstButton.GetComponent<Button>().navigation = navFirst;
+            }
+
+            if (currentLastButton != null)
+            {
+                Navigation navLast = currentLastButton.GetComponent<Button>().navigation;
+                navLast.mode = Navigation.Mode.Explicit;
+                if (currentSecondLastButton != null) navLast.selectOnLeft = currentSecondLastButton.GetComponent<Button>();
+                if (currentFirstButton != null) navLast.selectOnRight = currentFirstButton.GetComponent<Button>();
+                currentLastButton.GetComponent<Button>().navigation = navLast;
+            }
+        }
+        else if (numButtons == 3)
+        {
+            if (currentFirstButton != null)
+            {
+                Navigation navFirst = currentFirstButton.GetComponent<Button>().navigation;
+                navFirst.mode = Navigation.Mode.Explicit;
+                if (currentLastButton != null) navFirst.selectOnLeft = currentLastButton.GetComponent<Button>();
+                if (currentSecondButton != null) navFirst.selectOnRight = currentSecondButton.GetComponent<Button>();
+                currentFirstButton.GetComponent<Button>().navigation = navFirst;
+            }
+
+            if (currentLastButton != null)
+            {
+                Navigation navLast = currentLastButton.GetComponent<Button>().navigation;
+                navLast.mode = Navigation.Mode.Explicit;
+                if (currentSecondLastButton != null) navLast.selectOnLeft = currentSecondButton.GetComponent<Button>();
+                if (currentFirstButton != null) navLast.selectOnRight = currentFirstButton.GetComponent<Button>();
+                currentLastButton.GetComponent<Button>().navigation = navLast;
+            }
+        }
+        else if (numButtons == 2)
+        {
+            if (currentFirstButton != null)
+            {
+                Navigation navFirst = currentFirstButton.GetComponent<Button>().navigation;
+                navFirst.mode = Navigation.Mode.Explicit;
+                if (currentLastButton != null) navFirst.selectOnLeft = currentLastButton.GetComponent<Button>();
+                if (currentSecondButton != null) navFirst.selectOnRight = currentLastButton.GetComponent<Button>();
+                currentFirstButton.GetComponent<Button>().navigation = navFirst;
+            }
+
+            if (currentLastButton != null)
+            {
+                Navigation navLast = currentLastButton.GetComponent<Button>().navigation;
+                navLast.mode = Navigation.Mode.Explicit;
+                if (currentSecondLastButton != null) navLast.selectOnLeft = currentFirstButton.GetComponent<Button>();
+                if (currentFirstButton != null) navLast.selectOnRight = currentFirstButton.GetComponent<Button>();
+                currentLastButton.GetComponent<Button>().navigation = navLast;
+            }
         }
 
-        if (currentLastButton != null)
-        {
-            Navigation navLast = currentLastButton.GetComponent<Button>().navigation;
-            navLast.mode = Navigation.Mode.Explicit;
-            if (currentSecondLastButton != null) navLast.selectOnLeft = currentSecondLastButton.GetComponent<Button>();
-            if (currentFirstButton != null) navLast.selectOnRight = currentFirstButton.GetComponent<Button>();
-            currentLastButton.GetComponent<Button>().navigation = navLast;
-        }
+        //Reset others
+        SetAutomatic();
 
         //Reset to null
         currentFirstButton = null;
         currentSecondButton = null;
         currentSecondLastButton = null;
         currentLastButton = null;
+        numButtons = 0;
+    }
+
+    private void GetNumButtons()
+    {
+        foreach (GameObject t in pt.queue)
+        {
+            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
+            {
+                numButtons++;
+            }
+        }
+
+        for (int s = 0; s < cs.queue.Length; s++)
+        {
+            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
+            {
+                numButtons++;
+
+            }
+        }
+    }
+
+    private void SetAutomatic()
+    {
+        foreach (GameObject t in pt.queue)
+        {
+            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable && t != currentFirstButton && t != currentLastButton)
+            {
+                Navigation defaultNav = t.GetComponent<Button>().navigation;
+                defaultNav.mode = Navigation.Mode.Automatic;
+                t.GetComponent<Button>().navigation = defaultNav;
+            }
+        }
+
+        for (int s = 0; s < cs.queue.Length; s++)
+        {
+            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable && cs.queue[s] != currentFirstButton && cs.queue[s] != currentLastButton)
+            {
+                Navigation defaultNav = cs.queue[s].GetComponent<Button>().navigation;
+                defaultNav.mode = Navigation.Mode.Automatic;
+                cs.queue[s].GetComponent<Button>().navigation = defaultNav;
+
+            }
+        }
     }
 
 
     private void GetCurrentFirstButtons()
     {
 
-            foreach (GameObject t in pt.queue)
+        foreach (GameObject t in pt.queue)
+        {
+            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
             {
-                if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
+                if (currentFirstButton == null)
                 {
-                    if (currentFirstButton == null)
-                    {
-                        currentFirstButton = t;
-                    }
-                    else
-                    {
-                        currentSecondButton = t;
-                        return;
-                    }
+                    currentFirstButton = t;
+                }
+                else
+                {
+                    currentSecondButton = t;
+                    return;
                 }
             }
+        }
 
-            for (int s = 0; s < cs.queue.Length; s++)
+        for (int s = 0; s < cs.queue.Length; s++)
+        {
+            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
             {
-                if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
+                if (currentFirstButton == null)
                 {
-                    if (currentFirstButton == null)
-                    {
-                        currentFirstButton = cs.queue[s];
-                    }
-                    else
-                    {
-                        currentSecondButton = cs.queue[s];
-                        return;
-                    }
+                    currentFirstButton = cs.queue[s];
                 }
+                else
+                {
+                    currentSecondButton = cs.queue[s];
+                    return;
+                }
+              
             }
+        }
         
     }
 
