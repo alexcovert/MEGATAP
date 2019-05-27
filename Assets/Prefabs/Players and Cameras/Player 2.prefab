@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 114220156261559540}
   - component: {fileID: 114871698429783546}
   - component: {fileID: 82713190498109326}
+  - component: {fileID: 114615252475970790}
   m_Layer: 0
   m_Name: Player 2
   m_TagString: Untagged
@@ -1777,6 +1778,17 @@ MonoBehaviour:
   trapPlacementBad: {fileID: 8300000, guid: 146332e6c2633ee4bbced98f867e9780, type: 3}
   queueSize: 7
   InputEnabled: 1
+--- !u!114 &114615252475970790
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1134238031081466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781e602d8d46168409d59eecbe2b4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114871698429783546
 MonoBehaviour:
   m_ObjectHideFlags: 1

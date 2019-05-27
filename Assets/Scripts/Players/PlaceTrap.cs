@@ -146,7 +146,6 @@ public class PlaceTrap : MonoBehaviour {
         if (tutorialTopSpells != null) { tutorialTopSpells.SetActive(false); }
     }
 
-
     void Update() {
 
         if(SceneManager.GetActiveScene().name == "Tutorial")
@@ -194,7 +193,7 @@ public class PlaceTrap : MonoBehaviour {
         //Move ghost with cursor
         MoveGhost();
         //Get controller select
-        p2Controller = checkControllers.GetTopPlayerControllerState();
+        if(checkControllers != null) p2Controller = checkControllers.GetTopPlayerControllerState();
         if (p2Controller && !pause.GameIsPaused)
         {
             if (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) && InputEnabled)
@@ -213,6 +212,7 @@ public class PlaceTrap : MonoBehaviour {
 
             DestroyGhost();
             ClearTrapQueue();
+
             if (tutorial)
             {
                 CreateTutorialQueue(false);
@@ -222,6 +222,7 @@ public class PlaceTrap : MonoBehaviour {
                 CreateTrapQueue();
             }
             if (p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
+
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
         }
@@ -442,7 +443,10 @@ public class PlaceTrap : MonoBehaviour {
                     if (check != null) check.Placed = true;
                     previouslySelectedIndex = queueIndex;
 
+                    
                     ClearButton();
+                    GetComponent<ChangeNav>().ResetNav();
+
                     trap = null;
                     foreach (SpriteRenderer sr in placementSquares)
                     {
@@ -784,6 +788,8 @@ public class PlaceTrap : MonoBehaviour {
                 queue[i].GetComponent<Button>().interactable = false;
             }
         }
+
+        //GetComponent<ChangeNav>().ResetNav();
 
     }
 

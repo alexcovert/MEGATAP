@@ -76,7 +76,7 @@ public class MainMenu : MonoBehaviour {
 
     public void OnClickCredits()
     {
-        SceneManager.LoadScene("Credits");
+        StartCoroutine(loader.LoadScene("Credits"));
     }
     
     public void QuitGame()
