@@ -86,6 +86,10 @@ public class PlaceTrap : MonoBehaviour {
     GameObject tutorialTopPlaceTrap;
     GameObject tutorialTopSelectTrap;
     GameObject tutorialTopMoveTrap;
+    GameObject tutorialTopRotate;
+    GameObject tutorialTopY;
+    GameObject tutorialTopSpells;
+    bool tmpIndicator = false;
 
     private void Awake()
     {
@@ -129,11 +133,17 @@ public class PlaceTrap : MonoBehaviour {
         tutorialTopPlaceTrap = GameObject.Find("ToolTipTopPlaceTrap");
         tutorialTopMoveTrap = GameObject.Find("ToolTipTopMoveTrap");
         tutorialTopSelectTrap = GameObject.Find("ToolTipTopSelectTrap");
+        tutorialTopRotate = GameObject.Find("ToolTipTopRotate");
+        tutorialTopY = GameObject.Find("ToolTipTopY");
+        tutorialTopSpells = GameObject.Find("ToolTipTopSpells");
 
         if (tutorialTopGoal != null) { tutorialTopGoal.SetActive(true); }
         if (tutorialTopPlaceTrap != null) { tutorialTopPlaceTrap.SetActive(false); }
         if (tutorialTopMoveTrap != null) { tutorialTopMoveTrap.SetActive(false); }
         if (tutorialTopSelectTrap != null) { tutorialTopSelectTrap.SetActive(false); }
+        if (tutorialTopRotate != null) { tutorialTopRotate.SetActive(false); }
+        if (tutorialTopY != null) { tutorialTopY.SetActive(false); }
+        if (tutorialTopSpells != null) { tutorialTopSpells.SetActive(false); }
     }
 
 
@@ -146,10 +156,29 @@ public class PlaceTrap : MonoBehaviour {
             tutorialTopSelectTrap.SetActive(true);
         } else if (tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
         {
-
             tutorialTopSelectTrap.SetActive(false);
             tutorialTopMoveTrap.SetActive(true);
             tutorialTopPlaceTrap.SetActive(true);
+        } else if (trapQueueIsEmpty() && tutorialTopPlaceTrap.activeSelf == true)
+        {
+            tutorialTopPlaceTrap.SetActive(false);
+            tutorialTopMoveTrap.SetActive(false);
+            tutorialTopRotate.SetActive(true);
+        } else if (tutorialTopRotate.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+        {
+            tutorialTopRotate.SetActive(false);
+            tutorialTopY.SetActive(true);
+        } else if (tutorialTopY.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButton(0)))
+        {
+            tutorialTopY.SetActive(false);
+            tmpIndicator = true;
+        } else if (tmpIndicator == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+        {
+            tutorialTopSpells.SetActive(true);
+            tmpIndicator = false;
+        } else if (tutorialTopSpells.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+        {
+            tutorialTopSpells.SetActive(false);
         }
 
 
@@ -998,6 +1027,19 @@ public class PlaceTrap : MonoBehaviour {
     public int GetNumRotated()
     {
         return numTimesRotated;
+    }
+
+    // Helper
+    public bool trapQueueIsEmpty()
+    {
+        foreach( GameObject trap in queue)
+        {
+            if (trap.GetComponent<Button>().interactable)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
