@@ -836,7 +836,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.613266
+      value: -181
       objectReference: {fileID: 0}
     - target: {fileID: 4758679635353836, guid: cfd428a7fbb7c3042a80eb1763f22607, type: 2}
       propertyPath: m_LocalRotation.x
@@ -876,12 +876,12 @@ Prefab:
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
       propertyPath: m_MinimumFOV
-      value: 35
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
       propertyPath: m_MaximumFOV
-      value: 35
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
@@ -891,12 +891,12 @@ Prefab:
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
       propertyPath: m_MinimumDistance
-      value: 20
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
       propertyPath: m_MaximumDistance
-      value: 80
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 114584904814216998, guid: cfd428a7fbb7c3042a80eb1763f22607,
         type: 2}
@@ -11155,7 +11155,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -80.613266
+      value: -181
       objectReference: {fileID: 0}
     - target: {fileID: 4940846812731354, guid: 295df6c694235764eac79c393ed826dc, type: 2}
       propertyPath: m_LocalRotation.x
@@ -11216,6 +11216,16 @@ Prefab:
         type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20558474140203254, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: near clip plane
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 20558474140203254, guid: 295df6c694235764eac79c393ed826dc,
+        type: 2}
+      propertyPath: field of view
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 295df6c694235764eac79c393ed826dc, type: 2}
