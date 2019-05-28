@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MoveVines : MonoBehaviour {
     [HideInInspector] public bool Started = false; //Whether the vines have started moving
 
@@ -9,6 +9,7 @@ public class MoveVines : MonoBehaviour {
     [SerializeField] private float speedIncreasePerFace;
     [SerializeField] private float vineMoveUpSpeed;
     [SerializeField] private float curvinessUpperLimit;
+    [SerializeField] private float tutorialSpeed;
 
     //Positions of each individual vine in children
     private List<GameObject> vines;
@@ -27,6 +28,8 @@ public class MoveVines : MonoBehaviour {
 
     //speed that will increase as the vines progress
     private float speed;
+    private bool tutorial;
+    
 
 	void Start () {
         //Get all of the children w/ trail renderers (each individual vine object)
@@ -39,7 +42,15 @@ public class MoveVines : MonoBehaviour {
             offset.Add(Random.Range(0, 2 * Mathf.PI));
             multiplier.Add(Random.Range(1, curvinessUpperLimit));
         }
-
+        if(SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            tutorial = true;
+            Rotate();
+            Rotate();
+            face = 3;
+            movedUpThisFloor = false;
+            speed = tutorialSpeed;
+        }
         //Initialize variables
         speed = vineStartSpeed;
         Started = false;
@@ -111,6 +122,7 @@ public class MoveVines : MonoBehaviour {
             speed += speedIncreasePerFace;
             Rotate();
             face = 4;
+            if (tutorial) Started = false;
         }
         //Fourth to First face -- Rotating
         if (p.transform.position.x <= -40 && p.transform.position.z <= -43 && face == 4 && floor < 5)
@@ -133,6 +145,7 @@ public class MoveVines : MonoBehaviour {
     //Check if the vines should start moving upwards
     private void CheckMoveUp(GameObject p)
     {
+        Debug.Log(face + ", " + floor + ", " + movedUpThisFloor + ", " + moveUp);
         if (p.transform.position.x <= -40 && p.transform.position.z <= -10 && p.transform.position.z >= -11 && face == 4 && floor < 5 && !movedUpThisFloor && !moveUp)
         {
             moveUp = true;
