@@ -52,7 +52,7 @@ public class MoveControllerCursor : MonoBehaviour {
     }
 	
     //Move cursor with grid
-	void FixedUpdate () {
+	void Update () {
         p2Controller = checkControllers.GetControllerTwoState();
 
         if (!gameOver.GameOver)
