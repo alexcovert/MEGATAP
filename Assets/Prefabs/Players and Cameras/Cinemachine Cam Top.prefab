@@ -50,8 +50,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1741846204660752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000009536743, y: 29.999998, z: -81}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 29.999996, z: -181}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4908720073747742}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 120
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_LookaheadSmoothing: 10
   m_LookaheadIgnoreY: 0
   m_XDamping: 0
-  m_YDamping: 1
+  m_YDamping: 0
   m_ZDamping: 0
   m_ScreenX: 0.5
   m_ScreenY: 0.5
@@ -148,13 +148,13 @@ MonoBehaviour:
   m_BiasY: 0
   m_CenterOnActivate: 1
   m_GroupFramingMode: 2
-  m_AdjustmentMode: 1
+  m_AdjustmentMode: 2
   m_GroupFramingSize: 0.8
   m_MaxDollyIn: 5000
   m_MaxDollyOut: 5000
-  m_MinimumDistance: 40
-  m_MaximumDistance: 40
-  m_MinimumFOV: 35
-  m_MaximumFOV: 35
+  m_MinimumDistance: 140
+  m_MaximumDistance: 140
+  m_MinimumFOV: 10
+  m_MaximumFOV: 10
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000

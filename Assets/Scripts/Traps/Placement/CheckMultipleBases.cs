@@ -12,9 +12,9 @@ public class CheckMultipleBases : MonoBehaviour {
         checkLocations = GetComponentsInChildren<CheckValidLocations>();	
 	}
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if (other.tag == "Platform" && !Placed)
+        if(!Placed)
         {
             bool valid = true;
             foreach (CheckValidLocations check in checkLocations)
@@ -28,6 +28,7 @@ public class CheckMultipleBases : MonoBehaviour {
             Valid = valid;
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
