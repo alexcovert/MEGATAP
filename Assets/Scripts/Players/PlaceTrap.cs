@@ -194,14 +194,9 @@ public class PlaceTrap : MonoBehaviour {
         MoveGhost();
         //Get controller select
         if(checkControllers != null) p2Controller = checkControllers.GetTopPlayerControllerState();
-        if (p2Controller && !pause.GameIsPaused)
-        {
-            if (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) && InputEnabled)
-            {
-                MoveGhost();
-                SetTrap();
-            }
-        }
+
+
+
         //Reset queue's when tower rotates
         if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && resetEnabled && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
@@ -233,6 +228,22 @@ public class PlaceTrap : MonoBehaviour {
             DestroyGhost();
         }
 
+    }
+
+    private void FixedUpdate()
+    {
+        //Move ghost with cursor
+        MoveGhost();
+
+        if (p2Controller && !pause.GameIsPaused)
+        {
+            if (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) && InputEnabled)
+            {
+                SetTrap();
+                InputEnabled = false;
+                StartCoroutine(ResumeInput());
+            }
+        }
     }
 
     //Returns cursor position on tower as a grid location rather than free-floating
@@ -423,43 +434,35 @@ public class PlaceTrap : MonoBehaviour {
             }
 
             //CheckNearby() also checks the collider provided for the "safe zone" around the trap
-            if (CheckNearby() && validLocation)
+            if (CheckNearby() && validLocation && CheckFloor(ghostTrap.transform.position.y))
             {
-                Vector3 position = GetGridPosition().Value;
-                if (ghostTrap != null && CheckFloor(position.y))
-                {
-                    audioSource.PlayOneShot(trapPlacementGood);
-                    GameObject finalTrap = trap.InstantiateTrap(position, ghostTrap.transform.rotation);
+                audioSource.PlayOneShot(trapPlacementGood);
+                GameObject finalTrap = trap.InstantiateTrap(ghostTrap.transform.position, ghostTrap.transform.rotation);
 
-                    //Destroy scripts that use OnTriggerStay to reduce lagz
-                    TrapOverlap trapOverlap = finalTrap.GetComponentInChildren<TrapOverlap>();
-                    CheckMultipleBases multipleBases = finalTrap.GetComponentInChildren<CheckMultipleBases>();
-                    if (trapOverlap != null)
-                        Destroy(trapOverlap);
-                    if (multipleBases != null)
-                        Destroy(multipleBases);
+                //Destroy scripts that use OnTriggerStay to reduce lagz
+                TrapOverlap trapOverlap = finalTrap.GetComponentInChildren<TrapOverlap>();
+                CheckMultipleBases multipleBases = finalTrap.GetComponentInChildren<CheckMultipleBases>();
+                if(trapOverlap != null)
+                    Destroy(trapOverlap);
+                if(multipleBases != null)
+                    Destroy(multipleBases);
 
 
-                    if (check != null) check.Placed = true;
-                    previouslySelectedIndex = queueIndex;
+                if (check != null) check.Placed = true;
+                previouslySelectedIndex = queueIndex;
 
                     
-                    ClearButton();
-                    GetComponent<ChangeNav>().ResetNav();
+                ClearButton();
+                GetComponent<ChangeNav>().ResetNav();
 
-                    trap = null;
-                    foreach (SpriteRenderer sr in placementSquares)
-                    {
-                        sr.enabled = false;
-                    }
-                    placementSquares = null;
-                    DestroyGhost();
-                    SetSelectedButton();
-                }
-                else
+                trap = null;
+                foreach (SpriteRenderer sr in placementSquares)
                 {
-                    audioSource.PlayOneShot(trapPlacementBad);
+                    sr.enabled = false;
                 }
+                placementSquares = null;
+                DestroyGhost();
+                SetSelectedButton();
             }
             else
             {
