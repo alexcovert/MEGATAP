@@ -172,6 +172,8 @@ public class PlaceTrap : MonoBehaviour {
             {
                 tutorialTopRotate.SetActive(false);
                 tutorialTopY.SetActive(true);
+
+                GetComponent<ChangeNav>().ResetNav();
             }
             else if (tutorialTopY.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButton(0)))
             {
@@ -182,10 +184,14 @@ public class PlaceTrap : MonoBehaviour {
             {
                 tutorialTopSpells.SetActive(true);
                 tmpIndicator = false;
+
+                GetComponent<ChangeNav>().ResetNav();
             }
             else if (tutorialTopSpells.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
             {
                 tutorialTopSpells.SetActive(false);
+
+                GetComponent<ChangeNav>().ResetNav();
             }
         }
         
@@ -217,6 +223,8 @@ public class PlaceTrap : MonoBehaviour {
                 CreateTrapQueue();
             }
             if (p2Controller) eventSystem.SetSelectedGameObject(queue[0]);
+
+            GetComponent<ChangeNav>().ResetNav();
 
             cursorMove.MovingTraps = true;
             controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
@@ -792,7 +800,7 @@ public class PlaceTrap : MonoBehaviour {
             }
         }
 
-        //GetComponent<ChangeNav>().ResetNav();
+        GetComponent<ChangeNav>().ResetNav();
 
     }
 
@@ -899,6 +907,8 @@ public class PlaceTrap : MonoBehaviour {
                 trapCounter++;
             }
         }
+
+        GetComponent<ChangeNav>().ResetNav();
     }
 
     private void GenerateUncommon(ref int trapCounter)

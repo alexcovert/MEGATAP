@@ -627,6 +627,7 @@ public class CastSpell : MonoBehaviour
                 }
             }
         }
+        GetComponent<ChangeNav>().ResetNav();
     }
 
     private void ClearButton()

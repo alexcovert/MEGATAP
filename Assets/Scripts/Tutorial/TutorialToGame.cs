@@ -5,17 +5,21 @@ using UnityEngine;
 public class TutorialToGame : MonoBehaviour {
 
     private InputManager inputManager;
-//    private CheckControllers checkControllers;
     private SceneTransition loader;
+    private ChangeNav changeNav;
 
     private void Awake()
     {
         GameObject inputMan = GameObject.Find("InputManager");
         inputManager = inputMan.GetComponent<InputManager>();
-  //      checkControllers = inputMan.GetComponent<CheckControllers>();
         loader = GetComponent<SceneTransition>();
-    }
 
+        changeNav = GameObject.Find("Player 2").GetComponent<ChangeNav>();
+    }
+    private void Start()
+    {
+        changeNav.ResetNav();
+    }
     private void Update()
     {
         if (inputManager.GetButtonDown(InputCommand.Start))
