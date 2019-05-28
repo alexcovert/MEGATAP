@@ -105,7 +105,7 @@ public class ProjectileShooter : MonoBehaviour {
 
     private void Charge()
     {
-        chargeParticles[0].Play();
+        if(chargeParticles[0] != null) chargeParticles[0].Play();
     }
 
     private void LoadArrow()
@@ -129,7 +129,7 @@ public class ProjectileShooter : MonoBehaviour {
             if (projectile != null) col = projectile.GetComponent<BoxCollider>();
             if (col != null) col.enabled = true;
             if (rb != null) rb.velocity = velocity;
-            chargeParticles[1].Play();
+            if (chargeParticles[1] != null) chargeParticles[1].Play();
         }
     }
 }

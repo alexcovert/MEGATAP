@@ -18,7 +18,7 @@ public class TutorialToGame : MonoBehaviour {
 
     private void Update()
     {
-        if (inputManager.GetButtonDown(InputCommand.Start) || Input.GetKeyDown(KeyCode.Escape))
+        if (inputManager.GetButtonDown(InputCommand.Start))
         {
             StartCoroutine(loader.LoadScene("Tower1"));
         }
