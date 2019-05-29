@@ -19,7 +19,15 @@ public class GenerateFloors {
             tower.GetComponent<NumberOfFloors>().NumFloors = NumFloors;
             for (int floor = 0; floor < NumFloors; floor++)
             {
-                GameObject newFloor = PrefabUtility.InstantiatePrefab(Resources.Load("ProceduralFloorsPrefab")) as GameObject;
+                GameObject newFloor;
+                if (floor == NumFloors - 1)
+                {
+                    newFloor = PrefabUtility.InstantiatePrefab(Resources.Load("ProceduralFloorsPrefabTop")) as GameObject;
+                }
+                else
+                {
+                    newFloor = PrefabUtility.InstantiatePrefab(Resources.Load("ProceduralFloorsPrefab")) as GameObject;
+                }
                 newFloor.transform.position = new Vector3(0, floorHeight * floor, 0);
                 newFloor.transform.SetParent(tower.transform);
 
@@ -29,27 +37,6 @@ public class GenerateFloors {
                     GameObject winTrigger = PrefabUtility.InstantiatePrefab(Resources.Load("WinTrigger")) as GameObject;
                     winTrigger.transform.position = new Vector3(winTrigger.transform.position.x, floorHeight * floor + 30, winTrigger.transform.position.z);
                     winTrigger.transform.SetParent(tower.transform);
-
-                    //Make boundaries taller
-                    Transform[] transforms = newFloor.GetComponentsInChildren<Transform>();
-                    List<GameObject> boundaries = new List<GameObject>();
-                    foreach(Transform t in transforms)
-                    {
-                        for(int i = 1; i <= 4; i++)
-                        {
-                            if(t.name == ("Boundary" + i))
-                            {
-                                boundaries.Add(t.gameObject);
-                            }
-                        }
-                    }
-
-                    for(int i = 0; i < boundaries.Count; i++)
-                    {
-                        boundaries[i].transform.localScale = new Vector3(boundaries[i].transform.localScale.x, 150, boundaries[i].transform.localScale.z);
-                        boundaries[i].transform.localPosition = boundaries[i].transform.localPosition + new Vector3(0, 50, 0);
-
-                    }
                 }
             }
         }
