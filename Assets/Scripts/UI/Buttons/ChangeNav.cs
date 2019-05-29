@@ -26,10 +26,10 @@ public class ChangeNav : MonoBehaviour {
         GetCurrentLastButtons();
         GetNumButtons();
 
-        //Debug.Log("\n" + currentFirstButton);
-        //Debug.Log("\n" + currentSecondButton);
-        //Debug.Log("\n" + currentSecondLastButton);
-        //Debug.Log("\n" + currentLastButton);
+        Debug.Log("\n" + currentFirstButton);
+        Debug.Log("\n" + currentSecondButton);
+        Debug.Log("\n" + currentSecondLastButton);
+        Debug.Log("\n" + currentLastButton);
 
         //Change navigation of first and last buttons to wrap around
         if (numButtons >= 4)
@@ -106,44 +106,50 @@ public class ChangeNav : MonoBehaviour {
 
     private void GetNumButtons()
     {
-        foreach (GameObject t in pt.queue)
+        if (cs.queue != null && pt.queue != null)
         {
-            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
+            foreach (GameObject t in pt.queue)
             {
-                numButtons++;
+                if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
+                {
+                    numButtons++;
+                }
             }
-        }
 
-        for (int s = 0; s < cs.queue.Length; s++)
-        {
-            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
+            for (int s = 0; s < cs.queue.Length; s++)
             {
-                numButtons++;
+                if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
+                {
+                    numButtons++;
 
+                }
             }
         }
     }
 
     private void SetAutomatic()
     {
-        foreach (GameObject t in pt.queue)
+        if (pt.queue != null && cs.queue != null)
         {
-            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable && t != currentFirstButton && t != currentLastButton)
+            foreach (GameObject t in pt.queue)
             {
-                Navigation defaultNav = t.GetComponent<Button>().navigation;
-                defaultNav.mode = Navigation.Mode.Automatic;
-                t.GetComponent<Button>().navigation = defaultNav;
+                if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable && t != currentFirstButton && t != currentLastButton)
+                {
+                    Navigation defaultNav = t.GetComponent<Button>().navigation;
+                    defaultNav.mode = Navigation.Mode.Automatic;
+                    t.GetComponent<Button>().navigation = defaultNav;
+                }
             }
-        }
 
-        for (int s = 0; s < cs.queue.Length; s++)
-        {
-            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable && cs.queue[s] != currentFirstButton && cs.queue[s] != currentLastButton)
+            for (int s = 0; s < cs.queue.Length; s++)
             {
-                Navigation defaultNav = cs.queue[s].GetComponent<Button>().navigation;
-                defaultNav.mode = Navigation.Mode.Automatic;
-                cs.queue[s].GetComponent<Button>().navigation = defaultNav;
+                if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable && cs.queue[s] != currentFirstButton && cs.queue[s] != currentLastButton)
+                {
+                    Navigation defaultNav = cs.queue[s].GetComponent<Button>().navigation;
+                    defaultNav.mode = Navigation.Mode.Automatic;
+                    cs.queue[s].GetComponent<Button>().navigation = defaultNav;
 
+                }
             }
         }
     }
@@ -151,72 +157,76 @@ public class ChangeNav : MonoBehaviour {
 
     private void GetCurrentFirstButtons()
     {
-
-        foreach (GameObject t in pt.queue)
+        if (cs.queue != null && pt.queue != null)
         {
-            if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
+            foreach (GameObject t in pt.queue)
             {
-                if (currentFirstButton == null)
+                if (t != null && t.activeInHierarchy && t.GetComponent<Button>().interactable)
                 {
-                    currentFirstButton = t;
-                }
-                else
-                {
-                    currentSecondButton = t;
-                    return;
-                }
-            }
-        }
-
-        for (int s = 0; s < cs.queue.Length; s++)
-        {
-            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
-            {
-                if (currentFirstButton == null)
-                {
-                    currentFirstButton = cs.queue[s];
-                }
-                else
-                {
-                    currentSecondButton = cs.queue[s];
-                    return;
-                }
-              
-            }
-        }
-        
-    }
-
-    private void GetCurrentLastButtons()
-    {
-        for (int s = cs.queue.Length - 1; s >= 0; s--)
-        {
-            if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
-            {
-                if(currentLastButton == null)
-                {
-                    currentLastButton = cs.queue[s];
-
-                    if(s > 0 && cs.queue[s - 1] != null)
+                    if (currentFirstButton == null)
                     {
-                        currentSecondLastButton = cs.queue[s - 1];
+                        currentFirstButton = t;
+                    }
+                    else
+                    {
+                        currentSecondButton = t;
                         return;
                     }
                 }
             }
-        }
 
-        for(int t = pt.queue.Count - 1; t >= 0; t--)
-        {
-            if (pt.queue[t] != null && pt.queue[t].activeInHierarchy && pt.queue[t].GetComponent<Button>().interactable)
+            for (int s = 0; s < cs.queue.Length; s++)
             {
-                if(currentLastButton == null)
+                if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
                 {
-                    currentLastButton = pt.queue[t];
-                    if(t > 0 && pt.queue[t - 1] != null)
+                    if (currentFirstButton == null)
                     {
-                        currentSecondLastButton = pt.queue[t - 1];
+                        currentFirstButton = cs.queue[s];
+                    }
+                    else
+                    {
+                        currentSecondButton = cs.queue[s];
                         return;
+                    }
+
+                }
+            }
+        }
+    }
+
+    private void GetCurrentLastButtons()
+    {
+        if (cs.queue != null & pt.queue != null)
+        {
+            for (int s = cs.queue.Length - 1; s >= 0; s--)
+            {
+                if (cs.queue[s] != null && cs.queue[s].activeInHierarchy && cs.queue[s].GetComponent<Button>().interactable)
+                {
+                    if (currentLastButton == null)
+                    {
+                        currentLastButton = cs.queue[s];
+
+                        if (s > 0 && cs.queue[s - 1] != null)
+                        {
+                            currentSecondLastButton = cs.queue[s - 1];
+                            return;
+                        }
+                    }
+                }
+            }
+
+            for (int t = pt.queue.Count - 1; t >= 0; t--)
+            {
+                if (pt.queue[t] != null && pt.queue[t].activeInHierarchy && pt.queue[t].GetComponent<Button>().interactable)
+                {
+                    if (currentLastButton == null)
+                    {
+                        currentLastButton = pt.queue[t];
+                        if (t > 0 && pt.queue[t - 1] != null)
+                        {
+                            currentSecondLastButton = pt.queue[t - 1];
+                            return;
+                        }
                     }
                 }
             }

@@ -68,10 +68,6 @@ public class TutorialController : MonoBehaviour
             tip.SetActive(false);
         }
 
-        if (Input.GetButtonDown("Start"))
-        {
-            Initiate.Fade("Tower1", Color.black, 2);
-        }
 
     }
 }

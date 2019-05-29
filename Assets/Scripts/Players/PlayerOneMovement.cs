@@ -73,6 +73,9 @@ public class PlayerOneMovement : MonoBehaviour {
     private GhostTrail ghost;
     private bool once = false;
 
+    // used for tutorial
+    GameObject tutorialOverlay;
+
     private ParticleSystem dustParticles;
     private ParticleSystemRenderer[] particleRenderer;
     private ParticleSystemRenderer stun;
@@ -169,6 +172,7 @@ public class PlayerOneMovement : MonoBehaviour {
         jump = (jumpHeight * SlowJumpPenalty) * SuperJump;
 
         move = true;
+        tutorialOverlay = GameObject.Find("ToolTipBottomGoal");
     }
 
     private void Update()
@@ -341,6 +345,13 @@ public class PlayerOneMovement : MonoBehaviour {
                 sphere[0].center = new Vector3(0, 3f, 0);
             }
 
+            if(!pause.GameIsPaused) Move();
+            // remove tutorial overlay
+            tutorialOverlay = GameObject.Find("ToolTipBottomGoal");
+            if (tutorialOverlay != null && tutorialOverlay.activeSelf == true && inputManager.GetButtonDown(InputCommand.BottomPlayerJump))
+            {
+                tutorialOverlay.SetActive(false);
+            }
             cantStandUp = gameObject.GetComponentInChildren<Colliding>().GetCollision();
 
             if (!pause.GameIsPaused && !gameOver.GameOver) Move();
