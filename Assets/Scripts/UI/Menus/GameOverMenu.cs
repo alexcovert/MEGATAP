@@ -76,6 +76,8 @@ public class GameOverMenu : MonoBehaviour {
         
         //set input module
         inputModule.submitButton = "Submit_Menu";
+
+        inputModule.verticalAxis = "Vertical_Menu_Stick";
         inputModule.repeatDelay = 0.5f;
 
         //set character select button interactable or uninteractable based on whether they're using controllers
