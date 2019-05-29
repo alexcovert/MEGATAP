@@ -100,7 +100,6 @@ public class PickUp : MonoBehaviour {
             }
 
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
-            Destroy(this.gameObject);
         }
     }
 
