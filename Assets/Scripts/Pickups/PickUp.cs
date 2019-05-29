@@ -18,11 +18,11 @@ public class PickUp : MonoBehaviour {
     private bool active = true; // make sure only picks up once
 
     //For making the pickup rotate and bob
-    private float time = 0.0f;
-    private bool up = false;
-    [SerializeField] private float timeForBobbing = 1;
-    [SerializeField] private float BobbingAmount = 0.02f;
-    [SerializeField] private float RotationAmount = 15f;
+    //private float time = 0.0f;
+    //private bool up = false;
+    //[SerializeField] private float timeForBobbing = 1;
+    //[SerializeField] private float BobbingAmount = 0.02f;
+    //[SerializeField] private float RotationAmount = 15f;
 
     private AudioSource audioSource;
     // active correlates to whether or not the pickup is faded out or not
@@ -48,28 +48,28 @@ public class PickUp : MonoBehaviour {
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().material.color = currColor;
         }
 
-        transform.Rotate(new Vector3(RotationAmount, 0f, 0f) * Time.deltaTime);
+        //transform.rotate(new vector3(rotationamount, 0f, 0f) * time.deltatime);
 
-        time += Time.deltaTime;
-        if (up == false)
-        {
-            transform.position += new Vector3(0, BobbingAmount * Time.deltaTime, 0);
-            if (time >= timeForBobbing)
-            {
-                up = true;
-                time = 0;
-            }
-        }
+        //time += time.deltatime;
+        //if (up == false)
+        //{
+        //    transform.position += new vector3(0, bobbingamount * time.deltatime, 0);
+        //    if (time >= timeforbobbing)
+        //    {
+        //        up = true;
+        //        time = 0;
+        //    }
+        //}
 
-        if (up == true)
-        {
-            transform.position -= new Vector3(0, BobbingAmount * Time.deltaTime, 0);
-            if (time >= timeForBobbing)
-            {
-                up = false;
-                time = 0;
-            }
-        }
+        //if (up == true)
+        //{
+        //    transform.position -= new vector3(0, bobbingamount * time.deltatime, 0);
+        //    if (time >= timeforbobbing)
+        //    {
+        //        up = false;
+        //        time = 0;
+        //    }
+        //}
     }
     
     void OnTriggerEnter(Collider other)
@@ -100,6 +100,7 @@ public class PickUp : MonoBehaviour {
             }
 
             this.gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
+            Destroy(this.gameObject);
         }
     }
 
