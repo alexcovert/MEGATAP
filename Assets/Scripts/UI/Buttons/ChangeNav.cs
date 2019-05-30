@@ -157,7 +157,7 @@ public class ChangeNav : MonoBehaviour {
 
     private void GetCurrentFirstButtons()
     {
-        if (cs.queue != null && pt.queue != null)
+        if (cs != null && pt != null && cs.queue != null && pt.queue != null)
         {
             foreach (GameObject t in pt.queue)
             {
