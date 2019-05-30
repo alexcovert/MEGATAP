@@ -9,8 +9,20 @@ public class GameManager : MonoBehaviour {
     {
         if(SceneManager.GetActiveScene().name == "Tower1")
         {
-            SceneManager.LoadScene("Tower1_Platforms", LoadSceneMode.Additive);
-            SceneManager.LoadScene("Tower1_Traps", LoadSceneMode.Additive);
+            bool platformsLoaded = false;
+            bool trapsLoaded = false;
+
+            for(int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                if (SceneManager.GetSceneAt(i).name == "Tower1_Platforms")
+                    platformsLoaded = true;
+                if (SceneManager.GetSceneAt(i).name == "Tower1_Traps")
+                    trapsLoaded = true;
+            }
+
+            if(!platformsLoaded) SceneManager.LoadScene("Tower1_Platforms", LoadSceneMode.Additive);
+            if(!trapsLoaded) SceneManager.LoadScene("Tower1_Traps", LoadSceneMode.Additive);
+
         }
         if(SceneManager.GetActiveScene().name == "Tutorial")
         {
