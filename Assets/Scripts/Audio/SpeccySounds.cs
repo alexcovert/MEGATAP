@@ -18,6 +18,7 @@ public class SpeccySounds : MonoBehaviour {
     private float slipVolume;
     [SerializeField] [Range(0, 1)]
     private float sighVolume;
+    
 
     [SerializeField]
     private AudioClip[] BodySFX;
@@ -57,6 +58,16 @@ public class SpeccySounds : MonoBehaviour {
         AudioClip clip = GetLeftFootClip();
         audioSource.volume = footstepVolume;
         audioSource.PlayOneShot(clip);
+    }
+    
+    private void WallJump()
+    {
+    	AudioClip clip = GetLeftFootClip();
+        audioSource.volume = footstepVolume;
+        audioSource.PlayOneShot(clip);
+        AudioClip clip2 = GetRightFootClip();
+        audioSource.PlayOneShot(clip2);
+        
     }
 
     private AudioClip GetRightFootClip()
@@ -147,5 +158,18 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.volume = sapStepVolume;
         audioSource.PlayOneShot(sapSteps[1]);
     }
+    
+    private void CrouchWalkLeft()
+    {
+    	audioSource.volume = sapStepVolume;
+        audioSource.PlayOneShot(sapSteps[0]);
+    }
+    
+    private void CrouchWalkRight()
+    {
+    	audioSource.volume = sapStepVolume;
+        audioSource.PlayOneShot(sapSteps[1]);
+    }
 
+	
 }
