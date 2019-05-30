@@ -26,10 +26,10 @@ public class ChangeNav : MonoBehaviour {
         GetCurrentLastButtons();
         GetNumButtons();
 
-        Debug.Log("\n" + currentFirstButton);
-        Debug.Log("\n" + currentSecondButton);
-        Debug.Log("\n" + currentSecondLastButton);
-        Debug.Log("\n" + currentLastButton);
+        //Debug.Log("\n" + currentFirstButton);
+        //Debug.Log("\n" + currentSecondButton);
+        //Debug.Log("\n" + currentSecondLastButton);
+        //Debug.Log("\n" + currentLastButton);
 
         //Change navigation of first and last buttons to wrap around
         if (numButtons >= 4)
