@@ -33,7 +33,7 @@ public class PlayerOneLose : MonoBehaviour {
         if (!tutorial && other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started && !Lose)
         {
             menu.Open(false);
-
+            
             Lose = true;
             // Initiate.Fade("GameOver", Color.black, 1);
             speccyLosesUI.SetActive(true);

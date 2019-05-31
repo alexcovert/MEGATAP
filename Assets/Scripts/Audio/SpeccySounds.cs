@@ -26,9 +26,13 @@ public class SpeccySounds : MonoBehaviour {
     [SerializeField]
     private AudioClip[] OofVoiceSFX;
     [SerializeField]
+    private AudioClip[] CrouchSFX;
+    [SerializeField]
     private AudioClip[] sapSteps;
 
     int jumps = 0;
+    int sighs = 0;
+    int grunts = 0;
     int oofs = 0;
 
     private AudioSource audioSource;
@@ -92,12 +96,19 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(clip);
     }
 
+    private void TurnJumpHyah()
+    {
+        AudioClip clip = GetJumpingClip();
+        audioSource.volume = jumpVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
     private AudioClip GetJumpingClip()
     {
         int hyuh = jumps % 3;
         jumps++;
         return JumpVoiceSFX[hyuh];
-    }
+    }    
 
     // Oof-Slip
 
@@ -108,9 +119,22 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(clip);
     }
 
+    private void CrouchHMP()
+    {
+        int grunt = grunts % 4;
+        grunts++;
+        AudioClip clip = CrouchSFX[grunt];
+        Debug.Log("CROUCHING");
+        audioSource.volume = sighVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
     private void GetUpSigh()
     {
-        AudioClip clip = OofVoiceSFX[4];
+        int sigh = sighs % 4 + 4;
+        sighs++;
+        AudioClip clip = CrouchSFX[sigh];
+        Debug.Log("STANDING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
@@ -130,9 +154,18 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(clip);
     }
 
+    private void OofStun()
+    {
+        AudioClip clip = GetKB();
+        audioSource.volume = knockbackOofVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
     private AudioClip GetKB()
     {
-        return OofVoiceSFX[3];
+        int oof = oofs % 4 + 3;
+        oofs++;
+        return OofVoiceSFX[oof];
     }
 
     //Slime steps

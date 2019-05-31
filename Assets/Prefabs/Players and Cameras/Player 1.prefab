@@ -1947,8 +1947,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8c23a45a1411142ac34de9808c7538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpVolume: 0.76
-  landingVolume: 0.55
+  jumpVolume: 0.746
+  landingVolume: 1
   footstepVolume: 1
   knockbackOofVolume: 0.47
   sapStepVolume: 0.25
@@ -1959,15 +1959,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bcbd917027481b348871fc2e86ce115a, type: 3}
   - {fileID: 8300000, guid: 808939b8e9dbc494f90e38fd13919c8e, type: 3}
   JumpVoiceSFX:
-  - {fileID: 8300000, guid: a0e39d780b2450e4890b18f0b6d129ce, type: 3}
-  - {fileID: 8300000, guid: 758230dc84b1ff049b4989b97ccccb2f, type: 3}
-  - {fileID: 8300000, guid: 58cafdbbc3a36ef4a88cfc2b1d4d0748, type: 3}
+  - {fileID: 8300000, guid: e1396341860e3e342ab0fee2c7350026, type: 3}
+  - {fileID: 8300000, guid: 56383e4c0fcc8ec4598bb639df71c805, type: 3}
+  - {fileID: 8300000, guid: e0cae73121e179148b78d5a476c0ab6a, type: 3}
   OofVoiceSFX:
-  - {fileID: 8300000, guid: feb4ba600b151814ba7a0c7e2c3f681f, type: 3}
-  - {fileID: 8300000, guid: f3f464633b3e8344c993f614365df9aa, type: 3}
-  - {fileID: 8300000, guid: aa291a851cc771d48bf5af6399935bbc, type: 3}
-  - {fileID: 8300000, guid: 79a31afd5c288eb41b7f83c2f45e384e, type: 3}
-  - {fileID: 8300000, guid: 199fc6a88d301524590c12af7905031f, type: 3}
+  - {fileID: 8300000, guid: 2f84076429ec4b34e9ce0d28fec8d1d5, type: 3}
+  - {fileID: 8300000, guid: d60264401aafc34449ec6529d7aa2129, type: 3}
+  - {fileID: 8300000, guid: af3c18760bdf41f46a797766be17e51d, type: 3}
+  - {fileID: 8300000, guid: 0a0d430d9a65fda4d82f655b4d071c45, type: 3}
+  - {fileID: 8300000, guid: aca01718d2ac80548b2022082e0f135d, type: 3}
+  - {fileID: 8300000, guid: e3124ddac14d9384887f14d7823ed584, type: 3}
+  - {fileID: 8300000, guid: 7f4ae5b26e6ebdb4d82d9ed1a0eb2ca2, type: 3}
+  CrouchSFX:
+  - {fileID: 8300000, guid: 4508c59109a60914abf05835508d97a6, type: 3}
+  - {fileID: 8300000, guid: f5a1cb5b32d691741bfa2559a3d2435f, type: 3}
+  - {fileID: 8300000, guid: 1b7bb31a2ffddf54eb98f8d65e4ce27a, type: 3}
+  - {fileID: 8300000, guid: 4e5a22e36252e624cbc24f9db3fd6b14, type: 3}
+  - {fileID: 8300000, guid: 1eb8b5a100c91a9458df7218dad627ce, type: 3}
+  - {fileID: 8300000, guid: 994a99fbee16b684380fdfb0ca141724, type: 3}
+  - {fileID: 8300000, guid: 6180cb1d0c0b55c4a9275551440d1f2f, type: 3}
+  - {fileID: 8300000, guid: 2bab829f225381040a29f45a265fd084, type: 3}
   sapSteps:
   - {fileID: 8300000, guid: 77d1864985f5a574387ff5ad47eb4816, type: 3}
   - {fileID: 8300000, guid: 55755609799d75444b4a629c6ee201dd, type: 3}
@@ -2013,6 +2024,10 @@ MonoBehaviour:
   cam: {fileID: 114614076012222384}
   gameManager: {fileID: 0}
   speedBoostSFX: {fileID: 8300000, guid: e06853b6be043644f89a1ab20dc6cbe8, type: 3}
+  speedBoostYES:
+  - {fileID: 8300000, guid: 755dc5b201804e746b3aa502e729eb85, type: 3}
+  - {fileID: 8300000, guid: f2e495fdecfc5d04598253110fb9fc8f, type: 3}
+  - {fileID: 8300000, guid: ea98c426e94aac54a9bfcb2718f48f6a, type: 3}
 --- !u!135 &135254525513457034
 SphereCollider:
   m_ObjectHideFlags: 1

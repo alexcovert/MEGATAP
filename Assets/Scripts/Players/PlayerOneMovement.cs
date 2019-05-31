@@ -57,7 +57,9 @@ public class PlayerOneMovement : MonoBehaviour {
 
     // sound 
     [SerializeField] private AudioClip speedBoostSFX;
+    [SerializeField] private AudioClip[] speedBoostYES;
     private AudioSource audioSource;
+    private int yesVoice = 0;
 
     private float inputAxis; //used to get input axis from controller/keyboard
     private InputManager inputManager;
@@ -365,6 +367,10 @@ public class PlayerOneMovement : MonoBehaviour {
             // initiate speed up
             if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
             {
+                int VoiceYES = yesVoice % 3;
+                yesVoice++;
+                AudioClip clip = speedBoostYES[VoiceYES];
+                audioSource.PlayOneShot(clip);
                 spedUp = true;
                 audioSource.PlayOneShot(speedBoostSFX);
                 speedUpBeams.enabled = false;
