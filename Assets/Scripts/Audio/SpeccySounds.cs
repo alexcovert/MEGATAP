@@ -127,7 +127,6 @@ public class SpeccySounds : MonoBehaviour {
         int grunt = grunts % 4;
         grunts++;
         AudioClip clip = CrouchSFX[grunt];
-        Debug.Log("CROUCHING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
@@ -137,7 +136,6 @@ public class SpeccySounds : MonoBehaviour {
         int sigh = sighs % 4 + 4;
         sighs++;
         AudioClip clip = CrouchSFX[sigh];
-        Debug.Log("STANDING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
