@@ -106,7 +106,7 @@ public class ChangeNav : MonoBehaviour {
 
     private void GetNumButtons()
     {
-        if (cs.queue != null && pt.queue != null)
+        if (cs != null && pt != null && cs.queue != null && pt.queue != null)
         {
             foreach (GameObject t in pt.queue)
             {
@@ -129,7 +129,7 @@ public class ChangeNav : MonoBehaviour {
 
     private void SetAutomatic()
     {
-        if (pt.queue != null && cs.queue != null)
+        if (cs != null && pt != null && pt.queue != null && cs.queue != null)
         {
             foreach (GameObject t in pt.queue)
             {
@@ -196,7 +196,7 @@ public class ChangeNav : MonoBehaviour {
 
     private void GetCurrentLastButtons()
     {
-        if (cs.queue != null & pt.queue != null)
+        if (cs != null && pt != null && cs.queue != null & pt.queue != null)
         {
             for (int s = cs.queue.Length - 1; s >= 0; s--)
             {
