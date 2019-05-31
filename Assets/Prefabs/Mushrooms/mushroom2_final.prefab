@@ -36,7 +36,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4657359785193550}
-  - component: {fileID: 114692908003749386}
   m_Layer: 0
   m_Name: mushroom2_final
   m_TagString: Untagged
@@ -52,7 +51,7 @@ Transform:
   m_GameObject: {fileID: 1367203456232588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_Children:
   - {fileID: 4827989719177642}
   m_Father: {fileID: 0}
@@ -113,16 +112,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1077523418002226}
   m_Mesh: {fileID: 4300002, guid: d2d89f5b1da369c418746436c327f7cf, type: 3}
---- !u!114 &114692908003749386
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1367203456232588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prePlaced: 0
-  faceNumber: 0

@@ -2,38 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckRenderers : MonoBehaviour {
+public class CheckMushroomRenderer : MonoBehaviour {
     [SerializeField] private bool prePlaced;
     [SerializeField] private int faceNumber;
 
-    private int floor, face;
+    private static int floor, face;
     private CameraOneRotator bottomCam;
     private CameraTwoRotator topCam;
 
     private MeshRenderer[] mrs;
     private SkinnedMeshRenderer[] smrs;
 
-    private bool on, prevOn;
     private void Awake()
     {
-        topCam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
-        bottomCam = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
-
         mrs = GetComponentsInChildren<MeshRenderer>();
         smrs = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
     {
-        face = topCam.GetState();
-        floor = topCam.GetFloor();
+        topCam = GameObject.Find("Player 2 Camera").GetComponent<CameraTwoRotator>();
+        bottomCam = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
     }
 
     private void Update()
     {
         bool topCamLooking, bottomCamLooking;
 
-        if(prePlaced)
+        if (prePlaced)
         {
             topCamLooking = false;
             bottomCamLooking = faceNumber == bottomCam.GetState() && 1 == bottomCam.GetFloor();
@@ -43,6 +39,8 @@ public class CheckRenderers : MonoBehaviour {
             topCamLooking = face == topCam.GetState() && floor == topCam.GetFloor();
             bottomCamLooking = face == bottomCam.GetState() && floor == bottomCam.GetFloor();
         }
+
+        Debug.Log(face + " " + floor);
 
         if (topCamLooking || bottomCamLooking)
         {
@@ -68,5 +66,23 @@ public class CheckRenderers : MonoBehaviour {
                 if (smr != null) smr.enabled = false;
             }
         }
+    }
+
+    public void SetFace(int i)
+    {
+        if (i % 4 == 0)
+        {
+            face = 4;
+        }
+        else
+        {
+            face = i % 4;
+        }
+    }
+
+    public void SetFloor(int i)
+    {
+        floor = i;
+
     }
 }
