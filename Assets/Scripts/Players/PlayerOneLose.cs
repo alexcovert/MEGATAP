@@ -23,6 +23,7 @@ public class PlayerOneLose : MonoBehaviour {
 
     private AudioSource audioSource;
     [SerializeField] private AudioClip gameOverClip;
+    [SerializeField] private AudioClip gameOverScream;
 
     private void Start () {
         Lose = false;
@@ -41,6 +42,7 @@ public class PlayerOneLose : MonoBehaviour {
 
             audioSource.volume -= 0.2f;
             if(gameOverClip != null) audioSource.PlayOneShot(gameOverClip);
+            if (gameOverScream != null) audioSource.PlayOneShot(gameOverScream);
 
             Lose = true;
             // Initiate.Fade("GameOver", Color.black, 1);
