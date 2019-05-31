@@ -32,9 +32,12 @@ public class SpeccySounds : MonoBehaviour {
     int oofs = 0;
 
     private AudioSource audioSource;
+    private PlayerOneMovement p1Movement;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        p1Movement = GetComponent<PlayerOneMovement>();
     }
 
     private void Start()
@@ -148,4 +151,29 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(sapSteps[1]);
     }
 
+
+    //Crouch steps
+    private void CrouchStepLeft()
+    {
+        if(p1Movement.GetSlowed())
+        {
+            audioSource.PlayOneShot(sapSteps[0]);
+        }
+        else
+        {
+            audioSource.PlayOneShot(BodySFX[0]);
+        }
+    }
+
+    private void CrouchStepRight()
+    {
+        if (p1Movement.GetSlowed())
+        {
+            audioSource.PlayOneShot(sapSteps[1]);
+        }
+        else
+        {
+            audioSource.PlayOneShot(BodySFX[1]);
+        }
+    }
 }
