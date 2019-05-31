@@ -29,7 +29,13 @@ public class MoveVines : MonoBehaviour {
     //speed that will increase as the vines progress
     private float speed;
     private bool tutorial;
-    
+
+    //audio
+    private bool vineSoundPlayed = false;
+    private CameraOneRotator cam1;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip slither;
+
 
 	void Start () {
         //Get all of the children w/ trail renderers (each individual vine object)
@@ -54,6 +60,8 @@ public class MoveVines : MonoBehaviour {
         //Initialize variables
         speed = vineStartSpeed;
         Started = false;
+        cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 
@@ -108,6 +116,7 @@ public class MoveVines : MonoBehaviour {
             Rotate();
             face = 2;
             movedUpThisFloor = false;
+            vineSoundPlayed = false;
         }
         //Second to Third Face
         if (p.transform.position.x >= 40 && p.transform.position.z >= 43 && face == 2)
@@ -115,6 +124,7 @@ public class MoveVines : MonoBehaviour {
             speed += speedIncreasePerFace;
             Rotate();
             face = 3;
+            vineSoundPlayed = false;
         }
         //Third to Fourth Face
         if (p.transform.position.x <= -43 && p.transform.position.z >= 40 && face == 3)
@@ -123,6 +133,7 @@ public class MoveVines : MonoBehaviour {
             Rotate();
             face = 4;
             if (tutorial) Started = false;
+            vineSoundPlayed = false;
         }
         //Fourth to First face -- Rotating
         if (p.transform.position.x <= -40 && p.transform.position.z <= -43 && face == 4 && floor < 5)
@@ -131,6 +142,13 @@ public class MoveVines : MonoBehaviour {
             Rotate();
             floor++;
             face = 1;
+            vineSoundPlayed = false;
+        }
+
+        if(face == cam1.GetState() && floor == cam1.GetFloor() && !vineSoundPlayed)
+        {
+            if (slither != null) audioSource.PlayOneShot(slither);
+            vineSoundPlayed = true;
         }
     }
 
