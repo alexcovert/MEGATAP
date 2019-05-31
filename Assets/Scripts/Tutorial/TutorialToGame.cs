@@ -22,7 +22,7 @@ public class TutorialToGame : MonoBehaviour {
     }
     private void Update()
     {
-        if (inputManager.GetButtonDown(InputCommand.Start))
+        if (inputManager.GetButtonDown(InputCommand.Start) || Input.GetKeyDown(KeyCode.Escape))
         {
             StartCoroutine(loader.LoadScene("Tower1"));
         }
