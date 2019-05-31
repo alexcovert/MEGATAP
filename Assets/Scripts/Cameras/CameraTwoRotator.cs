@@ -41,6 +41,8 @@ public class CameraTwoRotator : MonoBehaviour {
     private int currentPos, floor;
 
     private bool moveEnabled = true;
+    // lock rotation of tower for tutorial purposes
+    public bool rotateLocked = false;
     private PauseMenu pause;
     private InputManager inputManager;
 
@@ -74,7 +76,7 @@ public class CameraTwoRotator : MonoBehaviour {
     {
         if (moveEnabled)
         {
-            if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused)
+            if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && !rotateLocked)
             {
                 moveEnabled = false;
 

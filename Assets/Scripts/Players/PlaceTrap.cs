@@ -90,6 +90,8 @@ public class PlaceTrap : MonoBehaviour {
     GameObject tutorialTopY;
     GameObject tutorialTopSpells;
     bool tmpIndicator = false;
+    // tutorial variable
+    GameObject camera2;
 
     private void Awake()
     {
@@ -129,6 +131,9 @@ public class PlaceTrap : MonoBehaviour {
         }
 
         // define tutorial tips
+        camera2 = GameObject.Find("Player 2 Camera");
+        camera2.GetComponent<CameraTwoRotator>().rotateLocked = true;
+
         tutorialTopGoal = GameObject.Find("ToolTipTopGoal");
         tutorialTopPlaceTrap = GameObject.Find("ToolTipTopPlaceTrap");
         tutorialTopMoveTrap = GameObject.Find("ToolTipTopMoveTrap");
@@ -151,30 +156,36 @@ public class PlaceTrap : MonoBehaviour {
         if(SceneManager.GetActiveScene().name == "Tutorial")
         {
             // tutorial tips
+            // goal is on screen and player presses a
             if (tutorialTopGoal != null && tutorialTopGoal.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButtonDown(0)))
             {
                 tutorialTopGoal.SetActive(false);
                 tutorialTopSelectTrap.SetActive(true);
             }
+            // select trap tip active and player presses triggers
             else if (tutorialTopSelectTrap != null && tutorialTopSelectTrap.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerMenu) || Input.GetMouseButtonDown(0)))
             {
                 tutorialTopSelectTrap.SetActive(false);
                 tutorialTopMoveTrap.SetActive(true);
                 tutorialTopPlaceTrap.SetActive(true);
             }
+            // placed all traps in the queue
             else if (trapQueueIsEmpty() && tutorialTopPlaceTrap.activeSelf == true)
             {
                 tutorialTopPlaceTrap.SetActive(false);
                 tutorialTopMoveTrap.SetActive(false);
                 tutorialTopRotate.SetActive(true);
+                camera2.GetComponent<CameraTwoRotator>().rotateLocked = false;
             }
-            else if (tutorialTopRotate.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
+            // tool tip to rotate and player presses y 
+            else if (tutorialTopRotate != null && tutorialTopRotate.activeSelf == true && inputManager.GetButtonDown(InputCommand.TopPlayerRotate))
             {
                 tutorialTopRotate.SetActive(false);
                 tutorialTopY.SetActive(true);
 
                 GetComponent<ChangeNav>().ResetNav();
             }
+            // tip to place all the traps and player presses a
             else if (tutorialTopY.activeSelf == true && (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) || Input.GetMouseButton(0)))
             {
                 tutorialTopY.SetActive(false);
@@ -204,7 +215,7 @@ public class PlaceTrap : MonoBehaviour {
 
 
         //Reset queue's when tower rotates
-        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && resetEnabled && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
+        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && resetEnabled && !camera2.GetComponent<CameraTwoRotator>().rotateLocked && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
 
             numTimesRotated++;
