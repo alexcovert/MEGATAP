@@ -47,11 +47,34 @@ public class PlaceMushrooms : MonoBehaviour {
                                 if (num <= 10)
                                 {
                                     int random = Random.Range(0, Mushrooms.Count);
+                                    GameObject mushroom;
+                                    float XOffset = 0;
+                                    float ZOffset = 0;
                                     if (random == 3 || random == 1 || random == 2)
                                     {
                                         if (random == 1)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.3f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.identity);
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }                              
+                                            else if(i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if(i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if(i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.3f, r.position.z + ZOffset), Quaternion.identity);
                                             mushroom.transform.Rotate(0, Random.Range(0, 360), 0);
 
                                             mushroom.transform.parent = mushrooms.transform;
@@ -59,14 +82,54 @@ public class PlaceMushrooms : MonoBehaviour {
                                         }
                                         else if (random == 2)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.8f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.identity);
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.8f, r.position.z + ZOffset), Quaternion.identity);
                                             mushroom.transform.Rotate(0, Random.Range(0, 360), 0);
 
                                             mushroom.transform.parent = mushrooms.transform;
                                         }
                                         else if (random == 3)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.35f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.identity);
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }                              
+                                            else if(i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if(i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if(i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.35f, r.position.z + ZOffset), Quaternion.identity);
                                             mushroom.transform.Rotate(0, Random.Range(0, 360), 0);
 
                                             mushroom.transform.parent = mushrooms.transform;
@@ -78,35 +141,135 @@ public class PlaceMushrooms : MonoBehaviour {
                                     {
                                         if (random == 0)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.35f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.Euler(new Vector3(-90f, 0, 0)));
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.35f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
                                             mushroom.transform.Rotate(0, 0, Random.Range(0, 360));
 
                                             mushroom.transform.parent = mushrooms.transform;
                                         }
                                         else if (random == 4)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 0.95f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.Euler(new Vector3(-90f, 0, 0)));
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 0.95f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
                                             mushroom.transform.Rotate(0, 0, Random.Range(0, 360));
 
                                             mushroom.transform.parent = mushrooms.transform;
                                         }
                                         else if (random == 5)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.4f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.Euler(new Vector3(-90f, 0, 0)));
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.4f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
                                             mushroom.transform.Rotate(0, 0, Random.Range(0, 360));
 
                                             mushroom.transform.parent = mushrooms.transform;
                                         }
                                         else if (random == 6)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1f, r.position.z + Random.Range(-0.9f, 0.9f)), Quaternion.Euler(new Vector3(-90f, 0, 0)));
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
                                             mushroom.transform.Rotate(0, 0, Random.Range(0, 360));
 
                                             mushroom.transform.parent = mushrooms.transform;
                                         }
                                         else if (random == 7)
                                         {
-                                            GameObject mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + Random.Range(-0.8f, 0.8f), r.position.y + 1.305f, r.position.z + Random.Range(-1, 1)), Quaternion.Euler(new Vector3(-90f, 0, 0)));
+                                            if (i % 4 == 1)
+                                            {
+                                                ZOffset = 0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 2)
+                                            {
+                                                XOffset = -0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            if (i % 4 == 3)
+                                            {
+                                                ZOffset = -0.8f;
+                                                XOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            else if (i % 4 == 0)
+                                            {
+                                                XOffset = 0.8f;
+                                                ZOffset = Random.Range(-0.8f, 0.8f);
+                                            }
+                                            mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.305f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
                                             mushroom.transform.Rotate(0, 0, Random.Range(0, 360));
 
                                             mushroom.transform.parent = mushrooms.transform;
