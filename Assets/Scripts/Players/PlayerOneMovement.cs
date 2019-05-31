@@ -468,7 +468,7 @@ public class PlayerOneMovement : MonoBehaviour {
         }
         else if (crouching && slowed == true)
         {
-            animator.Play("Armature|SapCrouch",0);
+            animator.Play("Sap Crouch",0);
         }
         if (move == false)
         {
