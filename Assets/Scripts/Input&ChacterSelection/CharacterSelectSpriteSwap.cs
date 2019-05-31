@@ -37,7 +37,12 @@ public class CharacterSelectSpriteSwap : MonoBehaviour {
             backImageSwapping = true;
 
             selectImageP1.sprite = selectSpriteKeyboard;
+            selectImageP1.rectTransform.sizeDelta = new Vector2(110, 110);
+            selectImageP1.rectTransform.localPosition = new Vector2(-85.7f, -4.1f);
+
             cancelImageP1.sprite = cancelSpriteKeyboard;
+            cancelImageP1.rectTransform.sizeDelta = new Vector2(75, 75);
+            cancelImageP1.rectTransform.localPosition = new Vector2(-85.7f, -4.1f);
         }
         
     }
