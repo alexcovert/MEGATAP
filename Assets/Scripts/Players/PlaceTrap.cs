@@ -132,7 +132,7 @@ public class PlaceTrap : MonoBehaviour {
 
         // define tutorial tips
         camera2 = GameObject.Find("Player 2 Camera");
-        camera2.GetComponent<CameraTwoRotator>().rotateLocked = true;
+        if (tutorial) camera2.GetComponent<CameraTwoRotator>().rotateLocked = true;
 
         tutorialTopGoal = GameObject.Find("ToolTipTopGoal");
         tutorialTopPlaceTrap = GameObject.Find("ToolTipTopPlaceTrap");
@@ -151,9 +151,9 @@ public class PlaceTrap : MonoBehaviour {
         if (tutorialTopSpells != null) { tutorialTopSpells.SetActive(false); }
     }
 
-    void Update() {
+    void LateUpdate() {
 
-        if(SceneManager.GetActiveScene().name == "Tutorial")
+        if (SceneManager.GetActiveScene().name == "Tutorial")
         {
             // tutorial tips
             // goal is on screen and player presses a
@@ -205,17 +205,26 @@ public class PlaceTrap : MonoBehaviour {
                 GetComponent<ChangeNav>().ResetNav();
             }
         }
-        
+
 
         //Move ghost with cursor
         MoveGhost();
         //Get controller select
-        if(checkControllers != null) p2Controller = checkControllers.GetTopPlayerControllerState();
+        if (checkControllers != null) p2Controller = checkControllers.GetTopPlayerControllerState();
 
+        //Cancel trap
+        if (Input.GetMouseButtonDown(1) && ghostTrap != null && !checkControllers.topPlayersController)
+        {
+            DestroyGhost();
+        }
 
+    }
 
+    //Called only when the camera actually rotates from the camera two rotator script
+    public void ChangeQueue()
+    {
         //Reset queue's when tower rotates
-        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && resetEnabled && !camera2.GetComponent<CameraTwoRotator>().rotateLocked && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
+        if (resetEnabled && !camera2.GetComponent<CameraTwoRotator>().rotateLocked && !pause.GameIsPaused && numTimesRotated < 4 * (tower.GetComponentInChildren<NumberOfFloors>().NumFloors - 1) - 1)
         {
 
             numTimesRotated++;
@@ -238,15 +247,8 @@ public class PlaceTrap : MonoBehaviour {
             GetComponent<ChangeNav>().ResetNav();
 
             cursorMove.MovingTraps = true;
-            controllerCursor.transform.localPosition = new Vector3(-1, -1, 0);
-        }
 
-        //Cancel trap
-        if (Input.GetMouseButtonDown(1) && ghostTrap != null && !checkControllers.topPlayersController)
-        {
-            DestroyGhost();
         }
-
     }
 
     private void FixedUpdate()
