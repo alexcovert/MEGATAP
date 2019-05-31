@@ -38,6 +38,10 @@ public class LogProjectile : MonoBehaviour {
     private bool canHit = true;
 
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip logHitSFX;
+    bool sfxPlayed = false;
+
     void Awake()
     {
         playerOne = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
@@ -49,6 +53,7 @@ public class LogProjectile : MonoBehaviour {
         child = transform.parent.gameObject.transform.GetChild(1).gameObject;
         rb = child.GetComponent<Rigidbody>();
         box = GetComponent<BoxCollider>();
+        audioSource = GetComponent<AudioSource>();
         StartCoroutine(Death());
     }
 
@@ -171,6 +176,11 @@ public class LogProjectile : MonoBehaviour {
             player = col.gameObject;
             hit = true;
             anim = player.GetComponent<PlayerOneMovement>().GetAnim();
+            if (logHitSFX != null && !sfxPlayed)
+            {
+                audioSource.PlayOneShot(logHitSFX);
+                sfxPlayed = true;
+            }
             if (player.GetComponent<PlayerOneMovement>().IsCrouched() == false)
             {
                 anim.Play("Knockback", 0);
