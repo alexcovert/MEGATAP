@@ -44,7 +44,7 @@ public class PlaceMushrooms : MonoBehaviour {
                             if (r.transform.childCount == 0)
                             {
                                 int num = Random.Range(1, 100);
-                                if (num <= 10)
+                                if (num <= 5)
                                 {
                                     int random = Random.Range(0, Mushrooms.Count);
                                     GameObject mushroom;
