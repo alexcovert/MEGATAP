@@ -36,9 +36,12 @@ public class SpeccySounds : MonoBehaviour {
     int oofs = 0;
 
     private AudioSource audioSource;
+    private PlayerOneMovement p1Movement;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        p1Movement = GetComponent<PlayerOneMovement>();
     }
 
     private void Start()
@@ -124,7 +127,6 @@ public class SpeccySounds : MonoBehaviour {
         int grunt = grunts % 2;
         grunts++;
         AudioClip clip = CrouchSFX[grunt];
-        Debug.Log("CROUCHING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
@@ -134,7 +136,6 @@ public class SpeccySounds : MonoBehaviour {
         int sigh = sighs % 4 + 2;
         sighs++;
         AudioClip clip = CrouchSFX[sigh];
-        Debug.Log("STANDING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
@@ -174,4 +175,29 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(sapSteps[1]);
     }
 
+
+    //Crouch steps
+    private void CrouchStepLeft()
+    {
+        if(p1Movement.GetSlowed())
+        {
+            audioSource.PlayOneShot(sapSteps[0]);
+        }
+        else
+        {
+            audioSource.PlayOneShot(BodySFX[0]);
+        }
+    }
+
+    private void CrouchStepRight()
+    {
+        if (p1Movement.GetSlowed())
+        {
+            audioSource.PlayOneShot(sapSteps[1]);
+        }
+        else
+        {
+            audioSource.PlayOneShot(BodySFX[1]);
+        }
+    }
 }

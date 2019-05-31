@@ -20,10 +20,15 @@ public class PlayerOneLose : MonoBehaviour {
     [SerializeField] private GameOverMenu menu;
 
     private bool tutorial;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip gameOverClip;
+
     private void Start () {
         Lose = false;
         cam = GetComponent<CameraOneRotator>();
         if (SceneManager.GetActiveScene().name == "Tutorial") tutorial = true;
+        audioSource = GameObject.Find("VineParent").GetComponent<AudioSource>();
 	}
 
 
@@ -33,7 +38,10 @@ public class PlayerOneLose : MonoBehaviour {
         if (!tutorial && other.tag == "Vine" && cam.GetFloor() == vines.GetVineFloor() && cam.GetState() == vines.GetVineFace() && vines.Started && !Lose)
         {
             menu.Open(false);
-            
+
+            audioSource.volume -= 0.2f;
+            if(gameOverClip != null) audioSource.PlayOneShot(gameOverClip);
+
             Lose = true;
             // Initiate.Fade("GameOver", Color.black, 1);
             speccyLosesUI.SetActive(true);

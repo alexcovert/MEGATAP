@@ -14,9 +14,9 @@ public class LogRoller : MonoBehaviour
     private GameObject logProjectile;
     private Rigidbody rb;
     private bool once = true;
-    private int face;
+    public int face;
 
-    private int floor;
+    public int floor;
 
     [SerializeField] private float speed = 40;
     //private Vector3 velocity;
@@ -25,6 +25,9 @@ public class LogRoller : MonoBehaviour
 
     private GameOverMenu gameOver;
 
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip dispenseSFX;
 
     void Start()
     {
@@ -35,6 +38,7 @@ public class LogRoller : MonoBehaviour
         logPrefab = Resources.Load("LogProjectile") as GameObject;
         face = cam.GetState();
         floor = cam.GetFloor();
+        audioSource = GetComponent<AudioSource>();
 
         switch (cam.GetState())
         {
@@ -75,6 +79,7 @@ public class LogRoller : MonoBehaviour
                     if (once == true)
                     {
                         logProjectile = Instantiate(logPrefab);
+                        if(dispenseSFX != null && cam1.GetState() == face && cam1.GetFloor() == floor) audioSource.PlayOneShot(dispenseSFX);
                         col = logProjectile.GetComponentInChildren<CapsuleCollider>();
 
                         Physics.IgnoreCollision(col, this.GetComponent<Collider>());
