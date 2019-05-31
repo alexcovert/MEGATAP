@@ -34,8 +34,6 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private float SuperJump = 1;
 
-    [SerializeField] private AudioClip wallJumpSFX;
-
     //Movement Penalty Multiplier
     private float crouchSlow = 0.5f;
 
@@ -369,7 +367,7 @@ public class PlayerOneMovement : MonoBehaviour {
             // initiate speed up
             if (GameObject.FindWithTag("Player").GetComponent<PlayerOneStats>().pickupCount >= 3 && inputManager.GetButtonDown(InputCommand.BottomPlayerBoost) && once == false)
             {
-                int VoiceYES = yesVoice % 3;
+                int VoiceYES = yesVoice % 2;
                 yesVoice++;
                 AudioClip clip = speedBoostYES[VoiceYES];
                 audioSource.PlayOneShot(clip);
@@ -503,7 +501,7 @@ public class PlayerOneMovement : MonoBehaviour {
         else rb.velocity = wallJumpVector;
     }
 
-    private bool jumpSoundPlayed = false;
+
     private void OnTriggerStay(Collider collision)
     {
         if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Trap" || collision.gameObject.tag == "TrapHitbox")
@@ -521,7 +519,6 @@ public class PlayerOneMovement : MonoBehaviour {
                     animator.Play("Wall Jump", 0);
                     wallJumpVector = (-transform.forward + transform.up / wallJumpDirectionDivider).normalized * (jumpH / wallJumpDivider);
                     wallJumping = true;
-                    if(wallJumpSFX != null && !jumpSoundPlayed) audioSource.PlayOneShot(wallJumpSFX);
                     //jumping = false;
                     dustParticles.Play();
                     StartCoroutine(DisableWallJump());
@@ -533,10 +530,8 @@ public class PlayerOneMovement : MonoBehaviour {
 
     private IEnumerator DisableWallJump()
     {
-        jumpSoundPlayed = true;
         yield return new WaitForSeconds(wallJumpTime);
         wallJumping = false;
-        jumpSoundPlayed = false;
         wallJumpVector = Vector3.zero;
     }
 

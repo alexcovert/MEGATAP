@@ -450,7 +450,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -568,9 +568,6 @@ MonoBehaviour:
   pickUpSFX2: {fileID: 8300000, guid: 7460042bde733a545a3ae7563cbfb9ad, type: 3}
   pickUpSFX3: {fileID: 8300000, guid: 93f2f340eb8b5544e8f49f67bb4f04dd, type: 3}
   pickupFull: {fileID: 21300000, guid: 9a76ce291ac911642975cbf1c7c06c1f, type: 3}
-  timeForBobbing: 1
-  BobbingAmount: 0.02
-  RotationAmount: 15
 --- !u!137 &137181162486273344
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
