@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4683404972131830}
   - component: {fileID: 33249176134173516}
   - component: {fileID: 23726495062853048}
+  - component: {fileID: 114759831637021734}
   m_Layer: 0
   m_Name: mushroom1_Final
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1592912698382242}
   m_Mesh: {fileID: 4300000, guid: ebfab8c0ace770749bf0a7b2b1d43126, type: 3}
+--- !u!114 &114759831637021734
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1592912698382242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82acfb96bca68534e91d65c516482dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePlaced: 0
+  faceNumber: 0

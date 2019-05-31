@@ -69,4 +69,21 @@ public class CheckRenderers : MonoBehaviour {
             }
         }
     }
+
+    private void SetFace(int i)
+    {
+        if (i % 4 == 0)
+        {
+            face = 4;
+        }
+        else
+        {
+            face = i % 4;
+        }
+    }
+
+    private void SetFloor(int i)
+    {
+        floor = i;
+    }
 }
