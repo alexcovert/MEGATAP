@@ -79,6 +79,9 @@ public class CastSpell : MonoBehaviour
 
     private GameObject currentSelectedGameObject;
 
+    // tutorial purposes
+    private GameObject camera2;
+
     private void Awake()
     {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
@@ -108,13 +111,15 @@ public class CastSpell : MonoBehaviour
         //p2Controller = gameManager.GetComponent<CheckControllers>().GetTopPlayerControllerState();
         placeEnabled = false;
         InputEnabled = true;
+
+        camera2 = GameObject.Find("Player 2 Camera");
     }
 
 
     void Update()
     {
         //Tutorial checks
-        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && tutorial && tutorialCounter < 2)
+        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !camera2.GetComponent<CameraTwoRotator>().rotateLocked && !pause.GameIsPaused && tutorial && tutorialCounter < 2)
         {
             tutorialCounter++;
             if(tutorialCounter == 2)

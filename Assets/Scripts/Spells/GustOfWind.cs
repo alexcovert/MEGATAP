@@ -12,13 +12,14 @@ public class GustOfWind : MonoBehaviour {
     [SerializeField] private int windForce;
     private Vector3 direction;
 
-    //private AudioSource audioSource;
+    private AudioSource audioSource;
     [SerializeField] private AudioClip clip;
 
     //Hit two boundaries to die
     private bool once = false;
 
     private int count = 0;
+    
 
     private void Start()
     {
@@ -26,8 +27,8 @@ public class GustOfWind : MonoBehaviour {
         count = 0;
        	cam = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
 
-        //audioSource = GetComponent<AudioSource>();
-        //audioSource.PlayOneShot(clip);
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(clip);
         switch (cam.GetState())
         {
             case 1:
