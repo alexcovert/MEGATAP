@@ -56,22 +56,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1.1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }                              
                                             else if(i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1.1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if(i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1.1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if(i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1.1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.3f, r.position.z + ZOffset), Quaternion.identity);
@@ -84,22 +84,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.8f, r.position.z + ZOffset), Quaternion.identity);
@@ -111,22 +111,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }                              
                                             else if(i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if(i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if(i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.35f, r.position.z + ZOffset), Quaternion.identity);
@@ -143,22 +143,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.35f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
@@ -170,22 +170,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1.1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1.1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1.1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1.1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 0.95f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
@@ -197,22 +197,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.4f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
@@ -224,22 +224,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
@@ -251,22 +251,22 @@ public class PlaceMushrooms : MonoBehaviour {
                                         {
                                             if (i % 4 == 1)
                                             {
-                                                ZOffset = 0.8f;
+                                                ZOffset = 1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 2)
                                             {
-                                                XOffset = -0.8f;
+                                                XOffset = -1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             if (i % 4 == 3)
                                             {
-                                                ZOffset = -0.8f;
+                                                ZOffset = -1f;
                                                 XOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             else if (i % 4 == 0)
                                             {
-                                                XOffset = 0.8f;
+                                                XOffset = 1f;
                                                 ZOffset = Random.Range(-0.8f, 0.8f);
                                             }
                                             mushroom = Instantiate(Mushrooms[random], new Vector3(r.position.x + XOffset, r.position.y + 1.305f, r.position.z + ZOffset), Quaternion.Euler(new Vector3(-90f, 0, 0)));
