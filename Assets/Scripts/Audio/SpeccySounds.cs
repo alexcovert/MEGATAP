@@ -114,14 +114,14 @@ public class SpeccySounds : MonoBehaviour {
 
     private void OofSlip()
     {
-        AudioClip clip = GetSlip();
+        AudioClip clip = OofVoiceSFX[3];
         audioSource.volume = slipVolume;
         audioSource.PlayOneShot(clip);
     }
 
     private void CrouchHMP()
     {
-        int grunt = grunts % 4;
+        int grunt = grunts % 2;
         grunts++;
         AudioClip clip = CrouchSFX[grunt];
         Debug.Log("CROUCHING");
@@ -131,19 +131,12 @@ public class SpeccySounds : MonoBehaviour {
 
     private void GetUpSigh()
     {
-        int sigh = sighs % 4 + 4;
+        int sigh = sighs % 4 + 2;
         sighs++;
         AudioClip clip = CrouchSFX[sigh];
         Debug.Log("STANDING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
-    }
-
-    private AudioClip GetSlip()
-    {
-        int oof = oofs % 3;
-        oofs++;
-        return OofVoiceSFX[oof];
     }
 
     // Oof-Knockback
@@ -163,7 +156,7 @@ public class SpeccySounds : MonoBehaviour {
 
     private AudioClip GetKB()
     {
-        int oof = oofs % 4 + 3;
+        int oof = oofs % 3;
         oofs++;
         return OofVoiceSFX[oof];
     }
