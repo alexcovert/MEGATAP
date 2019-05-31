@@ -466,9 +466,9 @@ public class PlayerOneMovement : MonoBehaviour {
             //animator.SetBool("Landing", landing);
             //StartCoroutine(CheckLanding());
         }
-        else if (crouching)
+        else if (crouching && slowed == true)
         {
-            //TODO
+            animator.Play("Armature|SapCrouch",0);
         }
         if (move == false)
         {

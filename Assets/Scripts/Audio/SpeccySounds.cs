@@ -152,20 +152,20 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.volume = sapStepVolume;
         audioSource.PlayOneShot(sapSteps[0]);
     }
-
+	
     private void SapStepRight()
     {
         audioSource.volume = sapStepVolume;
         audioSource.PlayOneShot(sapSteps[1]);
     }
     
-    private void CrouchWalkLeft()
+    private void SapCrouchLeft()
     {
     	audioSource.volume = sapStepVolume;
         audioSource.PlayOneShot(sapSteps[0]);
     }
     
-    private void CrouchWalkRight()
+    private void SapCrouchRight()
     {
     	audioSource.volume = sapStepVolume;
         audioSource.PlayOneShot(sapSteps[1]);
