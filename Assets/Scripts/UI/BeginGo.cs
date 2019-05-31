@@ -16,6 +16,8 @@ public class BeginGo : MonoBehaviour {
     [SerializeField] private GameObject countdownCanvas;
     [SerializeField] EventSystem es;
     [SerializeField] float countdownTime = 4;
+    [SerializeField] private AudioClip dingNumbers;
+    [SerializeField] private AudioClip dingGo;
     private bool once;
 
     private PlaceTrap pt;
@@ -27,12 +29,14 @@ public class BeginGo : MonoBehaviour {
     private Vector3 TargetPosition;
 
     [SerializeField] private float moveInSpeed = 0.1f;
-
+    private AudioSource audioSource;
     // Use this for initialization
     void Start () {
         pt = playerTwo.GetComponent<PlaceTrap>();
         cs = playerTwo.GetComponent<CastSpell>();
-        playerMov = playerOne.GetComponent<PlayerOneMovement>(); 
+        playerMov = playerOne.GetComponent<PlayerOneMovement>();
+
+        audioSource = GetComponent<AudioSource>();
 
         canvas.SetActive(false);
         TargetPosition = new Vector3(camTop.transform.position.x, 21, -75);
@@ -72,12 +76,19 @@ public class BeginGo : MonoBehaviour {
         count.SetActive(true);
 
         text.text = "3";
+        if(dingNumbers != null) audioSource.PlayOneShot(dingNumbers);
         yield return new WaitForSeconds(timePerNum);
+
         text.text = "2";
+        if (dingNumbers != null) audioSource.PlayOneShot(dingNumbers);
         yield return new WaitForSeconds(timePerNum);
+
         text.text = "1";
+        if (dingNumbers != null) audioSource.PlayOneShot(dingNumbers);
         yield return new WaitForSeconds(timePerNum);
+
         text.text = "Go!";
+        if (dingGo != null) audioSource.PlayOneShot(dingGo);
         yield return new WaitForSeconds(1);
 
         count.SetActive(false);

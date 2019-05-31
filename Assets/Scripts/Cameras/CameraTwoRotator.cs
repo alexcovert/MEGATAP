@@ -25,6 +25,7 @@ public class CameraTwoRotator : MonoBehaviour {
     private static int numFloors;
     
 
+
     private Vector3[] basePositions = new [] { new Vector3(0,                   camPosVertical, -camPosHorizontal),
                                                new Vector3(camPosHorizontal,    camPosVertical, 0),
                                                new Vector3(0,                   camPosVertical, camPosHorizontal),
@@ -40,11 +41,12 @@ public class CameraTwoRotator : MonoBehaviour {
 
     private int currentPos, floor;
 
-    private bool moveEnabled = true;
+    public bool moveEnabled { get; private set; }
     // lock rotation of tower for tutorial purposes
     public bool rotateLocked = false;
     private PauseMenu pause;
     private InputManager inputManager;
+    private PlaceTrap pt; 
 
     private CinemachineVirtualCamera cinemachineCam;
 
@@ -54,6 +56,7 @@ public class CameraTwoRotator : MonoBehaviour {
         inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         cinemachineCam = playerTwoCam.GetComponent<CinemachineVirtualCamera>();
         theCam = GetComponent<Camera>();
+        pt = GameObject.Find("Player 2").GetComponent<PlaceTrap>();
     }
     private void Start()
     {
@@ -79,7 +82,7 @@ public class CameraTwoRotator : MonoBehaviour {
             if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && !rotateLocked)
             {
                 moveEnabled = false;
-
+                pt.ChangeQueue();
                 if (currentPos == basePositions.Length)
                 {
                     if (floor < numFloors)
@@ -194,7 +197,7 @@ public class CameraTwoRotator : MonoBehaviour {
             yield return null;
         }
         cameraTarget.transform.rotation = targetRot;
-
+        
         moveEnabled = true;
         camTween = null;
     }
@@ -240,6 +243,7 @@ public class CameraTwoRotator : MonoBehaviour {
                 break;
         }
     }
+
 
     public int GetState()
     {
