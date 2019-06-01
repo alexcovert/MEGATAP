@@ -26,18 +26,19 @@ public class SpeccySounds : MonoBehaviour {
     [SerializeField]
     private AudioClip[] OofVoiceSFX;
     [SerializeField]
+    private AudioClip[] CrouchSFX;
+    [SerializeField]
     private AudioClip[] sapSteps;
 
     int jumps = 0;
+    int sighs = 0;
+    int grunts = 0;
     int oofs = 0;
 
     private AudioSource audioSource;
-    private PlayerOneMovement p1Movement;
-
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        p1Movement = GetComponent<PlayerOneMovement>();
     }
 
     private void Start()
@@ -95,34 +96,48 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(clip);
     }
 
+    private void TurnJumpHyah()
+    {
+        JumpLanding();
+        AudioClip clip = GetJumpingClip();
+        audioSource.volume = jumpVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
     private AudioClip GetJumpingClip()
     {
         int hyuh = jumps % 3;
         jumps++;
         return JumpVoiceSFX[hyuh];
-    }
+    }    
 
     // Oof-Slip
 
     private void OofSlip()
     {
-        AudioClip clip = GetSlip();
+        AudioClip clip = OofVoiceSFX[3];
         audioSource.volume = slipVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
+    private void CrouchHMP()
+    {
+        int grunt = grunts % 2;
+        grunts++;
+        AudioClip clip = CrouchSFX[grunt];
+        Debug.Log("CROUCHING");
+        audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
     }
 
     private void GetUpSigh()
     {
-        AudioClip clip = OofVoiceSFX[4];
+        int sigh = sighs % 4 + 2;
+        sighs++;
+        AudioClip clip = CrouchSFX[sigh];
+        Debug.Log("STANDING");
         audioSource.volume = sighVolume;
         audioSource.PlayOneShot(clip);
-    }
-
-    private AudioClip GetSlip()
-    {
-        int oof = oofs % 3;
-        oofs++;
-        return OofVoiceSFX[oof];
     }
 
     // Oof-Knockback
@@ -133,9 +148,18 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(clip);
     }
 
+    private void OofStun()
+    {
+        AudioClip clip = GetKB();
+        audioSource.volume = knockbackOofVolume;
+        audioSource.PlayOneShot(clip);
+    }
+
     private AudioClip GetKB()
     {
-        return OofVoiceSFX[3];
+        int oof = oofs % 3;
+        oofs++;
+        return OofVoiceSFX[oof];
     }
 
     //Slime steps
@@ -151,29 +175,4 @@ public class SpeccySounds : MonoBehaviour {
         audioSource.PlayOneShot(sapSteps[1]);
     }
 
-
-    //Crouch steps
-    private void CrouchStepLeft()
-    {
-        if(p1Movement.GetSlowed())
-        {
-            audioSource.PlayOneShot(sapSteps[0]);
-        }
-        else
-        {
-            audioSource.PlayOneShot(BodySFX[0]);
-        }
-    }
-
-    private void CrouchStepRight()
-    {
-        if (p1Movement.GetSlowed())
-        {
-            audioSource.PlayOneShot(sapSteps[1]);
-        }
-        else
-        {
-            audioSource.PlayOneShot(BodySFX[1]);
-        }
-    }
 }
