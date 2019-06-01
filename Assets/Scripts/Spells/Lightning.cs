@@ -50,7 +50,7 @@ public class Lightning : MonoBehaviour
         }
         col.enabled = false;
 
-        StartCoroutine(WaitToDie(0.5f));
+        StartCoroutine(WaitToDie(0.25f));
     }
 
     void OnTriggerEnter(Collider other)
@@ -104,7 +104,7 @@ public class Lightning : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(time*2);
+        yield return new WaitForSeconds(1);
         col.enabled = false;
         foreach (ParticleSystem ps in particleSystems)
         {
@@ -112,7 +112,6 @@ public class Lightning : MonoBehaviour
         }
         
         yield return new WaitForSeconds(stunDuration + 1f);
-
         if (anim != null)
         {
             anim.SetBool("Stunned", false);
