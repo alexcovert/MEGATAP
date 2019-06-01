@@ -78,6 +78,7 @@ public class BallandChain : MonoBehaviour {
 
             //play sfx
             audioSource.PlayOneShot(clip);
+            Destroy(this.gameObject, 5);
         }
       
         if (hit == false && other.tag == "Boundary" && once == false)
