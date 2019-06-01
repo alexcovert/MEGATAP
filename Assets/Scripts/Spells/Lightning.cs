@@ -47,20 +47,6 @@ public class Lightning : MonoBehaviour
         StartCoroutine(WaitToDie(1));
     }
 
-    void FixedUpdate()
-    {
-        if (player != null)
-        {
-            // if colliding, give an amount of slow
-            if (hit)
-            {
-                spellBase.Stun(player, stunDuration);
-                anim.SetBool("Stunned", hit);
-                StartCoroutine(Wait(this.gameObject));
-            }
-        }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player" && !hit)
@@ -74,6 +60,9 @@ public class Lightning : MonoBehaviour
             {
                 anim.Play("Stunned", 0);
             }
+            spellBase.Stun(player, stunDuration);
+            anim.SetBool("Stunned", hit);
+            StartCoroutine(Wait(this.gameObject));
             StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
         if (hit == false && other.tag == "Boundary")
@@ -105,8 +94,13 @@ public class Lightning : MonoBehaviour
         {
             Destroy(ps);
         }
-
+        
         yield return new WaitForSeconds(3);
+
+        if (anim != null)
+        {
+            anim.SetBool("Stunned", false);
+        }
         Destroy(this.gameObject);
     }
 
