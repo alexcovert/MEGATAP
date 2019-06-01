@@ -45,21 +45,6 @@ public class BallandChain : MonoBehaviour {
 
         }
     }
-    // Update is called once per frame
-    // knockback has a knockback velocity, knockup velocity, and a knockTimer to
-    // force the knockback into an arc shape.
-    void FixedUpdate()
-    {
-        if (player != null)
-        {
-            // if colliding, give an amount of stun
-            if (hit)
-            {
-                spellBase.Slow(player, slowRun, reduceJump, spellDuration);
-                StartCoroutine(Wait(this.gameObject));
-            }
-        }
-    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -78,6 +63,8 @@ public class BallandChain : MonoBehaviour {
 
             //play sfx
             audioSource.PlayOneShot(clip);
+            spellBase.Slow(player, slowRun, reduceJump, spellDuration);
+            StartCoroutine(Wait(this.gameObject));
             Destroy(this.gameObject, 5);
         }
       

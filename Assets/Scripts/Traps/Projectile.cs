@@ -23,18 +23,6 @@ public class Projectile : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
     }
 
-	void FixedUpdate(){
-		if (player != null)
-		{
-			if (hit)
-			{
-				trapBase.Stun(player, stunDuration, this.gameObject);
-                anim.SetBool("Stunned", hit);
-                StartCoroutine(Wait());
-            }
-		}
-	}
-
 	// Update is called once per frame
 	void OnTriggerEnter(Collider col)
 	{
@@ -48,6 +36,9 @@ public class Projectile : MonoBehaviour {
                 anim.Play("Stunned", 0);
             }
             Unrender();
+            trapBase.Stun(player, stunDuration, this.gameObject);
+            anim.SetBool("Stunned", hit);
+            StartCoroutine(Wait());
 
         }
 		else if(col.gameObject.tag == "Boundary" || col.gameObject.tag == "Platform"){

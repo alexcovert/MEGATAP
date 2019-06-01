@@ -44,21 +44,13 @@ public class Lightning : MonoBehaviour
 
         particleSystems = GetComponentsInChildren<ParticleSystem>();
 
-        StartCoroutine(WaitToDie(1));
-    }
-
-    void FixedUpdate()
-    {
-        if (player != null)
+        foreach(ParticleSystem p in particleSystems)
         {
-            // if colliding, give an amount of slow
-            if (hit)
-            {
-                spellBase.Stun(player, stunDuration);
-                anim.SetBool("Stunned", hit);
-                StartCoroutine(Wait(this.gameObject));
-            }
+            p.Stop();
         }
+        col.enabled = false;
+
+        StartCoroutine(WaitToDie(0.25f));
     }
 
     void OnTriggerEnter(Collider other)
@@ -74,6 +66,9 @@ public class Lightning : MonoBehaviour
             {
                 anim.Play("Stunned", 0);
             }
+            spellBase.Stun(player, stunDuration);
+            anim.SetBool("Stunned", hit);
+            StartCoroutine(Wait(this.gameObject));
             StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
         if (hit == false && other.tag == "Boundary")
@@ -100,13 +95,27 @@ public class Lightning : MonoBehaviour
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
+        col.enabled = true;
+        foreach (ParticleSystem p in particleSystems)
+        {
+            if (p != null)
+            {
+                p.Play();
+            }
+        }
+
+        yield return new WaitForSeconds(1);
         col.enabled = false;
         foreach (ParticleSystem ps in particleSystems)
         {
             Destroy(ps);
         }
-
-        yield return new WaitForSeconds(3);
+        
+        yield return new WaitForSeconds(stunDuration + 1f);
+        if (anim != null)
+        {
+            anim.SetBool("Stunned", false);
+        }
         Destroy(this.gameObject);
     }
 

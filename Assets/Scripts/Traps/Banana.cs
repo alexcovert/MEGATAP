@@ -9,9 +9,6 @@ public class Banana : MonoBehaviour {
 
     private Animator thisAnim;
 
-
-    // let the FixedUpdate method know that there was a collision
-    private bool hit = false;
     // the player (or whatever collided with this trap)
     private GameObject player = null;
     // Player's animator for animation
@@ -31,24 +28,11 @@ public class Banana : MonoBehaviour {
         thisAnim = GetComponentInChildren<Animator>();
         box = GetComponent<BoxCollider>();
     }
-    // Stun has player object, stun time in seconds, trap itself
-    // player has normal y velocity but is stopped in all other velocities and cannot move controls
-    void FixedUpdate()
-    {
-        if (player != null)
-        {
-            if (hit)
-            {
-                trapBase.Stun(player, stunDuration, this.gameObject);
-            }
-        }
-    }
 
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            hit = true;
             player = other.gameObject;
             anim = player.GetComponent<PlayerOneMovement>().GetAnim();
             thisAnim.SetTrigger("Collide");
@@ -56,6 +40,7 @@ public class Banana : MonoBehaviour {
             anim.Play("FaceplantStart", 0);
             box.enabled = false;
             audioSource.PlayOneShot(clip);
+            trapBase.Stun(player, stunDuration, this.gameObject);
         }
     }
 }
