@@ -33,6 +33,11 @@ public class CreditsMenu : MonoBehaviour {
         {
             es.SetSelectedGameObject(menuButton.gameObject);
         }
+
+        if(Input.GetButtonDown("Cancel") || Input.GetKeyDown("Escape"))
+        {
+            StartCoroutine(loader.LoadScene("Menu"));
+        }
     }
 
     public void OnClickMenu()
