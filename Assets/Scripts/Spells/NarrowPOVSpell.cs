@@ -76,5 +76,6 @@ public class NarrowPOVSpell : MonoBehaviour {
 
         vignette.active = false;
 
+        Destroy(this.gameObject, 5);
     }
 }

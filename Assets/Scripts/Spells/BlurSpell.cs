@@ -78,5 +78,7 @@ public class BlurSpell : MonoBehaviour {
 
         blur.active = false;
 
+        Destroy(this.gameObject, 5);
+
     }
 }
