@@ -44,7 +44,13 @@ public class Lightning : MonoBehaviour
 
         particleSystems = GetComponentsInChildren<ParticleSystem>();
 
-        StartCoroutine(WaitToDie(1));
+        foreach(ParticleSystem p in particleSystems)
+        {
+            p.Stop();
+        }
+        col.enabled = false;
+
+        StartCoroutine(WaitToDie(0.5f));
     }
 
     void OnTriggerEnter(Collider other)
@@ -89,13 +95,20 @@ public class Lightning : MonoBehaviour
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
+        col.enabled = true;
+        foreach (ParticleSystem p in particleSystems)
+        {
+            p.Play();
+        }
+
+        yield return new WaitForSeconds(time*2);
         col.enabled = false;
         foreach (ParticleSystem ps in particleSystems)
         {
             Destroy(ps);
         }
         
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(stunDuration + 1f);
 
         if (anim != null)
         {
