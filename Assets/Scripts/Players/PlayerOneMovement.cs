@@ -333,18 +333,18 @@ public class PlayerOneMovement : MonoBehaviour {
                 CrouchPenalty = crouchSlow;
                 col.height = 2.25f;
                 col.center = new Vector3(0, 1.1f, 0);
-                colArray[1].height = 2f;
-                colArray[1].center = new Vector3(0, 1f, 0.21f);
-                sphere[0].center = new Vector3(0, 1f, 0);
+                colArray[1].enabled = false;
+                sphere[0].enabled = false;
+                sphere[1].enabled = false;
             }
 
             if (crouching == false || grounded == false)
             {
                 col.height = 4.5f;
                 col.center = new Vector3(0, 2.2f, 0);
-                colArray[1].height = 4f;
-                colArray[1].center = new Vector3(0, 2.2f, 0.21f);
-                sphere[0].center = new Vector3(0, 3f, 0);
+                colArray[1].enabled = true;
+                sphere[0].enabled = true;
+                sphere[1].enabled = true;
             }
 
             if(!pause.GameIsPaused) Move();
