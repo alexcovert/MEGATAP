@@ -109,6 +109,7 @@ public class ButtonSelect : MonoBehaviour, ISelectHandler, IDeselectHandler// re
         else
         {
             GetCurrentFirstSpell();
+            spellCursor.transform.localPosition = new Vector3(0, -130, 0);
             if (inputManager.GetAxis(InputCommand.TopPlayerMenu) > 0 || IsTrapQueueNull())
             {
                 if (pt != null) pt.DestroyGhost();
