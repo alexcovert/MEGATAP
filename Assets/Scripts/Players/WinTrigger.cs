@@ -13,6 +13,7 @@ public class WinTrigger : MonoBehaviour {
 	public GameObject CanvasUI3;
 	public GameObject CanvasUI4;
     public GameObject CanvasUI6;
+    public Animator anim;
     public bool Win { get; private set; }
     [SerializeField] private GameOverMenu menu;
 	void Start () {
@@ -29,6 +30,8 @@ public class WinTrigger : MonoBehaviour {
             speccyWinUI.transform.SetAsLastSibling();
             
             Win = true;
+
+            anim.Play("Dance");
 
             WinGameCamera.SetActive(true);
             CanvasUI.SetActive(false);
