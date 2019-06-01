@@ -98,7 +98,10 @@ public class Lightning : MonoBehaviour
         col.enabled = true;
         foreach (ParticleSystem p in particleSystems)
         {
-            p.Play();
+            if (p != null)
+            {
+                p.Play();
+            }
         }
 
         yield return new WaitForSeconds(time*2);

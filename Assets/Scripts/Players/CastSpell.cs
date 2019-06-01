@@ -64,7 +64,7 @@ public class CastSpell : MonoBehaviour
     private bool atTop = false;
 
     //for spell movement and spawning
-    private int ValidLocation;
+    //private int ValidLocation;
     private int PlayerOneState = 1;
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Rigidbody rb;
@@ -143,6 +143,12 @@ public class CastSpell : MonoBehaviour
             }
         }
 
+        //Mouse Check for Spell Casting
+        if(!pause.GameIsPaused && Input.GetMouseButtonDown(0) && !p2Controller && Input.mousePosition.y <= Screen.height / 2)
+        {
+            SpellCast();
+        }
+
         PlayerOneState = playerOne.GetComponent<CameraOneRotator>().GetState();
 
 
@@ -219,24 +225,6 @@ public class CastSpell : MonoBehaviour
         else
         {
             return null;
-        }
-    }
-
-
-    //Called from event trigger on center column of tower when player clicks on it
-    public void OnClickTower()
-    {
-        if (!Input.GetMouseButtonUp(1) && ValidLocation == 1 && !p2Controller && Input.mousePosition.y <= Screen.height / 2)
-        {
-            SpellCast();
-        }
-    }
-
-    public void OnClickPlayer()
-    {
-        if (!Input.GetMouseButtonUp(1) && ValidLocation == 2 && !p2Controller)
-        {
-            SpellCast();
         }
     }
 
@@ -363,7 +351,7 @@ public class CastSpell : MonoBehaviour
     {
         if (spell != null)
         {
-            ValidLocation = spell.GetComponent<SpellBase>().GetLocation();
+            //ValidLocation = spell.GetComponent<SpellBase>().GetLocation();
             spellDirection = spell.GetComponent<SpellBase>().GetDirection();
 
             Vector3 pos = Vector3.zero;
@@ -483,7 +471,7 @@ public class CastSpell : MonoBehaviour
         if (spellTarget != null)
         {
             Destroy(spellTarget);
-            ValidLocation = 0;
+            //ValidLocation = 0;
             spellDirection = 0;
             spellSpeed = 0;
             spellTarget = null;
