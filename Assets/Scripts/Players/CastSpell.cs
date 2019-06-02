@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-public class CastSpell : MonoBehaviour {
+public class CastSpell : MonoBehaviour
+{
     [Header("Design Values -------------")]
     [SerializeField] private int queueSize;
     [SerializeField] private int verticalSpellSpawnHeight;
+    [SerializeField] private float CooldownReductionPercentage;
+
+    [Header("Percentage is X/100 currently.")]
+    [SerializeField] private int CommonRarityChance = 50;
+    [SerializeField] private int UncommonRarityChance = 35;
+    [SerializeField] private int RareRarityChance = 15;
 
     //[SerializeField] [Tooltip("Must be in SAME ORDER and SAME AMOUNT of spell prefabs and spell buttons arrays.")]
     //private float[] spellCooldowns;
@@ -15,24 +23,31 @@ public class CastSpell : MonoBehaviour {
 
     [Header("Programmers - GameObjects/Scripts -----")]
     [SerializeField] private GameObject tower;
-
-    [SerializeField] private GameObject[] spellButtons;
-    [SerializeField] private SpellBase[] spellPrefabs;
     [SerializeField] private GameObject spellQueue;
-
     [SerializeField] private Image controllerCursor;
-
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject gameManager;
     [SerializeField] private Camera cam;
     [SerializeField] private Camera cam2;
-
     [SerializeField] private GameObject playerOne;
     [SerializeField] private GameObject[] targeting;
 
     private PlaceTrap pt;
     private PauseMenu pause;
     private List<Camera> allCameras = new List<Camera>();
+
+
+    [Header("Spell Buttons & Prefabs")]
+    [SerializeField] private GameObject[] CommonSpellButtons;
+    [SerializeField] private GameObject[] UncommonSpellButtons;
+    [SerializeField] private GameObject[] RareSpellButtons;
+
+    [SerializeField] private SpellBase[] CommonSpellPrefabs;
+    [SerializeField] private SpellBase[] UncommonSpellPrefabs;
+    [SerializeField] private SpellBase[] RareSpellPrefabs;
+
+    private bool tutorial;
+    private int tutorialCounter = 0;
 
     //Queue Stuff
     public GameObject[] queue { get; private set; }
@@ -46,9 +61,10 @@ public class CastSpell : MonoBehaviour {
     private GameObject spellTarget;
     private GameObject castedSpell;
     private float spellSpeed;
+    private bool atTop = false;
 
     //for spell movement and spawning
-    private int ValidLocation;
+    //private int ValidLocation;
     private int PlayerOneState = 1;
     private Vector3 movementVector = new Vector3(0, 0, 0);
     private Rigidbody rb;
@@ -56,9 +72,21 @@ public class CastSpell : MonoBehaviour {
     //Controller Stuff
     private bool p2Controller;
     public bool placeEnabled;
+    public bool InputEnabled = true;
+    private int previouslySelectedIndex;
+    private InputManager inputManager;
+    private CheckControllers cc;
 
-    
+    private GameObject currentSelectedGameObject;
 
+    // tutorial purposes
+    private GameObject camera2;
+
+    private void Awake()
+    {
+        inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
+        cc = inputManager.GetComponent<CheckControllers>();
+    }
 
     void Start()
     {
@@ -69,45 +97,82 @@ public class CastSpell : MonoBehaviour {
         allCameras.Add(cam);
         allCameras.Add(cam2);
 
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            tutorial = true;
+        }
+
         //Queue Initialization
         queue = new GameObject[queueSize];
-        CreateSpellQueue();
+        if(!tutorial) CreateSpellQueue();
         spellQueue.transform.SetAsLastSibling();
 
         //Handle cursor or set buttons if controller connected
-        p2Controller = gameManager.GetComponent<CheckControllers>().GetControllerTwoState();
+        //p2Controller = gameManager.GetComponent<CheckControllers>().GetTopPlayerControllerState();
         placeEnabled = false;
+        InputEnabled = true;
+
+        camera2 = GameObject.Find("Player 2 Camera");
     }
 
 
     void Update()
     {
+        //Tutorial checks
+        if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !camera2.GetComponent<CameraTwoRotator>().rotateLocked && !pause.GameIsPaused && tutorial && tutorialCounter < 2)
+        {
+            tutorialCounter++;
+            if(tutorialCounter == 2)
+            {
+                CreateSpellQueue();
+            }
+        }
+
+        p2Controller = cc.GetTopPlayerControllerState();
+
+
         //Move target with cursor
         MoveTarget();
 
         //CONTROLLER ONLY Spell Casting Check
         if (p2Controller && !pause.GameIsPaused)
         {
-            if (Input.GetButtonDown("Place_Joy_2") && placeEnabled && spellTarget != null)
+            if (inputManager.GetButtonDown(InputCommand.TopPlayerSelect) && placeEnabled && InputEnabled && spellTarget != null)
             {
                 SpellCast();
             }
         }
 
-        PlayerOneState = playerOne.GetComponent<CameraOneRotator>().GetState();
-
-
-        if (Input.GetMouseButtonDown(1) && ValidLocation == 1)
+        //Mouse Check for Spell Casting
+        if(!pause.GameIsPaused && Input.GetMouseButtonDown(0) && !p2Controller && Input.mousePosition.y <= Screen.height / 2)
         {
             SpellCast();
         }
 
+        PlayerOneState = playerOne.GetComponent<CameraOneRotator>().GetState();
+
+
+        //Cancel spell
+        if(Input.GetMouseButtonDown(1) && spellTarget != null && !cc.topPlayersController)
+        {
+            DestroyTarget();
+        }
 
         //Safety check to make sure the player's cursor isn't lost / nothing is selected
-        if(p2Controller && eventSystem.currentSelectedGameObject == null)
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+            currentSelectedGameObject = eventSystem.currentSelectedGameObject;
+        }
+        
+        if(Input.GetMouseButtonDown(0) && cc.topPlayersController)
+        {
+            eventSystem.SetSelectedGameObject(currentSelectedGameObject);
+        }
+        if (cc.topPlayersController && eventSystem.currentSelectedGameObject == null)
         {
             SetSelectedButton();
         }
+        atTop = GetComponent<PlaceTrap>().LastFace();
     }
 
     void FixedUpdate()
@@ -120,12 +185,6 @@ public class CastSpell : MonoBehaviour {
 
     private Vector3? GetGridPosition()
     {
-        //if (RaycastFromCam() != null)
-        //{
-        //    RaycastHit hit = RaycastFromCam().Value;
-        //    return new Vector3(hit.point.x, hit.point.y, hit.point.z);
-        //}
-        //else return null;
         Vector3 pos;
         if (p2Controller) pos = controllerCursor.transform.position;
         else pos = Input.mousePosition;
@@ -169,53 +228,44 @@ public class CastSpell : MonoBehaviour {
         }
     }
 
-
-    //Called from event trigger on center column of tower when player clicks on it
-    public void OnClickTower()
-    {
-        if (!Input.GetMouseButtonUp(1) && ValidLocation == 1)
-        {
-            SpellCast();
-        }
-    }
-
-    public void OnClickPlayer()
-    {
-        if (!Input.GetMouseButtonUp(1) && ValidLocation == 2)
-        {
-            SpellCast();
-        }
-    }
-
     private void SpellCast()
     {
         if (GetGridPosition() != null)
         {
             Vector3 position = GetGridPosition().Value;
-            if (spellTarget != null && CheckFloor(position.y))
+            if (spellTarget != null)
             {
                 //Spell comes from right side
                 if (spellDirection == SpellDirection.Right)
                 {
+                    float pos;
+                    if(spell.ToString() == "Wind (SpellBase)")
+                    {
+                        pos = 45;
+                    }                
+                    else
+                    {
+                        pos = 50;
+                    }
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(50, spellTarget.transform.position.y, -42);
+                            castedSpell = spell.InstantiateSpell(pos, spellTarget.transform.position.y, -42);
                             movementVector = new Vector3(-spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, 50);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y, pos);
                             movementVector = new Vector3(0, 0, -spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(-50, spellTarget.transform.position.y, 42);
+                            castedSpell = spell.InstantiateSpell(-pos, spellTarget.transform.position.y, 42);
                             movementVector = new Vector3(spellSpeed, 0, 0);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -50);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y, -pos);
                             movementVector = new Vector3(0, 0, spellSpeed);
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
@@ -229,40 +279,53 @@ public class CastSpell : MonoBehaviour {
                 }
                 if (spellDirection == SpellDirection.Ceiling)
                 {
+                    float verticalOffset = 5;
                     switch (PlayerOneState)
                     {
                         case 1:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, -42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, -42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 2:
-                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 3:
-                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y + verticalSpellSpawnHeight, 42);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(spellTarget.transform.position.x, spellTarget.transform.position.y - verticalOffset, 42);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                         case 4:
-                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y + verticalSpellSpawnHeight, spellTarget.transform.position.z);
-                            movementVector = new Vector3(0, -spellSpeed, 0);
+                            castedSpell = spell.InstantiateSpell(-42, spellTarget.transform.position.y - verticalOffset, spellTarget.transform.position.z);
+                            movementVector = Vector3.zero;
                             rb = castedSpell.GetComponent<Rigidbody>();
                             break;
                     }
                     castedSpell.GetComponent<SpellBase>().SpellCast = true;
                 }
-                StartCoroutine(StartCooldown(spell.GetComponent<SpellBase>().CooldownTime, queue[queueIndex].transform.localPosition, queueIndex));
+                if (atTop == false)
+                {
+                    StartCoroutine(StartCooldown(spell.GetComponent<SpellBase>().CooldownTime, queue[queueIndex].transform.localPosition, queueIndex));
+                }
+                else
+                {
+                    StartCoroutine(StartCooldown((spell.GetComponent<SpellBase>().CooldownTime - (spell.GetComponent<SpellBase>().CooldownTime * CooldownReductionPercentage)), queue[queueIndex].transform.localPosition, queueIndex));
+                }
+
+                previouslySelectedIndex = queueIndex;
 
                 spell = null;
 
                 ClearButton();
-
+                GetComponent<ChangeNav>().ResetNav();
                 DestroyTarget();
 
-                SetSelectedButton();
+                if (p2Controller)
+                {
+                    SetSelectedButton();
+                }
             }
         }
     }
@@ -288,7 +351,7 @@ public class CastSpell : MonoBehaviour {
     {
         if (spell != null)
         {
-            ValidLocation = spell.GetComponent<SpellBase>().GetLocation();
+            //ValidLocation = spell.GetComponent<SpellBase>().GetLocation();
             spellDirection = spell.GetComponent<SpellBase>().GetDirection();
 
             Vector3 pos = Vector3.zero;
@@ -323,26 +386,31 @@ public class CastSpell : MonoBehaviour {
             if (GetGridPosition() != null)
             {
                 Vector3 position = GetGridPosition().Value;
+                Vector3 center = new Vector3(cam2.pixelWidth / 2, cam2.pixelHeight / 2, 0);
                 if (spellDirection == SpellDirection.Right || spellDirection == SpellDirection.Left)
                 {
                     GetComponent<MoveControllerCursor>().SpellCastDirection = SpellDirection.Right;
                     switch (PlayerOneState)
                     {
                         case 1:
-                            spellTarget.transform.eulerAngles = new Vector3(0, 0, 90);
-                            spellTarget.transform.position = new Vector3(transform.position.x, position.y, -45);
+                            spellTarget.transform.eulerAngles = new Vector3(0, 0, -90);
+                            //spellTarget.transform.position = new Vector3(transform.position.x, position.y, -45);
+                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x + 5, position.y, -45);
                             break;
                         case 2:
                             spellTarget.transform.eulerAngles = new Vector3(180, 90, 90);
-                            spellTarget.transform.position = new Vector3(45, position.y, transform.position.z);
+                            //spellTarget.transform.position = new Vector3(45, position.y, transform.position.z);
+                            spellTarget.transform.position = new Vector3(45, position.y, cam2.ScreenToWorldPoint(center).z + 5);
                             break;
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(180, 0, 90);
-                            spellTarget.transform.position = new Vector3(transform.position.x, position.y, 45);
+                            //spellTarget.transform.position = new Vector3(transform.position.x, position.y, 45);
+                            spellTarget.transform.position = new Vector3(cam2.ScreenToWorldPoint(center).x - 5, position.y, 45);
                             break;
                         case 4:
-                            spellTarget.transform.eulerAngles = new Vector3(0, 90, 90);
-                            spellTarget.transform.position = new Vector3(-45, position.y, transform.position.z);
+                            spellTarget.transform.eulerAngles = new Vector3(0, 90, -90);
+                            //spellTarget.transform.position = new Vector3(-45, position.y, transform.position.z);
+                            spellTarget.transform.position = new Vector3(-45, position.y, cam2.ScreenToWorldPoint(center).z - 5);
                             break;
                     }
                 }
@@ -350,23 +418,24 @@ public class CastSpell : MonoBehaviour {
                 else if (spellDirection == SpellDirection.Ceiling || spellDirection == SpellDirection.Floor)
                 {
                     GetComponent<MoveControllerCursor>().SpellCastDirection = SpellDirection.Ceiling;
-                    int playerFloor = playerOne.GetComponent<CameraOneRotator>().GetFloor() * 20 - 10;
+                    //int playerFloor = playerOne.GetComponent<CameraOneRotator>().GetFloor() * 20 - 10;
                     switch (PlayerOneState)
                     {
                         case 1:
-                            spellTarget.transform.position = new Vector3(position.x, playerFloor, -45);
+                            spellTarget.transform.position = new Vector3(position.x, cam2.ScreenToWorldPoint(center).y + 2.5f, -45);
+                            spellTarget.transform.rotation = Quaternion.identity;
                             break;
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(0, 180, 0);
-                            spellTarget.transform.position = new Vector3(position.x, playerFloor, 45);
+                            spellTarget.transform.position = new Vector3(position.x, cam2.ScreenToWorldPoint(center).y + 2.5f, 45);
                             break;
                         case 2:
                             spellTarget.transform.eulerAngles = new Vector3(0, -90, 0);
-                            spellTarget.transform.position = new Vector3(45, playerFloor, position.z);
+                            spellTarget.transform.position = new Vector3(45, cam2.ScreenToWorldPoint(center).y + 2.5f, position.z);
                             break;
                         case 4:
                             spellTarget.transform.eulerAngles = new Vector3(0, 90, 0);
-                            spellTarget.transform.position = new Vector3(-45, playerFloor, position.z);
+                            spellTarget.transform.position = new Vector3(-45, cam2.ScreenToWorldPoint(center).y + 2.5f, position.z);
                             break;
                     }
 
@@ -391,13 +460,7 @@ public class CastSpell : MonoBehaviour {
                     }
 
                 }
-
-                if (Input.GetMouseButton(1) || Input.GetButton("Cancel_Joy_2"))
-                {
-                    DestroyTarget();
-
-                    SetSelectedButton();
-                }
+                
             }
         }
     }
@@ -408,16 +471,40 @@ public class CastSpell : MonoBehaviour {
         if (spellTarget != null)
         {
             Destroy(spellTarget);
-            ValidLocation = 0;
+            //ValidLocation = 0;
             spellDirection = 0;
             spellSpeed = 0;
             spellTarget = null;
         }
     }
 
-    private void OnClickSpell(int spellNum)
+    private void OnClickSpellCommon(int spellNum)
     {
-        spell = spellPrefabs[spellNum];
+        spell = CommonSpellPrefabs[spellNum];
+
+        StartCoroutine(EnableInput());
+
+        DestroyTarget();
+        GetComponent<PlaceTrap>().DestroyGhost();
+        SetTarget();
+        spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
+    }
+
+    private void OnClickSpellUncommon(int spellNum)
+    {
+        spell = UncommonSpellPrefabs[spellNum];
+
+        StartCoroutine(EnableInput());
+
+        DestroyTarget();
+        GetComponent<PlaceTrap>().DestroyGhost();
+        SetTarget();
+        spellSpeed = spell.GetComponent<SpellBase>().GetSpeed();
+    }
+
+    private void OnClickSpellRare(int spellNum)
+    {
+        spell = RareSpellPrefabs[spellNum];
 
         StartCoroutine(EnableInput());
 
@@ -436,16 +523,49 @@ public class CastSpell : MonoBehaviour {
     private void GenerateNewSpell(Vector3 position, int index)
     {
         //Instantiate Spell Button
-        int random = Random.Range(0, spellButtons.Length);
-        GameObject newSpell = Instantiate(spellButtons[random], position, Quaternion.identity) as GameObject;
-        newSpell.transform.SetParent(spellQueue.transform, false);
+        int randomIndex;
+        GameObject newSpell;
+        int SpellChance = Random.Range(1, 100);
 
-        //Add Click Listener
-        newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpell(random));
-        newSpell.GetComponent<ButtonIndex>().ButtonIndexing(index);
-        newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+        if (SpellChance <= CommonRarityChance)
+        {
+            randomIndex = Random.Range(0, CommonSpellButtons.Length);
+            newSpell = Instantiate(CommonSpellButtons[randomIndex], position, Quaternion.identity) as GameObject;
+            newSpell.transform.SetParent(spellQueue.transform, false);
 
-        queue[index] = newSpell;
+            //Add Click Listener
+            newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellCommon(randomIndex));
+            newSpell.GetComponent<ButtonIndex>().ButtonIndexing(index);
+            newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+
+            queue[index] = newSpell;
+        }
+        else if (SpellChance > CommonRarityChance && SpellChance < (100 - RareRarityChance))
+        {
+            randomIndex = Random.Range(0, UncommonSpellButtons.Length);
+            newSpell = Instantiate(UncommonSpellButtons[randomIndex], position, Quaternion.identity) as GameObject;
+            newSpell.transform.SetParent(spellQueue.transform, false);
+
+            //Add Click Listener
+            newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellUncommon(randomIndex));
+            newSpell.GetComponent<ButtonIndex>().ButtonIndexing(index);
+            newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+
+            queue[index] = newSpell;
+        }
+        else if (SpellChance >= (CommonRarityChance + UncommonRarityChance))
+        {
+            randomIndex = Random.Range(0, RareSpellButtons.Length);
+            newSpell = Instantiate(RareSpellButtons[randomIndex], position, Quaternion.identity) as GameObject;
+            newSpell.transform.SetParent(spellQueue.transform, false);
+
+            //Add Click Listener
+            newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellRare(randomIndex));
+            newSpell.GetComponent<ButtonIndex>().ButtonIndexing(index);
+            newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+
+            queue[index] = newSpell;
+        }
     }
 
     //Called on start only now
@@ -455,19 +575,52 @@ public class CastSpell : MonoBehaviour {
         {
             if (queue[i] == null)
             {
-                int random = Random.Range(0, spellButtons.Length);
-                GameObject newSpell = Instantiate(spellButtons[random], new Vector3(-170f + 40f * i, 20f, 0), Quaternion.identity) as GameObject;
-                newSpell.transform.SetParent(spellQueue.transform, false);
+                int randomIndex;
+                GameObject newSpell;
+                int SpellChance = Random.Range(1, 100);
 
+                if (SpellChance <= CommonRarityChance)
+                {
+                    randomIndex = Random.Range(0, CommonSpellButtons.Length);
+                    newSpell = Instantiate(CommonSpellButtons[randomIndex], new Vector3(100f + 40f * i, 20f, 0), Quaternion.identity) as GameObject;
+                    newSpell.transform.SetParent(spellQueue.transform, false);
 
-                //Add click listeners for all trap buttons
-                newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpell(random));
-                newSpell.GetComponent<ButtonIndex>().ButtonIndexing(i);
-                newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+                    //Add Click Listener
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellCommon(randomIndex));
+                    newSpell.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
 
-                queue[i] = newSpell;
+                    queue[i] = newSpell;
+                }
+                else if (SpellChance > CommonRarityChance && SpellChance < (100 - RareRarityChance))
+                {
+                    randomIndex = Random.Range(0, UncommonSpellButtons.Length);
+                    newSpell = Instantiate(UncommonSpellButtons[randomIndex], new Vector3(100f + 40f * i, 20f, 0), Quaternion.identity) as GameObject;
+                    newSpell.transform.SetParent(spellQueue.transform, false);
+
+                    //Add Click Listener
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellUncommon(randomIndex));
+                    newSpell.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+
+                    queue[i] = newSpell;
+                }
+                else if (SpellChance >= (CommonRarityChance + UncommonRarityChance))
+                {
+                    randomIndex = Random.Range(0, RareSpellButtons.Length);
+                    newSpell = Instantiate(RareSpellButtons[randomIndex], new Vector3(100f + 40f * i, 20f, 0), Quaternion.identity) as GameObject;
+                    newSpell.transform.SetParent(spellQueue.transform, false);
+
+                    //Add Click Listener
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => OnClickSpellRare(randomIndex));
+                    newSpell.GetComponent<ButtonIndex>().ButtonIndexing(i);
+                    newSpell.GetComponent<Button>().onClick.AddListener(() => GetIndex(newSpell));
+
+                    queue[i] = newSpell;
+                }
             }
         }
+        GetComponent<ChangeNav>().ResetNav();
     }
 
     private void ClearButton()
@@ -479,26 +632,52 @@ public class CastSpell : MonoBehaviour {
     //Set new selected button if the controller is being used.
     private void SetSelectedButton()
     {
+
         if (p2Controller)
         {
             bool buttonSet = false;
-            for (int i = queue.Length - 1; i >= 0; i--)
+
+            //Loop over remaining spell queue to see if any are available
+            for (int i = previouslySelectedIndex; i < queue.Length; i++)
             {
                 if (queue[i] != null && queue[i].activeInHierarchy && queue[i].GetComponent<Button>().interactable && !buttonSet)
                 {
-                    eventSystem.SetSelectedGameObject(queue[i]);
+                    //eventSystem.SetSelectedGameObject(queue[i]);
+                    queue[i].GetComponent<Button>().Select();
+                    queue[i].GetComponent<Button>().OnSelect(new BaseEventData(eventSystem));
+                    controllerCursor.transform.localPosition = new Vector3(0, -130);
                     buttonSet = true;
                 }
             }
+
+            //Loop over previous of spell queue to see if any are available
+            if(!buttonSet)
+            {
+                for (int i = previouslySelectedIndex; i >= 0; i--)
+                {
+                    if (queue[i] != null && queue[i].activeInHierarchy && queue[i].GetComponent<Button>().interactable && !buttonSet)
+                    {
+                        //eventSystem.SetSelectedGameObject(queue[i]);
+                        queue[i].GetComponent<Button>().Select();
+                        queue[i].GetComponent<Button>().OnSelect(new BaseEventData(eventSystem));
+                        controllerCursor.transform.localPosition = new Vector3(0, -130);
+                        buttonSet = true;
+                    }
+                }
+            }
+
+            //Loop over traps to set available button
             if (!buttonSet)
             {
                 for (int i = 0; i < pt.queue.Count; i++)
                 {
-                    if (pt.queue[i] != null && pt.queue[i].activeInHierarchy && !buttonSet)
+                    if (pt.queue[i] != null && pt.queue[i].activeInHierarchy && !buttonSet && pt.queue[i].GetComponent<Button>().interactable)
                     {
 
                         controllerCursor.transform.localPosition = new Vector3(0, 130);
-                        eventSystem.SetSelectedGameObject(pt.queue[i]);
+                        //eventSystem.SetSelectedGameObject(pt.queue[i]);
+                        pt.queue[i].GetComponent<Button>().Select();
+                        pt.queue[i].GetComponent<Button>().OnSelect(new BaseEventData(eventSystem));
                         buttonSet = true;
                     }
                 }
@@ -511,10 +690,16 @@ public class CastSpell : MonoBehaviour {
     IEnumerator EnableInput()
     {
         yield return new WaitForSeconds(0.5f);
-      //  resetEnabled = true;
         placeEnabled = true;
     }
 
+    //Called from pause script to re-enable input after pressing "Resume"
+    public IEnumerator ResumeInput()
+    {
+        yield return new WaitForSeconds(0.5f);
+        InputEnabled = true;
+    }
+    
     //Start a cooldown on the button pressed. Needs current button position and queue index to replace.
     private IEnumerator StartCooldown(float cooldownTime, Vector3 buttonPosition, int index)
     {
@@ -546,7 +731,12 @@ public class CastSpell : MonoBehaviour {
             if(cooldownTimePassed >= cooldownTime)
             {
                 button.interactable = true;
-                if (eventSystem.currentSelectedGameObject == null) SetSelectedButton();
+                GetComponent<ChangeNav>().ResetNav();
+
+                if (eventSystem.currentSelectedGameObject == null && p2Controller)
+                {
+                    SetSelectedButton();
+                }
             }
         }
     }
@@ -573,45 +763,4 @@ public class CastSpell : MonoBehaviour {
         }
         return null;
     }
-
-    //---------------------------------------Not needed if we aren't swapping back and forth.
-    //private void SwitchQueue()
-    //{
-    //    if (active == true)
-    //    {
-    //        spellQueue.transform.SetAsFirstSibling();
-    //        spellQueue.transform.position += new Vector3(15f, 15f, 0);
-    //        for (int i = 0; i < queue.Length; i++)
-    //        {
-    //            if (queue[i] != null)
-    //            {
-    //                queue[i].GetComponent<Button>().interactable = false;
-    //            }
-    //        }
-    //    }
-
-    //    if (active == false)
-    //    {
-    //        controllerCursor.transform.position = new Vector3(Screen.width / 2, Screen.height / 2 - cursorDistFromCenter, 0);
-    //        GetComponent<MoveControllerCursor>().MovingTraps = false;
-    //        bool buttonSet = false;
-    //        spellQueue.transform.SetAsLastSibling();
-    //        spellQueue.transform.position -= new Vector3(15f, 15f, 0);
-    //        for (int i = 0; i < queue.Length; i++)
-    //        {
-    //            if (queue[i] != null)
-    //            {
-    //                queue[i].GetComponent<Button>().interactable = true;
-
-
-    //                if (queue[i].activeInHierarchy && !buttonSet)
-    //                {
-    //                    eventSystem.SetSelectedGameObject(queue[i]);
-    //                    buttonSet = true;
-    //                }
-    //            }
-    //        }
-    //    }
-    //    active = !active;
-    //}
 }

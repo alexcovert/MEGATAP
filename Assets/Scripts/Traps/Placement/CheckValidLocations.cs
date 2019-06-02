@@ -4,18 +4,16 @@
 [RequireComponent(typeof(BoxCollider))]
 public class CheckValidLocations : MonoBehaviour {
     private TrapBase tb;
-    private Location toCheck;
+
     public bool Valid { get; private set; }
     public bool Placed;
-    private void Start()
-    {
-        tb = GetComponentInParent<TrapBase>();
-        toCheck = tb.ValidLocations;
 
+    private void Start()
+    { 
         Valid = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         SetValidBool(true, other.tag);
     }
@@ -31,29 +29,7 @@ public class CheckValidLocations : MonoBehaviour {
     {
         if (tag == "Platform" && !Placed)
         {
-            Direction dir = GameObject.Find("Player 2").GetComponent<PlaceTrap>().CurrentDirection;
-            switch (toCheck)
-            {
-                case Location.AnySurface:
-                    Valid = valid;
-                    break;
-                case Location.Floor:
-                    if (dir == Direction.Up)
-                    {
-                        Valid = valid;
-                    }
-                    break;
-                //<ac> TODO: All other directions; need traps to test with first.
-                case Location.AnyWall:
-                case Location.Ceiling:
-                case Location.FloorAndCeiling:
-                case Location.FreeFloat:
-                case Location.LeftWall:
-                case Location.RightWall:
-                    Debug.Log("Snapping not implemented for this trap");
-                    Valid = true;
-                    break;
-            }
+            Valid = valid;
         }
     }
 }

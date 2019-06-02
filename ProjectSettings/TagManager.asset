@@ -13,10 +13,15 @@ TagManager:
   - Wall3
   - Wall4
   - Platform
-  - rise
   - Trap
   - Boundary
   - PlayerSpell
+  - Vine
+  - PickUp
+  - CamUnlock
+  - Projectile
+  - Ground
+  - TrapHitbox
   layers:
   - Default
   - TransparentFX
@@ -33,11 +38,11 @@ TagManager:
   - Platform
   - TopCamera
   - BottomCamera
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Trees1
+  - Trees2
+  - Trees3
+  - Trees4
+  - TrapProjectile
   - 
   - 
   - 
@@ -53,4 +58,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: TextLayer
+    uniqueID: 3554467725
+    locked: 0
+  - name: ImageLayer
+    uniqueID: 2726365159
     locked: 0

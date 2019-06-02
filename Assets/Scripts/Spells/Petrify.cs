@@ -25,11 +25,16 @@ public class Petrify : MonoBehaviour {
 
     private Animator anim;
 
+	 private AudioSource audioSource;
+    [SerializeField] private AudioClip cast;
+    [SerializeField] private AudioClip clip;
 
 
     private void Start()
     {
         spellBase = GetComponent<SpellBase>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(cast);
         switch (GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
@@ -51,11 +56,10 @@ public class Petrify : MonoBehaviour {
     {
         if (player != null)
         {
-            if (hit)
+            if (player.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == false)
             {
-                child = player.GetComponentsInChildren<Renderer>();
-                spellBase.Stun(player, stunDuration, turnStone, anim);
-                StartCoroutine(Wait(this.gameObject));
+                Revert();
+                anim.enabled = true;
             }
         }
     }
@@ -64,10 +68,24 @@ public class Petrify : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+        	audioSource.PlayOneShot(clip);
             hit = true;
             player = other.gameObject;
             anim = player.gameObject.GetComponent<PlayerOneMovement>().GetAnim();
+            anim.enabled = false;
+
+            //Turn off renderer & particles
             this.GetComponent<Renderer>().enabled = false;
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+            foreach (ParticleSystem p in particles)
+            {
+                Destroy(p);
+            }
+            Destroy(this.gameObject, 8);
+            child = player.GetComponentsInChildren<Renderer>();
+            spellBase.Stun(player, stunDuration, turnStone);
+            StartCoroutine(CheckPetrifyStatus());
+            StartCoroutine(Wait(this.gameObject));
         }
         if (hit == false && other.tag == "Boundary" && once == false)
         {
@@ -75,8 +93,9 @@ public class Petrify : MonoBehaviour {
         }
         if(hit == false && other.tag == "Boundary" && once == true)
         {
-            Destroy(this.gameObject);
+            StartCoroutine(Die(3f));
         }
+         
     }
 
     private void Revert()
@@ -100,19 +119,44 @@ public class Petrify : MonoBehaviour {
                 r.material = normalPoncho;
             }
         }
+        anim.enabled = true;
     }
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(stunDuration - 0.1f);
-        Revert();
-        yield return new WaitForSeconds(0.1f);
-        Destroy(obj);
+        float time = 0;
+        while (time <= stunDuration + 0.2f)
+        {
+            if (player.gameObject.GetComponent<PlayerOneMovement>().GetUnPetrify() == true)
+            {
+                Revert();
+                anim.enabled = true;
+            }
+            yield return null;
+        }
+        yield return new WaitForSeconds(8f);
+        Destroy(this.gameObject);
     }
 
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
         once = true;
+    }
+
+    private IEnumerator Die(float time)
+    {
+        yield return new WaitForSeconds(time * 4);
+        Destroy(this.gameObject);
+    }
+
+    private IEnumerator CheckPetrifyStatus()
+    {
+        //For petrify's materials to stop flickering
+        player.gameObject.GetComponent<PlayerOneMovement>().SetPetrifyTime(stunDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetStunTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnPetrify(false);
+
+        yield return null;
     }
 }

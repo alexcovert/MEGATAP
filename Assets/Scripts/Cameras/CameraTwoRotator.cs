@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Cinemachine;
 //<alexc> This class rotates and moves the Player 2 (right side camera) on a given input.
 public class CameraTwoRotator : MonoBehaviour {
     [Header("Programmers - GameObjects/Scripts -----")]
@@ -13,8 +13,9 @@ public class CameraTwoRotator : MonoBehaviour {
     [SerializeField] private GameManager gm;
 
     [Header("Designers - Speeds & Offsets -----")]
-    [SerializeField] private float rotateSpeed;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float zoomOutAmount;
+    [SerializeField] private float moveUpSlowMultiplier;
     [SerializeField] private int offsetFromAbove;
 
     //Change these static variables iff tower is scaled
@@ -23,6 +24,7 @@ public class CameraTwoRotator : MonoBehaviour {
     private static int camRotationX = 0;
     private static int numFloors;
     
+
 
     private Vector3[] basePositions = new [] { new Vector3(0,                   camPosVertical, -camPosHorizontal),
                                                new Vector3(camPosHorizontal,    camPosVertical, 0),
@@ -39,8 +41,23 @@ public class CameraTwoRotator : MonoBehaviour {
 
     private int currentPos, floor;
 
-    private bool moveEnabled = true;
+    public bool moveEnabled { get; private set; }
+    // lock rotation of tower for tutorial purposes
+    public bool rotateLocked = false;
     private PauseMenu pause;
+    private InputManager inputManager;
+    private PlaceTrap pt; 
+
+    private CinemachineVirtualCamera cinemachineCam;
+
+    private Camera theCam;
+    private void Awake()
+    {
+        inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
+        cinemachineCam = playerTwoCam.GetComponent<CinemachineVirtualCamera>();
+        theCam = GetComponent<Camera>();
+        pt = GameObject.Find("Player 2").GetComponent<PlaceTrap>();
+    }
     private void Start()
     {
         numFloors = tower.GetComponent<NumberOfFloors>().NumFloors;
@@ -53,28 +70,19 @@ public class CameraTwoRotator : MonoBehaviour {
         floor = 2;
 
         moveEnabled = true;
+
+        SetCullingMask();
     }
 
     //Rotate camera around tower when arrow keys are pressed
     private void Update()
     {
-        //Allow toggling grid on/off for playtesting
-        if(gridToggle.isOn && !gridUI.gameObject.activeInHierarchy)
-        {
-            gridUI.gameObject.SetActive(true);
-        }
-        else if(!gridToggle.isOn && gridUI.gameObject.activeInHierarchy)
-        {
-            gridUI.gameObject.SetActive(false);
-        }
-
-
         if (moveEnabled)
         {
-            if (Input.GetButtonDown("Submit_Joy_2") && !pause.GameIsPaused)
+            if (inputManager.GetButtonDown(InputCommand.TopPlayerRotate) && !pause.GameIsPaused && !rotateLocked)
             {
                 moveEnabled = false;
-
+                pt.ChangeQueue();
                 if (currentPos == basePositions.Length)
                 {
                     if (floor < numFloors)
@@ -83,19 +91,20 @@ public class CameraTwoRotator : MonoBehaviour {
                         floor++;
                         //cameraTarget.transform.position = new Vector3(cameraTarget.transform.position.x, cameraTarget.transform.position.y + 20, cameraTarget.transform.position.z);
 
-                        StartMove(basePositions[0], baseRotations[0], 1);
+                        StartMove(basePositions[0], baseRotations[0], 1, moveSpeed * moveUpSlowMultiplier);
+                        StartCoroutine(ChangeFOV(moveSpeed * moveUpSlowMultiplier));
                     }
                 }
                 else
                 {
-                    StartMove(basePositions[currentPos], baseRotations[currentPos], currentPos + 1);
+                    StartMove(basePositions[currentPos], baseRotations[currentPos], currentPos + 1, moveSpeed);
                 }
             }
         }
     }
 
     //Initialize camera movement variables and start movement coroutine
-    private void StartMove(Vector3 goalPos, Quaternion goalRot, int goal)
+    private void StartMove(Vector3 goalPos, Quaternion goalRot, int goal, float time)
     {
         currentPos = goal;
 
@@ -104,17 +113,50 @@ public class CameraTwoRotator : MonoBehaviour {
             StopCoroutine(camTween);
         }
         //Tween the vcam rotation
-        camTween = TweenToPosition(goalPos, goalRot, rotateSpeed);
+        camTween = TweenToPosition(goalPos, goalRot, time);
         StartCoroutine(camTween);
 
         //Tween the targets (at edges of face) rotation - vcam will follow at this speed
-        targetTween = TargetTween(goalPos, goalRot, moveSpeed);
+        targetTween = TargetTween(goalPos, goalRot, time);
         StartCoroutine(targetTween);
 
 
 
         MoveGrid();
+        SetCullingMask();
 
+    }
+
+    //src: https://forum.unity.com/threads/how-to-toggle-on-or-off-a-single-layer-of-the-cameras-culling-mask.340369/
+    public void SetCullingMask()
+    {
+        switch(currentPos)
+        {
+            case 1:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees1"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees4");
+                break;
+            case 2:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees2"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees1");
+                break;
+            case 3:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees3"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees2");
+                break;
+            case 4:
+                //Hide
+                theCam.cullingMask &= ~(1 << LayerMask.NameToLayer("Trees4"));
+                //Show
+                theCam.cullingMask |= 1 << LayerMask.NameToLayer("Trees3");
+                break;
+        }
     }
 
     //Camera movement coroutine
@@ -155,15 +197,35 @@ public class CameraTwoRotator : MonoBehaviour {
             yield return null;
         }
         cameraTarget.transform.rotation = targetRot;
-
+        
         moveEnabled = true;
         camTween = null;
+    }
+
+    private IEnumerator ChangeFOV(float time)
+    {
+        float normalFOV = cinemachineCam.m_Lens.FieldOfView;
+        float zoomedFOV = cinemachineCam.m_Lens.FieldOfView - zoomOutAmount;
+
+        cinemachineCam.m_Lens.FieldOfView = zoomedFOV;
+
+        for (float t = 0; t < time / 2; t += Time.deltaTime)
+        {
+            cinemachineCam.m_Lens.FieldOfView = Mathf.Lerp(normalFOV, zoomedFOV, t / time);
+            yield return null;
+        }
+
+        for (float t = time / 2; t < time; t += Time.deltaTime)
+        {
+            cinemachineCam.m_Lens.FieldOfView = Mathf.Lerp(zoomedFOV, normalFOV, t / time);
+            yield return null;
+        }
     }
 
     //Rotate and move worldspace grid UI with camera
     private void MoveGrid()
     {
-        gridUI.transform.Rotate(0, 90, 0);
+        gridUI.transform.Rotate(0, -90, 0);
         switch (currentPos)
         {
             case 1:
@@ -181,6 +243,7 @@ public class CameraTwoRotator : MonoBehaviour {
                 break;
         }
     }
+
 
     public int GetState()
     {

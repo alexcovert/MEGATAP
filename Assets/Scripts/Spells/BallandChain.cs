@@ -18,17 +18,17 @@ public class BallandChain : MonoBehaviour {
     //Hit two boundaries to die
     private bool once = false;
 
-    private MeshRenderer[] slowEffect = new MeshRenderer[2];
-
     // SFX
     private AudioSource audioSource;
     [SerializeField]
     private AudioClip clip;
+    [SerializeField] private AudioClip cast;
 
     private void Start()
     {
         spellBase = GetComponent<SpellBase>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(cast);
         switch(GameObject.Find("Player 1").GetComponent<CameraOneRotator>().GetState())
         {
             case 1:
@@ -45,22 +45,6 @@ public class BallandChain : MonoBehaviour {
 
         }
     }
-    // Update is called once per frame
-    // knockback has a knockback velocity, knockup velocity, and a knockTimer to
-    // force the knockback into an arc shape.
-    void FixedUpdate()
-    {
-        if (player != null)
-        {
-            // if colliding, give an amount of stun
-            if (hit)
-            {
-                spellBase.Slow(player, slowRun, reduceJump, spellDuration);
-                player.GetComponent<PlayerOneMovement>().IsSlowed(true);
-                StartCoroutine(Wait(this.gameObject));
-            }
-        }
-    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -68,27 +52,20 @@ public class BallandChain : MonoBehaviour {
         {
             hit = true;
             player = other.gameObject;
-            MeshRenderer[] mrs = player.GetComponentsInChildren<MeshRenderer>();
-            int slowEffectCount = 0;
-            foreach(MeshRenderer mr in mrs)
-            { 
-                if (mr.name == "SlowEffect")
-                {
-                    slowEffect[slowEffectCount] = mr;
-                    slowEffectCount++;
-                }
-            }
-            
-            foreach(MeshRenderer e in slowEffect)
-            {
-                if(e != null)
-                {
-                    e.enabled = true;
-                }
-            }
-            StartCoroutine(DisableSlowEffect());
+
+            //Turn of spells mesh renderer
             this.GetComponent<Renderer>().enabled = false;
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+            foreach(ParticleSystem p in particles)
+            {
+                Destroy(p);
+            }
+
+            //play sfx
             audioSource.PlayOneShot(clip);
+            spellBase.Slow(player, slowRun, reduceJump, spellDuration);
+            StartCoroutine(Wait(this.gameObject));
+            Destroy(this.gameObject, 5);
         }
       
         if (hit == false && other.tag == "Boundary" && once == false)
@@ -103,9 +80,7 @@ public class BallandChain : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj)
     {
-        yield return new WaitForSeconds(spellDuration);
-        player.GetComponent<PlayerOneMovement>().IsSlowed(false);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(spellDuration*4f);
         Destroy(obj);
     }
 
@@ -117,23 +92,7 @@ public class BallandChain : MonoBehaviour {
 
     private IEnumerator DestroyObj()
     {
-        if (player != null)
-        {
-            player.GetComponent<PlayerOneMovement>().IsSlowed(true);
-        }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(spellDuration*4f);
         Destroy(this.gameObject);
-    }
-
-    private IEnumerator DisableSlowEffect()
-    {
-        yield return new WaitForSeconds(spellDuration);
-        foreach (MeshRenderer e in slowEffect)
-        {
-            if (e != null)
-            {
-                e.enabled = false;
-            }
-        }
     }
 }

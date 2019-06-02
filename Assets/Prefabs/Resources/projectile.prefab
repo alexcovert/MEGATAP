@@ -57,9 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1095368574633302}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-
   m_LocalPosition: {x: 561.0393, y: 273.7902, z: 44.05}
-
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children:
   - {fileID: 4886909372902734}
@@ -187,7 +185,7 @@ BoxCollider:
   m_GameObject: {fileID: 1095368574633302}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 2.1364136, y: 0.43081665, z: 1}
   m_Center: {x: -0.7784729, y: 0.04484558, z: 0}
@@ -199,7 +197,8 @@ AudioSource:
   m_GameObject: {fileID: 1095368574633302}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243073020565902902, guid: 8906dfadacdf5064080101660d028db8,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -309,6 +308,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e621b41b6859451ea5930cf7d542917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunDuration: 1
+  stunDuration: 0.7
   impactSFX: {fileID: 8300000, guid: 992c04d576b894f44a759d86e0d28ccc, type: 3}
-  releaseSFX: {fileID: 0}

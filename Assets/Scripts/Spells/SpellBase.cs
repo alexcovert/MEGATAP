@@ -103,40 +103,39 @@ public class SpellBase : MonoBehaviour {
 
     // apply stun to inputted
     // goes to enumerator for its waitforseconds
-    public void Stun(GameObject player, float stunDuration, Material mat = null, Animator anim = null)
+    public void Stun(GameObject player, float stunDuration, Material mat = null)
     {
         Renderer[] child = player.GetComponentsInChildren<Renderer>();
         if (once == false)
         {
             once = true;
-            StartCoroutine(WaitStun(player, stunDuration, mat, child, anim));
+            StartCoroutine(WaitStun(player, stunDuration, mat, child));
         }
 
     }
 
-    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null, Animator anim = null)
+    private IEnumerator WaitStun(GameObject player, float stunDuration, Material mat, Renderer[] child = null)
     {
-        player.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(0);
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
         player.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, player.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
-        if (mat != null)
+
+        float stunTime = 0;
+
+        while (stunTime <= stunDuration)
         {
-            foreach (Renderer r in child)
+            player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+            stunTime += Time.deltaTime;
+            if (mat != null)
             {
-                if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
+                foreach (Renderer r in child)
+                {
+                    if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
+                }
             }
+            yield return null;
         }
-        if(anim != null)
-        {
-            anim.enabled = false;
-        }
-        yield return new WaitForSeconds(stunDuration);
+        //  yield return new WaitForSeconds(stunDuration);
         player.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-        player.GetComponent<PlayerOneMovement>().SetSpeed(player.GetComponent<PlayerOneMovement>().GetConstantSpeed());
-        if (anim != null)
-        {
-            anim.enabled = true;
-        }
     }
 
     // apply slow to inputted
@@ -152,15 +151,56 @@ public class SpellBase : MonoBehaviour {
 
     private IEnumerator WaitSlow(GameObject player, float slowPercent, float jumpReductionPercent, float slowDuration)
     {
-        player.gameObject.GetComponent<PlayerOneMovement>().SetJumpHeight(player.gameObject.GetComponent<PlayerOneMovement>().GetJumpHeight() * jumpReductionPercent);
-        player.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(player.gameObject.GetComponent<PlayerOneMovement>().GetSpeed() * slowPercent);
-        player.gameObject.GetComponent<PlayerOneMovement>().IsSlowed(true);
+        float GetJumpPenalty = player.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty();
 
-        yield return new WaitForSeconds(slowDuration);
+        if (jumpReductionPercent <= GetJumpPenalty)
+        {
+            player.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
+        }
 
-        player.GetComponent<PlayerOneMovement>().SetJumpHeight(player.GetComponent<PlayerOneMovement>().GetConstantJumpHeight());
-        player.GetComponent<PlayerOneMovement>().SetSpeed(player.GetComponent<PlayerOneMovement>().GetConstantSpeed());
-        player.gameObject.GetComponent<PlayerOneMovement>().IsSlowed(false);
+        float GetPenalty = player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
+        if (slowPercent <= GetPenalty)
+        {
+            player.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
+        }
+
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowSpellTime(slowDuration);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetSlowTimeInitial(0);
+        player.gameObject.GetComponent<PlayerOneMovement>().SetUnSlow(false);
+
+        float slowTimePassed = 0;
+        bool noSlow = false;
+
+        while (slowTimePassed <= slowDuration)
+        {
+            slowTimePassed += Time.deltaTime;
+
+            GetPenalty = player.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
+            if (slowPercent <= GetPenalty)
+            {
+                player.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
+            }
+
+            GetJumpPenalty = player.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty();
+            if (jumpReductionPercent <= GetJumpPenalty)
+            {
+                player.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
+            }
+
+            noSlow = player.gameObject.GetComponent<PlayerOneMovement>().GetUnSlow();
+
+            yield return null;
+        }
+        if (noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == false)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(1);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(1);
+        }
+        else if(noSlow == true && player.gameObject.GetComponent<PlayerOneMovement>().GetSlowed() == true)
+        {
+            player.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(0.99f);
+            player.GetComponent<PlayerOneMovement>().SetSlowPenalty(0.99f);
+        }
     }
 
     public void RestartFace(GameObject obj)

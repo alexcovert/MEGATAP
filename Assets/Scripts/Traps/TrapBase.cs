@@ -55,7 +55,7 @@ public class TrapBase : MonoBehaviour {
         {
             playery = 1;
         }
-        else if (obj.gameObject.GetComponent<Rigidbody>().velocity.y < 0)
+        else if (obj.gameObject.GetComponent<Rigidbody>().velocity.y <= 0)
         {
             playery = -1;
         }
@@ -68,8 +68,6 @@ public class TrapBase : MonoBehaviour {
             playerz = -1;
         }
     }
-
-    private float time;
 
 
     //for stun function and its enum
@@ -89,15 +87,31 @@ public class TrapBase : MonoBehaviour {
         switch (playerDirection)
         {
             case 1:
-                rb.velocity = new Vector3(-knockBackDistance * playerx, knockUpDistance * -playery, 0);
+                if(playerx == 0)
+                {
+                    playerx = 1;
+                }
+                rb.velocity = new Vector3(knockBackDistance * -playerx, knockUpDistance * -playery, 0);
                 break;
             case 2:
-                rb.velocity = new Vector3(0, knockUpDistance * -playery, -knockBackDistance * playerz);
+                if (playerz == 0)
+                {
+                    playerz = 1;
+                }
+                rb.velocity = new Vector3(0, knockUpDistance * -playery, knockBackDistance * -playerz);
                 break;
             case 3:
+                if (playerx == 0)
+                {
+                    playerx = -1;
+                }
                 rb.velocity = new Vector3(knockBackDistance * -playerx, knockUpDistance * -playery, 0);
                 break;
             case 4:
+                if (playerz == 0)
+                {
+                    playerz = -1;
+                }
                 rb.velocity = new Vector3(0, knockUpDistance * -playery, knockBackDistance * -playerz);
                 break;
         }
@@ -120,14 +134,21 @@ public class TrapBase : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj, float stunDuration, GameObject trap = null)
     {
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(0);
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
-        yield return new WaitForSeconds(stunDuration);
+        obj.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, obj.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
+
+        float stunTimePassed = 0;
+        while (stunTimePassed <= stunDuration)
+        {
+            stunTimePassed += Time.deltaTime;
+
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+
+            yield return null;
+        }
 
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-        obj.GetComponent<PlayerOneMovement>().SetSpeed(obj.GetComponent<PlayerOneMovement>().GetConstantSpeed());
 
-        once = false;
         if (trap != null)
         {
             Destroy(trap);
@@ -138,8 +159,16 @@ public class TrapBase : MonoBehaviour {
     // input directions: both "percents" should be between 0 and 1
     public void Slow(GameObject obj, float slowPercent, float jumpReductionPercent)
     {
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetJumpHeight(obj.gameObject.GetComponent<PlayerOneMovement>().GetJumpHeight() * jumpReductionPercent);
-        obj.gameObject.GetComponent<PlayerOneMovement>().SetSpeed(obj.gameObject.GetComponent<PlayerOneMovement>().GetSpeed() * slowPercent);
+        float GetJumpPenalty = obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowJumpPenalty();
+        if (jumpReductionPercent <= GetJumpPenalty)
+        {
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetSlowJumpPenalty(jumpReductionPercent);
+        }
+        float GetPenalty = obj.gameObject.GetComponent<PlayerOneMovement>().GetSlowPenalty();
+        if (slowPercent <= GetPenalty)
+        {
+            obj.gameObject.GetComponent<PlayerOneMovement>().SetSlowPenalty(slowPercent);
+        }
     }
 
     // apply knockback to inputted

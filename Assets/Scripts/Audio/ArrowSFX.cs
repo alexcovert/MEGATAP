@@ -2,28 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowSFX : MonoBehaviour {
+public class ArrowSFX : MonoBehaviour
+{
 
     [SerializeField] private AudioClip stringDrawSFX;
     [SerializeField] private AudioClip stringReleaseSFX;
-
+    [SerializeField] private AudioClip arrowWhoosh;
+    
     private AudioSource audioSource;
+    private ProjectileShooter shooter;
 
-	private void Start () {
+    private CameraOneRotator cam1;
+
+    private int floor, face;
+    private GameOverMenu gameOver;
+    private void Start()
+    {
+        cam1 = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
+        gameOver = GameObject.Find("GameManager").GetComponent<GameOverMenu>();
         audioSource = GetComponent<AudioSource>();
-	}
-	
+        shooter = GetComponent<ProjectileShooter>();
+
+        face = shooter.FaceNumber;
+        floor = shooter.FloorNumber;
+
+        //Debug.Log(floor + ", " + cam1.GetFloor() + ";   " + face + ", " + cam1.GetState(), this);
+    }
+
 
 
     //Sound Effects
-
+    //Only play if Speccy is on same face
     private void StringDraw()
     {
-        audioSource.PlayOneShot(stringDrawSFX);
+        if(floor == cam1.GetFloor() && face == cam1.GetState() && !gameOver.GameOver)
+           audioSource.PlayOneShot(stringDrawSFX);
     }
 
     private void StringRelease()
     {
-        audioSource.PlayOneShot(stringReleaseSFX);
+        if (floor == cam1.GetFloor() && face == cam1.GetState() && !gameOver.GameOver)
+        {
+            audioSource.PlayOneShot(stringReleaseSFX);
+            audioSource.PlayOneShot(arrowWhoosh);
+        }
     }
+    
+
 }

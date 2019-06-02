@@ -167,7 +167,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|CrouchEnd
       takeName: Armature|CrouchEnd
-      firstFrame: 1
+      firstFrame: 5
       lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
@@ -187,7 +187,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.25358158
+        functionName: GetUpSigh
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -223,7 +230,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|CrouchStart
       takeName: Armature|CrouchStart
-      firstFrame: 5
+      firstFrame: 7
       lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
@@ -243,7 +250,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.1134265
+        functionName: CrouchHMP
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -271,7 +285,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.19819807
+        functionName: LeftFootstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.686496
+        functionName: RightFootstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -468,7 +496,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|JumpIdle
       takeName: Armature|JumpIdle
-      firstFrame: 0
+      firstFrame: 1
       lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
@@ -712,7 +740,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.28847137
+        functionName: WallJumpHyah
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -740,7 +775,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: TurnJumpHyah
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

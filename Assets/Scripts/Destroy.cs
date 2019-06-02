@@ -21,11 +21,16 @@ public class Destroy : MonoBehaviour {
 
     private void Update()
     {
-        if(bottomPlayer.GetFloor() > floor || (bottomPlayer.GetFloor() == floor && bottomPlayer.GetState() > face))
+        int topPlayerState = (topPlayer.GetFloor() * 4) + topPlayer.GetState() - 4;
+        int bottomPlayerState = (bottomPlayer.GetFloor() * 4) + bottomPlayer.GetState() - 4;
+        int currentState = (floor * 4) + face - 4;
+        //Debug.Log(topPlayerState + ", " + bottomPlayerState + ", " + currentState);
+
+        if (topPlayerState >= currentState + 1 && bottomPlayerState > currentState + 1)
         {
             Component[] components = GetComponents<Component>();
             Component[] childComponents = GetComponentsInChildren<Component>();
-
+            ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
             foreach(Component c in components)
             {
                 //Desetroy ALL components besides meshrenderers and transforms so it stays the same visually
@@ -46,6 +51,11 @@ public class Destroy : MonoBehaviour {
                 {
                     Destroy(c);
                 }
+            }
+
+            foreach(ParticleSystem ps in particles)
+            {
+                Destroy(ps);
             }
             
             Destroy(this);

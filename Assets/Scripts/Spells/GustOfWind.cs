@@ -9,13 +9,17 @@ public class GustOfWind : MonoBehaviour {
     private bool trig = false;
     private CameraOneRotator cam;
     private CameraTwoRotator cam2;
-    [SerializeField] private int windForce = 10;
+    [SerializeField] private int windForce;
     private Vector3 direction;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip clip;
 
     //Hit two boundaries to die
     private bool once = false;
 
     private int count = 0;
+    
 
     private void Start()
     {
@@ -23,6 +27,8 @@ public class GustOfWind : MonoBehaviour {
         count = 0;
        	cam = GameObject.Find("Player 1").GetComponent<CameraOneRotator>();
 
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(clip);
         switch (cam.GetState())
         {
             case 1:
@@ -102,12 +108,10 @@ public class GustOfWind : MonoBehaviour {
 
 	void OnTriggerStay(Collider other)
 	{
-
      	// Here you add negative forces to object that is within the fan area
      	// Other is the object, that should be pushed away
       if(other.gameObject.tag == "Player")
       {
-
         //Debug.Log("Object is in trigger");
      	  Vector3 place = transform.position;
         //Debug.Log("place" + place);
@@ -119,7 +123,8 @@ public class GustOfWind : MonoBehaviour {
         //  Debug.Log("normal direction" + direction);
 
         if(count > 1){
-          other.transform.position += direction * windForce/2 * Time.deltaTime;
+          other.transform.position += direction * windForce/count * Time.deltaTime;
+         
         }
         else{
           other.transform.position += direction * windForce * Time.deltaTime;
