@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour {
 	private GameObject player = null;
     private Renderer[] child;
     private Animator anim;
+    private BoxCollider box;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +21,7 @@ public class Projectile : MonoBehaviour {
 		Destroy(gameObject, 5.0f);
         child = this.GetComponentsInChildren<Renderer>();
         hit = false;
+        box = GetComponent<BoxCollider>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -36,6 +38,7 @@ public class Projectile : MonoBehaviour {
                 anim.Play("Stunned", 0);
             }
             Unrender();
+            box.enabled = false;
             trapBase.Stun(player, stunDuration, this.gameObject);
             anim.SetBool("Stunned", hit);
             StartCoroutine(Wait());
@@ -48,11 +51,17 @@ public class Projectile : MonoBehaviour {
                 {
                     Unrender();
                 }
+                box.enabled = false;
                 StartCoroutine(Death(stunDuration));
             }
             else if(hit == false)
             {
-                Destroy(this.gameObject);
+                if(col.gameObject.tag == "Platform")
+                {
+                    Unrender();
+                }
+                box.enabled = false;
+                StartCoroutine(Death(stunDuration));
             }
         }
 	}
@@ -73,8 +82,7 @@ public class Projectile : MonoBehaviour {
 
     private IEnumerator Death(float stunDuration)
     {
-        yield return new WaitForSeconds(stunDuration + 2f);
-
+        yield return new WaitForSeconds(stunDuration + 4f);
         Destroy(this.gameObject);
     }
 }
