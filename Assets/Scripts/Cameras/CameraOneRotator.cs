@@ -103,6 +103,7 @@ public class CameraOneRotator : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "CamUnlock":
+                Destroy(other.gameObject);
                 StartCoroutine(IncreaseOffset());
                 break;
             case "Trigger4":
