@@ -134,6 +134,9 @@ public class TrapBase : MonoBehaviour {
 
     private IEnumerator Wait(GameObject obj, float stunDuration, GameObject trap = null)
     {
+        obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+        obj.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, obj.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
+
         float stunTimePassed = 0;
         while (stunTimePassed <= stunDuration)
         {
@@ -146,13 +149,6 @@ public class TrapBase : MonoBehaviour {
 
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
 
-        while(obj.gameObject.GetComponent<PlayerOneMovement>().IsStunned() == true)
-        {
-            obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
-            yield return null;
-        }
-
-        once = false;
         if (trap != null)
         {
             Destroy(trap);

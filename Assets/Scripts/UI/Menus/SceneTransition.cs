@@ -33,6 +33,13 @@ public class SceneTransition : MonoBehaviour
 
         fadeAnim.transform.SetAsLastSibling();
         loadImg.transform.SetAsLastSibling();
+
+        GameObject tutorialCanvas = GameObject.Find("Tutorial Canvas");
+        if(tutorialCanvas != null)
+        {
+            Destroy(tutorialCanvas);
+        }
+
         //Uncomment this line to see loading screen better; our game loads TOO FAST
         yield return new WaitForSeconds(loadTime);
 
