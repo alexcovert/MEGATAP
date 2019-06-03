@@ -149,6 +149,8 @@ public class TrapBase : MonoBehaviour {
 
         obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(true);
 
+        once = false;
+
         if (trap != null)
         {
             Destroy(trap);
