@@ -72,13 +72,13 @@ public class LogProjectile : MonoBehaviour {
             switch (playerOne.GetState())
             {
                 case 1:
-                    if (rb.velocity.x > speedForKnockback)
+                    if (rb.velocity.x > speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(0.0065f, 0, -0.0003f);
                         box.enabled = true;
                     }
                     //left
-                    else if (rb.velocity.x < -speedForKnockback)
+                    else if (rb.velocity.x < -speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(-0.0065f, 0, -0.0003f);
                         box.enabled = true;
@@ -89,13 +89,13 @@ public class LogProjectile : MonoBehaviour {
                     }
                     break;
                 case 2:
-                    if (rb.velocity.z > speedForKnockback)
+                    if (rb.velocity.z > speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(0.0065f, 0, -0.0003f);
                         box.enabled = true;
                     }
                     //left
-                    else if (rb.velocity.z < -speedForKnockback)
+                    else if (rb.velocity.z < -speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(-0.0065f, 0, -0.0003f);
                         box.enabled = true;
@@ -107,12 +107,12 @@ public class LogProjectile : MonoBehaviour {
                     break;
                 case 3:
                     //left
-                    if (rb.velocity.x > speedForKnockback)
+                    if (rb.velocity.x > speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(-0.0065f, 0, -0.0003f);
                         box.enabled = true;
                     }
-                    else if (rb.velocity.x < -speedForKnockback)
+                    else if (rb.velocity.x < -speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(0.0065f, 0, -0.0003f);
                         box.enabled = true;
@@ -124,12 +124,12 @@ public class LogProjectile : MonoBehaviour {
                     break;
                 case 4:
                     //left
-                    if (rb.velocity.z > speedForKnockback)
+                    if (rb.velocity.z > speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(-0.0065f, 0, -0.0003f);
                         box.enabled = true;
                     }
-                    else if (rb.velocity.z < 0)
+                    else if (rb.velocity.z < -speedForKnockback && canHit == true)
                     {
                         box.center = new Vector3(0.0065f, 0, -0.0003f);
                         box.enabled = true;
@@ -194,7 +194,7 @@ public class LogProjectile : MonoBehaviour {
         yield return new WaitForSeconds(lifeTime);
         canHit = false;
         box.enabled = false;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(stunDuration + 2f);
         Destroy(this.transform.parent.gameObject);
     }
     
