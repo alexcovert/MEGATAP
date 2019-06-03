@@ -121,7 +121,7 @@ public class SpellBase : MonoBehaviour {
 
         float stunTime = 0;
 
-        while (stunTime <= stunDuration)
+        while (stunTime < stunDuration)
         {
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
             stunTime += Time.deltaTime;
@@ -171,7 +171,7 @@ public class SpellBase : MonoBehaviour {
         float slowTimePassed = 0;
         bool noSlow = false;
 
-        while (slowTimePassed <= slowDuration)
+        while (slowTimePassed < slowDuration)
         {
             slowTimePassed += Time.deltaTime;
 
