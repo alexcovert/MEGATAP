@@ -148,12 +148,12 @@ public class LogProjectile : MonoBehaviour {
         {
             if (hit)
             {
-                if (hit && knockTimer < 7 && knockTimer >= 5)
+                if (knockTimer < 7 && knockTimer >= 5)
                 {
                     trapBase.KnockBack(player, knockBackValue, 0);
                     knockTimer++;
                 }
-                else if (hit && knockTimer < 7)
+                else if (knockTimer < 7)
                 {
                     trapBase.KnockBack(player, 0, knockUpValue);
                     trapBase.Stun(player.gameObject, stunDuration);
@@ -175,6 +175,7 @@ public class LogProjectile : MonoBehaviour {
         {
             player = col.gameObject;
             hit = true;
+            trapBase.UpdatePlayerVelocities(col.gameObject);
             anim = player.GetComponent<PlayerOneMovement>().GetAnim();
             if (logHitSFX != null && !sfxPlayed)
             {

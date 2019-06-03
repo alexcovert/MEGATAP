@@ -140,9 +140,9 @@ public class TrapBase : MonoBehaviour {
         float stunTimePassed = 0;
         while (stunTimePassed <= stunDuration)
         {
-            stunTimePassed += Time.deltaTime;
-
             obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
+
+            stunTimePassed += Time.deltaTime;
 
             yield return null;
         }
