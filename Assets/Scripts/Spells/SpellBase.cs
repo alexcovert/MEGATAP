@@ -132,6 +132,7 @@ public class SpellBase : MonoBehaviour {
                     if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
                 }
             }
+
             yield return null;
         }
         //  yield return new WaitForSeconds(stunDuration);

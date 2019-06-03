@@ -111,7 +111,7 @@ public class Lightning : MonoBehaviour
             Destroy(ps);
         }
         
-        yield return new WaitForSeconds(stunDuration + 1f);
+        yield return new WaitForSeconds(stunDuration + 2f);
         if (anim != null)
         {
             anim.SetBool("Stunned", false);
