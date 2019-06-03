@@ -121,7 +121,7 @@ public class SpellBase : MonoBehaviour {
 
         float stunTime = 0;
 
-        while (stunTime < stunDuration)
+        while (stunTime <= stunDuration)
         {
             player.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
             stunTime += Time.deltaTime;
@@ -132,6 +132,7 @@ public class SpellBase : MonoBehaviour {
                     if (r.name == "Body" || r.name == "Hat" || r.name == "HatEyes" || r.name == "Poncho") r.material = mat;
                 }
             }
+
             yield return null;
         }
         //  yield return new WaitForSeconds(stunDuration);
@@ -171,7 +172,7 @@ public class SpellBase : MonoBehaviour {
         float slowTimePassed = 0;
         bool noSlow = false;
 
-        while (slowTimePassed < slowDuration)
+        while (slowTimePassed <= slowDuration)
         {
             slowTimePassed += Time.deltaTime;
 

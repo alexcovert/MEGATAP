@@ -138,7 +138,7 @@ public class TrapBase : MonoBehaviour {
         obj.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, obj.gameObject.GetComponent<Rigidbody>().velocity.y, 0);
 
         float stunTimePassed = 0;
-        while (stunTimePassed < stunDuration)
+        while (stunTimePassed <= stunDuration)
         {
             obj.gameObject.GetComponent<PlayerOneMovement>().SetMove(false);
 
