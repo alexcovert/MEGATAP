@@ -83,8 +83,8 @@ public class Petrify : MonoBehaviour {
             }
             Destroy(this.gameObject, 8);
             child = player.GetComponentsInChildren<Renderer>();
-            spellBase.Stun(player, stunDuration, turnStone);
             StartCoroutine(CheckPetrifyStatus());
+            spellBase.Stun(player, stunDuration, turnStone);
             StartCoroutine(Wait(this.gameObject));
         }
         if (hit == false && other.tag == "Boundary" && once == false)

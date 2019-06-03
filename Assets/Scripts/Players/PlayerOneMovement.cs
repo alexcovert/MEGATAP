@@ -394,6 +394,15 @@ public class PlayerOneMovement : MonoBehaviour {
             {
                 unPetrify = false;
             }
+           
+            if(unPetrify == true)
+            {
+                animator.enabled = true;
+            }
+            else if(unPetrify == false)
+            {
+                animator.enabled = false;
+            }
 
             //Slow flicker fix
             SlowTimeInitial += Time.deltaTime;
