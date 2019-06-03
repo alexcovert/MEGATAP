@@ -447,6 +447,7 @@ public class CastSpell : MonoBehaviour
                     switch (PlayerOneState)
                     {
                         case 1:
+                            spellTarget.transform.rotation = Quaternion.identity;
                             break;
                         case 3:
                             spellTarget.transform.eulerAngles = new Vector3(0, 180, 0);
