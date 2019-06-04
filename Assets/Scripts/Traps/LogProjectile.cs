@@ -185,6 +185,7 @@ public class LogProjectile : MonoBehaviour {
             if (player.GetComponent<PlayerOneMovement>().IsCrouched() == false)
             {
                 anim.Play("Knockback", 0);
+                anim.SetBool("Knockback", hit);
             }
         }
     }
@@ -194,6 +195,10 @@ public class LogProjectile : MonoBehaviour {
         yield return new WaitForSeconds(lifeTime);
         canHit = false;
         box.enabled = false;
+        if (anim != null)
+        {
+            anim.SetBool("Knockback", false);
+        }
         yield return new WaitForSeconds(stunDuration + 2f);
         Destroy(this.transform.parent.gameObject);
     }

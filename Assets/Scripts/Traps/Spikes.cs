@@ -78,7 +78,6 @@ public class Spikes : MonoBehaviour {
             player = other.gameObject;
             trapBase.UpdatePlayerVelocities(other.gameObject);
             anim = player.GetComponent<PlayerOneMovement>().GetAnim();
-            anim.Play("Knockback", 0);
 
             //Wait for the player to hit again; hitCount would increment too quickly if the player stayed above the spikes
             if(hitCheck)
@@ -109,7 +108,8 @@ public class Spikes : MonoBehaviour {
             }
             else
             {
-                anim.SetBool("Knockback", hit);
+                anim.Play("Knockback", 0);
+                anim.SetBool("Knockback", true);
             }
             
         }
