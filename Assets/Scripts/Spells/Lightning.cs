@@ -68,11 +68,8 @@ public class Lightning : MonoBehaviour
             }
             spellBase.Stun(player, stunDuration);
             anim.SetBool("Stunned", hit);
+            col.enabled = false;
             StartCoroutine(Wait(this.gameObject));
-            StartCoroutine(WaitToDie(stunDuration * 1.5f));
-        }
-        if (hit == false && other.tag == "Boundary")
-        {
             StartCoroutine(WaitToDie(stunDuration * 1.5f));
         }
     }
@@ -89,13 +86,17 @@ public class Lightning : MonoBehaviour
         }
 
         yield return new WaitForSeconds(stunDuration);
+        col.enabled = false;
         Destroy(obj);
     }
 
     private IEnumerator WaitToDie(float time)
     {
         yield return new WaitForSeconds(time);
-        col.enabled = true;
+        if (hit == false)
+        {
+            col.enabled = true;
+        }
         foreach (ParticleSystem p in particleSystems)
         {
             if (p != null)
@@ -110,8 +111,9 @@ public class Lightning : MonoBehaviour
         {
             Destroy(ps);
         }
-        
+
         yield return new WaitForSeconds(stunDuration + 2f);
+        col.enabled = false;
         if (anim != null)
         {
             anim.SetBool("Stunned", false);
