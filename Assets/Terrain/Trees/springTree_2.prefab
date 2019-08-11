@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 33389398823149122}
   - component: {fileID: 23005784871947690}
   m_Layer: 0
-  m_Name: Tree_2
+  m_Name: springTree_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,13 +35,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1691727247011430}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 140.41031, y: 0, z: 397.02557}
-  m_LocalScale: {x: 0.5, y: 1.5, z: 1.5}
+  m_LocalRotation: {x: -0, y: -0.024777036, z: -0, w: 0.99969304}
+  m_LocalPosition: {x: 127.50154, y: 0, z: 502.57468}
+  m_LocalScale: {x: 1, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -2.8400002, z: 0}
 --- !u!21 &21097095261871080
 Material:
   serializedVersion: 6
@@ -61,15 +61,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpSpecMap:
-        m_Texture: {fileID: 2800000, guid: 89df30b29f2316d45aceef0504c2d9fc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 14faffc23ea4ab645acc8d38f90479b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 02c25726ba471e1428f7bedbbf3ce02e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2eed658a723478d4baf0e93998204b2a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TranslucencyMap:
-        m_Texture: {fileID: 2800000, guid: b73df4255d1b5744c8b5fb2c67e724c8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9a24d83297bcc7648a062226eb4129aa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -99,19 +99,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpSpecMap:
-        m_Texture: {fileID: 2800000, guid: 89df30b29f2316d45aceef0504c2d9fc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 14faffc23ea4ab645acc8d38f90479b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 02c25726ba471e1428f7bedbbf3ce02e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2eed658a723478d4baf0e93998204b2a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowTex:
-        m_Texture: {fileID: 2800000, guid: b4b437037b880c547b655907b4fd1362, type: 3}
+        m_Texture: {fileID: 2800000, guid: 23b8931a163ec8942a731ff839a5e4a8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TranslucencyMap:
-        m_Texture: {fileID: 2800000, guid: b73df4255d1b5744c8b5fb2c67e724c8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9a24d83297bcc7648a062226eb4129aa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -153,7 +153,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: Tree Data
   m_EditorClassIdentifier: 
   _uniqueID: 89
-  materialHash: 7d557fcd163e963aa6fea3a5e92c6920-550813696
+  materialHash: 750d607fd5ff50ec26171695590e93a7-550813696
   root:
     _uniqueID: 1
     seed: 1234
